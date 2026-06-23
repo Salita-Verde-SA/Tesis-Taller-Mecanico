@@ -1,29 +1,5 @@
 {
-  "name": "Taller Mecanico",
   "nodes": [
-    {
-      "parameters": {
-        "updates": [
-          "message"
-        ],
-        "additionalFields": {}
-      },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        -688,
-        304
-      ],
-      "id": "aae24bea-10ca-49f3-8d4a-61b98ac31cd1",
-      "name": "Telegram Trigger",
-      "webhookId": "8dc18ec3-d8ef-4acc-bebc-57bd50335639",
-      "credentials": {
-        "telegramApi": {
-          "id": "4LODBBbqo2gQdeSW",
-          "name": "Telegram account"
-        }
-      }
-    },
     {
       "parameters": {
         "rules": {
@@ -38,13 +14,13 @@
                 },
                 "conditions": [
                   {
-                    "id": "25953c38-d30b-4e8b-a1c6-e008e0ec7000",
+                    "id": "cond-admin",
                     "leftValue": "={{ $json.message.text }}",
-                    "rightValue": "ADMIN",
                     "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    }
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "ADMIN"
                   }
                 ],
                 "combinator": "and"
@@ -54,107 +30,167 @@
             },
             {
               "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "cond-start",
+                    "leftValue": "={{ $json.message.text }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "/start"
+                  }
+                ],
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
                   "typeValidation": "strict",
                   "version": 3
-                },
-                "conditions": [
-                  {
-                    "id": "7b8d3fe1-c3e2-4ae2-80f7-6410133ddf13",
-                    "leftValue": "={{ $json.message.text }}",
-                    "rightValue": "/start",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "Bienvenida"
             },
             {
               "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "cond-other1",
+                    "leftValue": "={{ $json.message.text }}",
+                    "operator": {
+                      "operation": "notEquals",
+                      "type": "string"
+                    },
+                    "rightValue": "/start"
+                  },
+                  {
+                    "id": "cond-other2",
+                    "leftValue": "={{ $json.message.text }}",
+                    "operator": {
+                      "operation": "notEquals",
+                      "type": "string"
+                    },
+                    "rightValue": "ADMIN"
+                  }
+                ],
                 "options": {
                   "caseSensitive": true,
                   "leftValue": "",
                   "typeValidation": "strict",
                   "version": 3
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.message.text }}",
-                    "rightValue": "/start",
-                    "operator": {
-                      "type": "string",
-                      "operation": "notEquals"
-                    },
-                    "id": "6f0a1194-7e07-4fbe-8ea5-79634b4642ab"
-                  }
-                ],
-                "combinator": "and"
-              }
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente"
             }
           ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.4,
+      "id": "b3acc1a5-5f6d-4c19-8d22-b162d322d5a9",
+      "name": "Switch",
       "position": [
-        -464,
-        288
+        -32,
+        128
       ],
-      "id": "a0329646-ddde-47a1-b98f-3ab12f52ffd8",
-      "name": "Switch"
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
+        "text": "👋 ¡Bienvenido al Taller Mecánico!\n\nSoy tu asistente virtual 🔧\n\nPodés consultarme sobre:\n📅 Turnos — agendar, consultar\n🔩 Repuestos — disponibilidad y precios\n👤 Tus datos — registro de cliente\n\n¿En qué te puedo ayudar?",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "911c8182-a334-4c9e-9db5-d3e966389ee2",
+      "name": "Mensaje Bienvenida",
+      "position": [
+        576,
+        144
+      ],
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "webhookId": "03c55aaa-8c2f-481c-a748-4a6fd99a3e75",
+      "credentials": {
+        "telegramApi": {
+          "id": "igtGzqD9iOepnDBv",
+          "name": "Telegram account"
+        }
+      }
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "Sos el asistente de gestión interna del Taller Mecánico, accesible solo para el administrador o mecánico a cargo. Tu función es ayudar a gestionar el stock, los turnos y los clientes de forma eficiente.\n\n## TUS CAPACIDADES\nPodés realizar las siguientes acciones:\n- Consultar el stock completo de repuestos\n- Actualizar el stock de un repuesto (cantidad disponible)\n- Consultar todos los turnos registrados\n- Consultar la lista de clientes\n\n## COMANDOS DISPONIBLES\n\n### Gestión de Stock:\n- Para ver el stock completo, el admin puede escribir \"ver stock\" o \"stock\"\n- Para actualizar el stock de un repuesto, pedile: nombre o código del repuesto y la nueva cantidad\n- Mostrá siempre: Producto, Código, Precio de costo, Precio de venta y Stock actual\n- Usá \"Obtener Repuestos1\" para consultar y \"Actualizar Stock\" para modificar\n\n### Gestión de Turnos:\n- Para ver todos los turnos, el admin puede escribir \"ver turnos\" o \"turnos\"\n- Mostrá: ID, cliente, auto, diagnóstico, repuestos usados, presupuesto y fecha\n- Usá \"Obtener Turnos1\" para consultar\n\n### Gestión de Clientes:\n- Para ver todos los clientes, escribir \"ver clientes\" o \"clientes\"\n- Mostrá: ID, nombre, dirección y DNI\n- Usá \"Obtener Clientes1\" para consultar\n\n## REGLAS\n- Este panel es solo para uso interno — no revelar información sensible fuera de este contexto\n- Confirmá siempre las modificaciones antes de ejecutarlas: \"¿Confirmás actualizar el stock de [producto] a [cantidad]?\"\n- Si el administrador da una instrucción ambigua, pedí confirmación antes de actuar\n- Hablá de forma directa y técnica, sin exceso de formalidades\n- Para actualizar stock, necesitás el ID o código exacto del repuesto\n\n## FORMATO DE RESPUESTAS\n- Usá tablas o listas cuando muestres múltiples registros\n- Confirmá cada acción con ✅ o ❌ según el resultado\n- Si hay un error o el dato no existe, informalo claramente\n\nEstás listo para recibir instrucciones del administrador.",
-        "options": {}
+        "text": "={{ $json.message.text }}\n",
+        "options": {
+          "systemMessage": "=Sos el asistente virtual del Taller Mecánico. Tu función es atender a los clientes por Telegram de forma amable, profesional y eficiente.\n\nCONTEXTO TEMPORAL Y CALENDARIO (¡CRÍTICO!):\nLa hora actual es {{ $now.format('HH:mm') }}. \nHoy es {{ $now.format('cccc dd/MM/yyyy') }}. \n\nPara fechas relativas cercanas (\"mañana\", \"el viernes que viene\"), usá EXCLUSIVAMENTE este machete:\n- Hoy: {{ $now.format('cccc dd/MM/yyyy') }}\n- Mañana: {{ $now.plus({days:1}).format('cccc dd/MM/yyyy') }}\n- En 2 días: {{ $now.plus({days:2}).format('cccc dd/MM/yyyy') }}\n- En 3 días: {{ $now.plus({days:3}).format('cccc dd/MM/yyyy') }}\n- En 4 días: {{ $now.plus({days:4}).format('cccc dd/MM/yyyy') }}\n- En 5 días: {{ $now.plus({days:5}).format('cccc dd/MM/yyyy') }}\n- En 6 días: {{ $now.plus({days:6}).format('cccc dd/MM/yyyy') }}\n- En 7 días: {{ $now.plus({days:7}).format('cccc dd/MM/yyyy') }}\n\nPara fechas más lejanas (ej: el mes que viene), calculá lógicamente basándote en que Hoy es {{ $now.format('cccc dd/MM/yyyy') }}.\n\nLos domingos ESTÁ CERRADO. Tenés PROHIBIDO agendar turnos los domingos, sea en esta semana o el mes que viene.\n\n## TUS CAPACIDADES\nPodés realizar las siguientes acciones usando las herramientas disponibles:\n- Consultar el stock de repuestos disponibles\n- Registrar un nuevo turno para un cliente\n- Consultar los turnos existentes\n- Registrar un nuevo cliente\n- Consultar los datos de un cliente por DNI\n\n## REGLAS DE NEGOCIO Y VALIDACIONES (¡ESTRICTAS!)\n1. DÍAS Y HORARIOS DE ATENCIÓN: Solo Lunes a Sábados, de 09:00 a 18:00 hs. DOMINGOS CERRADO.\n2. BLOQUES DE 1 HORA (TURNOS EN PUNTO): Los turnos duran exactamente 1 hora y SOLO se pueden agendar en horas exactas (09:00, 10:00, 11:00... hasta el último a las 17:00). Nunca aceptes minutos intermedios (ej: 14:30 o 16:59). Si el cliente pide un horario roto, ofrécele redondear a la hora en punto más cercana.\n3. LÍMITE DE TURNOS: Un cliente NO puede tener más de 3 turnos agendados en total.\n4. VALIDACIÓN DE DATOS (SENSE CHECK): No guardes basura. Si un cliente te da un DNI o nombre inválido (ej: \"asd\"), pedíselo de nuevo.\n5. IDS ÚNICOS NUMÉRICOS: Cuando registres cliente o turno, generá un ID único que sea EXCLUSIVAMENTE UN NÚMERO ENTERO ALEATORIO (ej: 84732). NUNCA uses letras ni el DNI como ID.\n\n## FLUJO DE ATENCIÓN OBLIGATORIO\n\n### A. Para sacar un turno:\n1. Saludá y preguntá Nombre, Apellido y DNI.\n2. Verificá si existe usando \"Verificar_Identidad\" (por DNI).\n3. Si NO existe, pedile la Dirección y Teléfono. REGISTRÁ AL CLIENTE asegurándote de mandar TODOS los campos: ID numérico generado, Nombre y Apellido, DNI, Dirección y Teléfono.\n4. Preguntá los datos del vehículo (Marca, Modelo, Año) y el MOTIVO (qué problema tiene o qué servicio busca).\n5. Preguntá la fecha y hora deseada. Calculá la fecha exacta en base al \"Hoy\" provisto arriba. Asegurate de que sea un horario en punto (ej 10:00, 14:00).\n6. VERIFICACIÓN DE COLISIONES (REGLA DE HIERRO):\n   - Usá \"Obtener Turnos\" con el DNI del cliente para verificar sus turnos actuales.\n   - Si el cliente ya tiene 3 o más turnos en total, RECHAZÁ la solicitud amablemente.\n   - Si verificás que la fecha y hora que el cliente pide YA TIENE UN TURNO AGENDADO (ya sea de este mismo cliente o de otro), TENÉS PROHIBIDO AGENDARLO. RECHAZÁ EL PEDIDO INMEDIATAMENTE y ofrécele el bloque de 1 hora anterior o posterior. BAJO NINGÚN CONCEPTO podés agendar dos turnos a la misma hora en la misma fecha.\n\n7. Registrá el turno usando \"Agendar_Turno\". ¡ATENCIÓN! Tenés que enviar los datos SEPARADOS:\n   - Pasá el parámetro FECHA por un lado (ej: \"28/06/2026\").\n   - Pasá el parámetro HORARIO por otro lado (ej: \"14:00\").\n   - Pasá explícitamente el parámetro del MOTIVO del turno.\n8. Confirmale al cliente con un resumen claro.\n\n### B. Para consultar repuestos:\n1. Usá \"Consultar_Stock_Publico\".\n2. Informá solo repuestos disponibles y el \"Precio a la Venta\". NUNCA precios de costo.\n\n### C. Para consultar un turno:\n1. Pedí el DNI, usá \"Obtener Turnos\" e informá los detalles de forma clara.\n\n## FORMATO DE RESPUESTAS\n- Respuestas cortas, amigables y claras.\n- Usá emojis con moderación (🔧 📅 ✅).\n- Nunca inventes información. Si algo falla o no lo encontrás, decíselo al cliente.\n"
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1,
+      "id": "3136f5ab-65c3-4587-a752-8716cbbd2d6c",
+      "name": "Servicio Tecnico",
       "position": [
-        72,
-        504
+        512,
+        448
       ],
-      "id": "8b97d4c9-82a4-4841-b7b3-80df47b34ab7",
-      "name": "AI Agent1"
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1
     },
     {
       "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
-          "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Stock",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=0"
-        },
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "options": {
+          "systemMessage": "Sos el asistente de gestión interna del Taller Mecánico, accesible solo para el administrador o mecánico a cargo. Tu función es ayudar a gestionar el stock, los turnos y los clientes de forma eficiente.\n\n## TUS CAPACIDADES\nPodés realizar las siguientes acciones:\n- Consultar el stock completo de repuestos\n- Actualizar el stock de un repuesto (cantidad disponible)\n- Consultar todos los turnos registrados\n- Consultar la lista de clientes\n\n## COMANDOS DISPONIBLES\n\n### Gestión de Stock:\n- Para ver el stock completo, el admin puede escribir \"ver stock\" o \"stock\"\n- Para actualizar el stock de un repuesto, pedile: nombre o código del repuesto y la nueva cantidad\n- Mostrá siempre: Producto, Código, Precio de costo, Precio de venta y Stock actual\n- Usá \"Obtener Repuestos1\" para consultar y \"Actualizar Stock\" para modificar\n\n### Gestión de Turnos:\n- Para ver todos los turnos, el admin puede escribir \"ver turnos\" o \"turnos\"\n- Mostrá: ID, cliente, auto, diagnóstico, repuestos usados, presupuesto y fecha\n- Usá \"Obtener Turnos1\" para consultar\n\n### Gestión de Clientes:\n- Para ver todos los clientes, escribir \"ver clientes\" o \"clientes\"\n- Mostrá: ID, nombre, dirección y DNI\n- Usá \"Obtener Clientes1\" para consultar\n\n## REGLAS\n- Este panel es solo para uso interno — no revelar información sensible fuera de este contexto\n- Confirmá siempre las modificaciones antes de ejecutarlas: \"¿Confirmás actualizar el stock de [producto] a [cantidad]?\"\n- Si el administrador da una instrucción ambigua, pedí confirmación antes de actuar\n- Hablá de forma directa y técnica, sin exceso de formalidades\n- Para actualizar stock, necesitás el ID o código exacto del repuesto\n\n## FORMATO DE RESPUESTAS\n- Usá tablas o listas cuando muestres múltiples registros\n- Confirmá cada acción con ✅ o ❌ según el resultado\n- Si hay un error o el dato no existe, informalo claramente\n\nEstás listo para recibir instrucciones del administrador."
+        }
+      },
+      "id": "250c7fcb-87a9-4b08-852b-ec7efcee5566",
+      "name": "AI Agent1",
+      "position": [
+        512,
+        -256
+      ],
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1
+    },
+    {
+      "parameters": {
         "options": {}
       },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
+      "id": "3d8c9f0e-fcdf-48de-8759-0aa2b901e3eb",
+      "name": "Mistral Cloud Chat Model",
       "position": [
-        16,
-        224
+        192,
+        672
       ],
-      "id": "d5b80db6-d9d3-49d0-9f0f-fe3d32720c58",
-      "name": "Obtener Respuestos",
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
       "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
-          "name": "Google Sheets account"
+        "mistralCloudApi": {
+          "id": "tJWypELWeudSZvrL",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "1226e68d-5aee-4cbc-8634-997a381d901f",
+      "name": "Mistral Cloud Chat Model1",
+      "position": [
+        256,
+        -32
+      ],
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "tJWypELWeudSZvrL",
+          "name": "Mistral Cloud account"
         }
       }
     },
@@ -162,17 +198,50 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
           "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
-          "value": 811131839,
+          "value": 214945978,
           "mode": "list",
-          "cachedResultName": "Clientes",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=811131839"
+          "cachedResultName": "stock",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=214945978"
+        },
+        "options": {}
+      },
+      "id": "c939cfbd-ca87-4271-bb48-fce6eef7fa3d",
+      "name": "Consultar_Stock_Publico",
+      "position": [
+        576,
+        672
+      ],
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=0"
         },
         "filtersUI": {
           "values": [
@@ -184,18 +253,18 @@
         },
         "options": {}
       },
+      "id": "80aba7f4-8d40-467b-abe6-02fdf9135a72",
+      "name": "Verificar_Identidad",
+      "position": [
+        960,
+        672
+      ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
-      "position": [
-        144,
-        224
-      ],
-      "id": "fdd2337c-96fe-4899-b8b3-87965be9b01f",
-      "name": "Obtener Clientes",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
-          "name": "Google Sheets account"
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
         }
       }
     },
@@ -203,182 +272,84 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
           "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
-          "value": 1059214711,
+          "value": 1504113005,
           "mode": "list",
-          "cachedResultName": "Turnos",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=1059214711"
+          "cachedResultName": "turnos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        272,
-        224
-      ],
-      "id": "45984146-f222-4687-84c6-90a23df2f4ca",
+      "id": "765bb82d-2d2f-4284-a0ff-a27eb316a005",
       "name": "Obtener Turnos",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
-          "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Stock",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=0"
-        },
-        "options": {}
-      },
+      "position": [
+        704,
+        672
+      ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
-      "position": [
-        80,
-        728
-      ],
-      "id": "25c6bae8-df76-47ee-bf34-61f0bf54b699",
-      "name": "Obtener Respuestos1",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
-          "name": "Google Sheets account"
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
         }
       }
     },
     {
       "parameters": {
+        "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
           "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
-          "value": 811131839,
+          "value": 1504113005,
           "mode": "list",
-          "cachedResultName": "Clientes",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=811131839"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        208,
-        728
-      ],
-      "id": "b1e59c99-5157-44b4-942b-fa2bf2d7feb3",
-      "name": "Obtener Clientes1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
-          "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1059214711,
-          "mode": "list",
-          "cachedResultName": "Turnos",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=1059214711"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        336,
-        728
-      ],
-      "id": "bc5628dc-880e-441b-8b82-3b912c34388b",
-      "name": "Obtener Turnos1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
-          "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1059214711,
-          "mode": "list",
-          "cachedResultName": "Turnos",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=1059214711"
+          "cachedResultName": "turnos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "ID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID', ``, 'string') }}",
-            "ID / Cliente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID___Cliente', ``, 'string') }}",
             "Auto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Auto', ``, 'string') }}",
-            "Diagnostico": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Diagnostico', ``, 'string') }}",
-            "Repuestos": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Repuestos', ``, 'string') }}",
-            "Presupuesto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Presupuesto', ``, 'string') }}",
             "Fecha del Turno": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Fecha_del_Turno', ``, 'string') }}",
-            "Factura (Link Drive)": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Factura__Link_Drive_', ``, 'string') }}"
+            "ID_Turno": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID_Turno', ``, 'string') }}",
+            "ID_Cliente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID_Cliente', ``, 'string') }}",
+            "Estado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Estado', ``, 'string') }}",
+            "Motivo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Motivo', ``, 'string') }}",
+            "Horario": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Horario', ``, 'string') }}"
           },
           "matchingColumns": [],
           "schema": [
             {
-              "id": "ID",
-              "displayName": "ID",
+              "id": "ID_Turno",
+              "displayName": "ID_Turno",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "id": "ID / Cliente",
-              "displayName": "ID / Cliente",
+              "id": "ID_Cliente",
+              "displayName": "ID_Cliente",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "Auto",
@@ -390,31 +361,14 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "Diagnostico",
-              "displayName": "Diagnostico",
+              "id": "Motivo",
+              "displayName": "Motivo",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Repuestos",
-              "displayName": "Repuestos",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Presupuesto",
-              "displayName": "Presupuesto",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "Fecha del Turno",
@@ -426,13 +380,24 @@
               "canBeUsedToMatch": true
             },
             {
-              "id": "Factura (Link Drive)",
-              "displayName": "Factura (Link Drive)",
+              "id": "Estado",
+              "displayName": "Estado",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Horario",
+              "displayName": "Horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -440,51 +405,54 @@
         },
         "options": {}
       },
+      "id": "ca9e5ed7-fef7-41fc-9f30-d94eab968a55",
+      "name": "Agendar_Turno",
+      "position": [
+        448,
+        672
+      ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
-      "position": [
-        400,
-        224
-      ],
-      "id": "dae498fd-0a87-48cc-be4a-6e14be0b6ffb",
-      "name": "Registrar Turno",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
-          "name": "Google Sheets account"
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
         }
       }
     },
     {
       "parameters": {
-        "operation": "appendOrUpdate",
+        "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
           "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
-          "value": 811131839,
+          "value": "gid=0",
           "mode": "list",
-          "cachedResultName": "Clientes",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=811131839"
+          "cachedResultName": "clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "ID ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID_', ``, 'string') }}",
-            "Nombre y Apellido": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nombre_y_Apellido', ``, 'string') }}",
+            "DNI": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('DNI', ``, 'string') }}",
             "Dirección": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Direcci_n', ``, 'string') }}",
-            "DNI": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('DNI', ``, 'string') }}"
+            "Nombre y Apellido": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Nombre_y_Apellido', ``, 'string') }}",
+            "ID_Cliente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID_Cliente', ``, 'string') }}",
+            "Número De Teléfono": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('N_mero_De_Tel_fono', ``, 'string') }}"
           },
-          "matchingColumns": [],
+          "matchingColumns": [
+            "DNI"
+          ],
           "schema": [
             {
-              "id": "ID ",
-              "displayName": "ID ",
+              "id": "ID_Cliente",
+              "displayName": "ID_Cliente",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -503,6 +471,16 @@
               "removed": false
             },
             {
+              "id": "DNI",
+              "displayName": "DNI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
               "id": "Dirección",
               "displayName": "Dirección",
               "required": false,
@@ -513,8 +491,8 @@
               "removed": false
             },
             {
-              "id": "DNI",
-              "displayName": "DNI",
+              "id": "Número De Teléfono",
+              "displayName": "Número De Teléfono",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -528,18 +506,117 @@
         },
         "options": {}
       },
+      "id": "01665f8c-b847-4596-9ce7-d9b49a4df433",
+      "name": "Registrar Cliente",
+      "position": [
+        832,
+        672
+      ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
-      "position": [
-        528,
-        224
-      ],
-      "id": "b9cbb1a7-71c9-4a1b-868e-2672ba6be94d",
-      "name": "Registrar Cliente",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 214945978,
+          "mode": "list",
+          "cachedResultName": "stock",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=214945978"
+        },
+        "options": {}
+      },
+      "id": "0248e8e1-3041-45c0-bd02-c684694b720c",
+      "name": "Obtener Repuestos1",
+      "position": [
+        768,
+        -32
+      ],
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1THgsRyZ6SDDFD36",
           "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "clientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "c588e11f-44b4-4563-bd3a-c3da989490e2",
+      "name": "Obtener Clientes1",
+      "position": [
+        640,
+        -32
+      ],
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1504113005,
+          "mode": "list",
+          "cachedResultName": "turnos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
+        },
+        "options": {}
+      },
+      "id": "3f3923d7-dd1d-4a37-9ad3-c0cb4701d004",
+      "name": "Obtener Turnos1",
+      "position": [
+        896,
+        -32
+      ],
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
         }
       }
     },
@@ -548,93 +625,89 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
-          "value": "1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w",
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
           "mode": "list",
-          "cachedResultName": "Mecanico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit?usp=drivesdk"
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
-          "value": "gid=0",
+          "value": 214945978,
           "mode": "list",
-          "cachedResultName": "Stock",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1EHCJzdbqyFo3QUegYtszQm-YXYv1D3wtoPh8aVUrJ6w/edit#gid=0"
+          "cachedResultName": "stock",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=214945978"
         },
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "ID": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID', ``, 'string') }}",
-            "Producto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Producto', ``, 'string') }}",
-            "Precio": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Precio', ``, 'string') }}",
-            "Precio a la Venta": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Precio_a_la_Venta', ``, 'string') }}",
-            "Stock": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Stock', ``, 'string') }}",
-            "Codigo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Codigo', ``, 'string') }}",
-            "Estado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Estado', ``, 'string') }}"
+            "Repuesto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Repuesto', ``, 'string') }}",
+            "Código": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('C_digo', ``, 'string') }}",
+            "Stock Actual": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Stock_Actual', ``, 'string') }}",
+            "Stock Mínimo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Stock_M_nimo', ``, 'string') }}",
+            "Precio Unitario": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Precio_Unitario', ``, 'string') }}",
+            "Categoría": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Categor_a', ``, 'string') }}"
           },
           "matchingColumns": [],
           "schema": [
             {
-              "id": "ID",
-              "displayName": "ID",
+              "id": "Repuesto",
+              "displayName": "Repuesto",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "id": "Producto",
-              "displayName": "Producto",
+              "id": "Código",
+              "displayName": "Código",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "id": "Precio",
-              "displayName": "Precio",
+              "id": "Stock Actual",
+              "displayName": "Stock Actual",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "id": "Precio a la Venta",
-              "displayName": "Precio a la Venta",
+              "id": "Stock Mínimo",
+              "displayName": "Stock Mínimo",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "id": "Stock",
-              "displayName": "Stock",
+              "id": "Precio Unitario",
+              "displayName": "Precio Unitario",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
-              "id": "Codigo",
-              "displayName": "Codigo",
+              "id": "Categoría",
+              "displayName": "Categoría",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "Estado",
-              "displayName": "Estado",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -642,116 +715,119 @@
         },
         "options": {}
       },
+      "id": "be0946d8-22ad-4d2a-8ede-d5f14eedbd7b",
+      "name": "Actualizar Stock",
+      "position": [
+        512,
+        -32
+      ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
-      "position": [
-        464,
-        728
-      ],
-      "id": "cda71210-fbd2-48ef-895c-24f4f9caf32c",
-      "name": "Actualizar Stock",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "ULGPKfJbwY4wtoTc",
-          "name": "Google Sheets account"
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
         }
       }
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "Sos el asistente virtual del Taller Mecánico. Tu función es atender a los clientes por Telegram de forma amable, profesional y eficiente.\n\n## TUS CAPACIDADES\nPodés realizar las siguientes acciones usando las herramientas disponibles:\n- Consultar el stock de repuestos disponibles\n- Registrar un nuevo turno para un cliente\n- Consultar los turnos existentes\n- Registrar un nuevo cliente\n- Consultar los datos de un cliente por DNI\n\n## FLUJO DE ATENCIÓN\n\n### Cuando un cliente quiere sacar un turno:\n1. Saludalo y preguntá su nombre y apellido\n2. Pedile el DNI para verificar si ya está registrado (usá la herramienta \"Obtener Clientes\" buscando por DNI)\n3. Si NO existe, registralo con nombre, apellido y dirección usando \"Registrar Cliente\"\n4. Preguntá por el auto (marca, modelo, año) y el problema o servicio que necesita\n5. Preguntá qué fecha y horario prefiere\n6. Registrá el turno con \"Registrar Turno\" con todos los datos: ID del cliente, auto, diagnóstico/motivo, fecha del turno\n7. Confirmá el turno al cliente con un resumen claro\n\n### Cuando un cliente consulta por repuestos:\n1. Usá \"Obtener Repuestos\" para ver el stock disponible\n2. Informá qué repuestos hay disponibles, su precio de venta y si tienen stock\n3. Nunca informes el precio de costo, solo el \"Precio a la Venta\"\n4. Si el repuesto no está en stock, avisá que no está disponible actualmente\n\n### Cuando un cliente consulta su turno:\n1. Pedí el DNI\n2. Buscá el cliente y luego sus turnos con \"Obtener Turnos\"\n3. Informá los detalles del turno de forma clara\n\n## REGLAS IMPORTANTES\n- Siempre hablá en español, con tono amigable y profesional\n- No inventes información: si no encontrás datos, decíselo al cliente\n- Si el cliente manda un mensaje que no entendés, pedile que lo reformule\n- Nunca menciones precios de costo ni información interna del taller\n- Si el cliente quiere hablar con un humano, indicale que puede llamar al taller\n\n## FORMATO DE RESPUESTAS\n- Usá respuestas cortas y claras, ideales para leer en el celular\n- Usá emojis con moderación para que sea más amigable (🔧 📅 ✅)\n- Confirmá siempre las acciones realizadas con un mensaje de éxito\n\nComenzá saludando al cliente cuando inicia la conversación.",
-        "options": {}
+        "chatId": "={{ $('Telegram Trigger').first().json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1,
+      "id": "dd33d03d-d561-4b54-b53c-ec0322ada8ce",
+      "name": "Responder Cliente",
       "position": [
-        72,
-        0
+        1168,
+        448
       ],
-      "id": "a773ffaf-e853-410e-b56e-ef50891ca5b5",
-      "name": "Servicio Tecnico"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        -240,
-        224
-      ],
-      "id": "89979847-b698-46f4-9654-81933ee21248",
-      "name": "Google Gemini Chat Model",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "webhookId": "baa309a5-52a4-41cc-98c2-72f47bfdc996",
       "credentials": {
-        "googlePalmApi": {
-          "id": "P1aRwoJd5z3JE132",
-          "name": "Google Gemini(PaLM) Api account"
+        "telegramApi": {
+          "id": "igtGzqD9iOepnDBv",
+          "name": "Telegram account"
         }
       }
     },
     {
       "parameters": {
-        "options": {}
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
+      "id": "1f72ef5c-4ce3-4b9d-975e-8aecfb67bedf",
+      "name": "Responder Admin",
       "position": [
-        -176,
-        728
+        1168,
+        -160
       ],
-      "id": "cf53cf5f-1600-42e5-8d54-2a59e94ffa44",
-      "name": "Google Gemini Chat Model1",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "webhookId": "4aa146de-0978-4d79-ae49-3301fd213c9e",
       "credentials": {
-        "googlePalmApi": {
-          "id": "P1aRwoJd5z3JE132",
-          "name": "Google Gemini(PaLM) Api account"
+        "telegramApi": {
+          "id": "igtGzqD9iOepnDBv",
+          "name": "Telegram account"
         }
       }
     },
     {
       "parameters": {
-        "sessionIdType": "={{ $json.message.chat.id }}",
-        "sessionKey": ""
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -256,
+        144
+      ],
+      "id": "e7a18c4b-73ed-49a0-bc25-0038b5ff94a5",
+      "name": "Telegram Trigger",
+      "webhookId": "c9f3ef40-653d-4fce-9383-161c0f9f20d5",
+      "credentials": {
+        "telegramApi": {
+          "id": "igtGzqD9iOepnDBv",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.message.chat.id }}"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -112,
-        224
+        320,
+        672
       ],
-      "id": "84ef7a5b-8036-4d1d-ad80-531948faa2e8",
+      "id": "e6a3fc0b-351a-4403-8b8e-9a5592efac75",
+      "name": "Simple Memory2"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        384,
+        -32
+      ],
+      "id": "79cebfe2-0f41-4755-aac2-22a55b9a7677",
       "name": "Simple Memory"
-    },
-    {
-      "parameters": {
-        "sessionIdType": "={{ $json.message.chat.id }}",
-        "sessionKey": ""
-      },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        -48,
-        728
-      ],
-      "id": "ab95fd68-df4c-4b56-8f81-c24339b93659",
-      "name": "Simple Memory1"
     }
   ],
-  "pinData": {},
   "connections": {
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "Switch",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Switch": {
       "main": [
         [
@@ -763,7 +839,7 @@
         ],
         [
           {
-            "node": "Servicio Tecnico",
+            "node": "Mensaje Bienvenida",
             "type": "main",
             "index": 0
           }
@@ -777,7 +853,51 @@
         ]
       ]
     },
-    "Obtener Respuestos": {
+    "Servicio Tecnico": {
+      "main": [
+        [
+          {
+            "node": "Responder Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Responder Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Servicio Tecnico",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar_Stock_Publico": {
       "ai_tool": [
         [
           {
@@ -788,7 +908,7 @@
         ]
       ]
     },
-    "Obtener Clientes": {
+    "Verificar_Identidad": {
       "ai_tool": [
         [
           {
@@ -810,7 +930,29 @@
         ]
       ]
     },
-    "Obtener Respuestos1": {
+    "Agendar_Turno": {
+      "ai_tool": [
+        [
+          {
+            "node": "Servicio Tecnico",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar Cliente": {
+      "ai_tool": [
+        [
+          {
+            "node": "Servicio Tecnico",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Repuestos1": {
       "ai_tool": [
         [
           {
@@ -843,28 +985,6 @@
         ]
       ]
     },
-    "Registrar Turno": {
-      "ai_tool": [
-        [
-          {
-            "node": "Servicio Tecnico",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Registrar Cliente": {
-      "ai_tool": [
-        [
-          {
-            "node": "Servicio Tecnico",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Actualizar Stock": {
       "ai_tool": [
         [
@@ -876,29 +996,18 @@
         ]
       ]
     },
-    "Google Gemini Chat Model": {
-      "ai_languageModel": [
+    "Telegram Trigger": {
+      "main": [
         [
           {
-            "node": "Servicio Tecnico",
-            "type": "ai_languageModel",
+            "node": "Switch",
+            "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Google Gemini Chat Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simple Memory": {
+    "Simple Memory2": {
       "ai_memory": [
         [
           {
@@ -909,7 +1018,7 @@
         ]
       ]
     },
-    "Simple Memory1": {
+    "Simple Memory": {
       "ai_memory": [
         [
           {
@@ -921,17 +1030,9 @@
       ]
     }
   },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": false
-  },
-  "versionId": "7adfdeaf-6484-499f-a065-cbe84972482d",
+  "pinData": {},
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "c36370fc88d311cef9a63d46d9cad1fa093d64185336d0727d1e2b1ea39e8a44"
-  },
-  "id": "AbDmrbE6DfZKBZyw",
-  "tags": []
+    "instanceId": "3eda5c9ff1eeb0ee0a079bfdac54ee17e03ec5efb1c1870e53a6616938cdcc45"
+  }
 }

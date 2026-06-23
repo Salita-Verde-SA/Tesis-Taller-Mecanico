@@ -1,0 +1,405 @@
+Pestaña 1
+TRABAJO FINAL DE CARRERA
+Automatización de Gestión Empresarial con n8n: Asistente Inteligente para Taller Mecánico vía Telegram
+Línea de Investigación: Workflows Aplicados a la Gestión Empresarial y Marketing
+Tecnicatura Universitaria en Programación
+Universidad Tecnológica Nacional
+Mendoza, 2026
+Profesor: Cortez, Alberto Alejandro
+Estudiantes: Palmero, Manuel; Rojas, Uriel
+Resumen4
+I. Introducción5
+1.1. Contexto y Justificación5
+1.2. Problemática Identificada5
+1.2.1. Hipótesis de Trabajo6
+1.3. Objetivos6
+1.3.1. Objetivo General6
+1.3.2. Objetivos Específicos6
+II. Marco Teórico8
+2.1. Automatización de Procesos de Negocio (BPA/RPA)8
+2.2. Plataformas Low-Code y n8n8
+2.3. Agentes Conversacionales basados en LLM9
+2.4. Integración del Framework LangChain9
+2.5. Modelos de Lenguaje de Gran Escala: Mistral AI10
+2.6. Persistencia de Datos en Hojas de Cálculo Conectadas10
+2.7. Telegram Bot API como Interfaz Conversacional11
+2.8. Antecedentes y Estado del Arte11
+2.8.1. Metodología de búsqueda11
+2.8.2. Automatización conversacional y agentes con uso de herramientas11
+2.8.3. Digitalización de PyMEs en el sector automotriz y de servicios11
+2.8.4. Brecha identificada y posicionamiento del trabajo12
+III. Marco Metodológico13
+3.1. Tipo y Enfoque de Investigación13
+3.2. Diseño de Investigación: Estudio de Caso13
+3.3. Caracterización del Caso de Estudio13
+3.4. Instrumentos de Relevamiento14
+3.5. Procedimiento de Desarrollo Iterativo14
+3.6. Técnicas de Análisis y Validación15
+IV. Diseño de la Solución16
+4.1. Arquitectura General del Workflow16
+4.2. Lógica de Enrutamiento17
+4.3. Agente de Servicio al Cliente (Público)17
+4.4. Agente Administrativo (Privado)18
+4.5. Mecanismo de Seguridad y Confirmación18
+4.6. Estructura de la Base de Datos18
+4.7. Limitaciones Técnicas Reconocidas19
+V. Implementación20
+5.1. Configuración del Bot de Telegram20
+5.2. Configuración de los Agentes de IA20
+5.3. Integración con Google Sheets20
+5.4. Configuración del Modelo Mistral20
+5.5. Mecanismo de Respuesta21
+VI. Resultados y Validación Funcional22
+6.1. Diseño Experimental de las Pruebas22
+6.2. Resultados de las Pruebas Unitarias22
+6.3. Resultados de las Pruebas de Integración23
+6.4. Resultados de las Pruebas de Enrutamiento y Seguridad23
+6.5. Discusión de Resultados23
+VII. Conclusiones25
+7.1. Cumplimiento de Objetivos25
+7.2. Aportes del Trabajo25
+7.3. Limitaciones del Estudio26
+7.4. Líneas de Trabajo Futuro26
+VIII. Referencias Bibliográficas28
+Documentación técnica consultada29
+IX. Anexos30
+Anexo 8.1. Prompts de Sistema Completos30
+8.1.1. Prompt del Agente Público (Servicio Técnico)30
+8.1.2. Prompt del Agente Privado (Panel Administrativo)31
+Anexo 8.2. Diagrama de Flujo del Workflow Principal31
+Anexo 8.3. Modelo de Datos Lógico33
+Anexo 8.4. Guion de Entrevista al Caso de Estudio33
+Anexo 8.5. Capturas de Pantalla de Pruebas Funcionales33
+Resumen
+El presente Trabajo Final de Carrera desarrolla, implementa y valida un sistema de automatización para la gestión operativa de un taller mecánico de pequeña escala, utilizando la plataforma de orquestación de workflows de código abierto n8n integrada con la aplicación de mensajería Telegram como canal conversacional. La arquitectura se fundamenta en la concepción de dos agentes de inteligencia artificial diferenciados bajo el principio de privilegio mínimo: un Agente de Servicio Técnico, orientado a la atención al cliente para el registro de turnos y consulta de inventario, y un Agente Administrativo, restringido al personal interno para la gestión completa de la base de datos. Como motor de razonamiento se empleó el modelo Mistral Cloud, integrado mediante el framework LangChain en su implementación nativa de n8n. La persistencia de datos se gestiona en Google Sheets, estructurada en tres entidades (Stock, Clientes y Turnos) vinculadas relacionalmente mediante claves de identificación. Metodológicamente se adoptó un diseño de estudio de caso aplicado a un taller mecánico simulado caracterizado mediante entrevista semiestructurada con un mecánico en actividad. El sistema fue sometido a un protocolo de validación funcional compuesto por pruebas unitarias, de integración, de enrutamiento y de coherencia conversacional, cuyos resultados se documentan con capturas de pantalla y métricas de éxito. Los hallazgos confirman la viabilidad técnica de la solución en su condición de prototipo de investigación validado en condiciones controladas: el sistema completó satisfactoriamente el flujo de registro de turnos, las operaciones CRUD sobre el inventario y la discriminación de roles. El mecanismo de autenticación administrativa se implementa mediante la validación del identificador de usuario de Telegram (User ID) contra una lista de identificadores autorizados cargada manualmente en el workflow, y el resultado de dicha validación se almacena en una variable booleana denominada "admin" que determina el enrutamiento hacia el panel administrativo. Se identifican como limitaciones la ausencia de persistencia de memoria conversacional entre sesiones y las posibles condiciones de carrera bajo concurrencia. El trabajo aporta un modelo replicable de adopción de tecnologías low-code para PyMEs del sector automotriz argentino y traza líneas futuras orientadas a reforzar la escalabilidad, incorporar persistencia conversacional e integrar el sistema con calendarios externos. Su transformación en un sistema apto para despliegue productivo requiere, adicionalmente, un análisis de conformidad con la Ley 25.326 de Protección de Datos Personales, dado que los mensajes procesados contienen información personal de clientes.
+Palabras clave: automatización de procesos de negocio, low-code, agentes de inteligencia artificial, LangChain, PyMEs, Telegram Bot.
+I. Introducción
+1.1. Contexto y Justificación
+La transformación digital se ha consolidado como un eje estratégico para la competitividad empresarial contemporánea, y la automatización de procesos de negocio (Business Process Automation, BPA) ocupa dentro de ella un lugar central (van der Aalst et al., 2018). Para las pequeñas y medianas empresas (PyMEs), la adopción tecnológica enfrenta restricciones presupuestarias y de capital humano especializado que tornan particularmente atractivas las soluciones de código abierto y de bajo costo de implementación (Eller et al., 2020; Sahay et al., 2020).
+En el sector automotriz, los talleres mecánicos de pequeña escala presentan procesos operativos altamente susceptibles de automatización. La gestión de turnos, el control de inventario de repuestos y la comunicación con clientes suelen sostenerse mediante registros manuales o herramientas ofimáticas básicas, lo que genera ineficiencias documentadas en estudios sobre digitalización de PyMEs de servicios (Eller et al., 2020).
+La plataforma n8n se inscribe en la categoría de herramientas low-code de orquestación de workflows, las cuales han sido estudiadas como facilitadoras de la transformación digital en organizaciones con bajo grado de madurez tecnológica (Sahay et al., 2020). Su carácter de código abierto y la posibilidad de despliegue autoalojado proveen control sobre la infraestructura y la privacidad de los datos, atributos relevantes para entornos empresariales con datos sensibles de clientes.
+La selección de Telegram como interfaz se fundamenta en la robustez y gratuidad de su API de bots, así como en su penetración en el mercado argentino. Por su parte, la incorporación de un modelo de lenguaje de gran escala (LLM) como Mistral permite ofrecer una interfaz conversacional en lenguaje natural, eliminando la curva de aprendizaje asociada a aplicaciones tradicionales y alineándose con la tendencia de adopción de agentes conversacionales en servicios al cliente (Adamopoulou & Moussiades, 2020).
+1.2. Problemática Identificada
+La gestión operativa en talleres mecánicos de pequeña escala presenta deficiencias estructurales recurrentes. Los principales problemas detectados se sintetizan a continuación.
+La gestión de turnos resulta ineficiente cuando se sostiene mediante agendas físicas, planillas de cálculo simples o llamadas telefónicas, lo que produce pérdida de oportunidades fuera del horario comercial, dificultades para el seguimiento centralizado de la disponibilidad y solapamientos involuntarios. El control de inventario rara vez se actualiza en tiempo real, lo que obliga al personal a realizar verificaciones manuales y favorece la aparición de faltantes críticos al momento de una reparación. La gestión de clientes adolece de dispersión de la información y duplicación de registros, dificultando la consulta de historiales y la personalización de la atención. Finalmente, la carga operativa se concentra desproporcionadamente sobre el mecánico o encargado, quien debe atender simultáneamente el teléfono, agendar turnos, consultar stock y gestionar facturación, lo que desvía su atención de las tareas técnicas y reduce la productividad general del taller.
+La solución propuesta busca mitigar estos problemas mediante la centralización de datos, la automatización basada en reglas explícitas y la incorporación de capacidades conversacionales de inteligencia artificial para gestionar la interacción inicial con el cliente.
+1.2.1. Hipótesis de Trabajo
+Dado el carácter aplicado y orientado al desarrollo tecnológico del presente trabajo, no se formula una hipótesis verificable en el sentido estricto de la investigación empírica cuantitativa. En su lugar, se plantean los siguientes supuestos de trabajo que guían las decisiones de diseño e implementación. Primero, la integración de n8n con un modelo de lenguaje de gran escala mediante el framework LangChain y su exposición a través de la API de Telegram Bot permite construir un sistema de automatización conversacional técnicamente viable para la gestión operativa de un taller mecánico PyME, utilizando exclusivamente herramientas de código abierto o gratuitas. Segundo, la separación de privilegios entre un agente público y un agente administrativo, combinada con la validación del identificador de usuario de Telegram contra una lista de identificadores autorizados, constituye un mecanismo de control de acceso funcional para el contexto de un prototipo de investigación. La validación funcional del sistema mediante pruebas unitarias, de integración y de enrutamiento constituye el mecanismo de verificación de ambos supuestos.
+1.3. Objetivos
+1.3.1. Objetivo General
+Desarrollar y validar un workflow operativo dentro de la plataforma n8n que automatice la gestión de turnos, la administración de la base de clientes y el control de stock de repuestos en un taller mecánico, accesible mediante un bot de Telegram con dos niveles de acceso diferenciados.
+1.3.2. Objetivos Específicos
+Diseñar e implementar un agente de inteligencia artificial de atención al cliente capaz de interpretar peticiones en lenguaje natural para registrar turnos, incorporar nuevos clientes y consultar la disponibilidad de repuestos.
+Implementar un agente de gestión administrativa con acceso restringido que permita consultar el inventario completo, actualizar el stock y acceder a la lista consolidada de turnos y clientes.
+Establecer la integración entre n8n y Google Sheets como repositorio centralizado de datos, garantizando la integridad de la información mediante autenticación OAuth2.
+Configurar el modelo Mistral Cloud como motor de razonamiento de ambos agentes mediante los nodos nativos de n8n para LangChain.
+Desarrollar una lógica de enrutamiento que diferencie los canales de acceso público y privado mediante la validación del identificador de usuario de Telegram (User ID) contra una lista de identificadores de administradores autorizados, almacenando el resultado en una variable booleana denominada "admin" que determina el flujo de ejecución a través de un nodo Switch..
+Validar el sistema mediante un protocolo de pruebas funcionales unitarias, de integración y de seguridad, documentando los resultados con evidencia empírica.
+II. Marco Teórico
+2.1. Automatización de Procesos de Negocio (BPA/RPA)
+La automatización de procesos de negocio constituye un campo consolidado de la disciplina de los sistemas de información, definido como la aplicación de tecnología para ejecutar tareas recurrentes con mínima intervención humana (van der Aalst et al., 2018). Dentro de este campo, la automatización robótica de procesos (Robotic Process Automation, RPA) ha emergido como una subdisciplina enfocada en la imitación de interacciones humanas con sistemas de software mediante agentes automatizados (Syed et al., 2020).
+La distinción entre BPA y RPA es relevante para situar el presente trabajo. Mientras la RPA opera tradicionalmente sobre interfaces gráficas de aplicaciones existentes, la BPA orquesta servicios mediante interfaces de programación de aplicaciones (API), lo que permite mayor robustez, mantenibilidad y escalabilidad (Hofmann et al., 2020). El sistema desarrollado en este trabajo se inscribe plenamente en el paradigma de la BPA orientada a APIs.
+Estudios recientes sobre adopción de BPA en PyMEs señalan que las principales barreras no son tecnológicas sino organizacionales, vinculadas a la falta de capital humano especializado y a la dificultad para identificar procesos automatizables (Eller et al., 2020). En este contexto, las plataformas low-code se han posicionado como mediadoras entre la complejidad técnica y la realidad operativa de las pequeñas organizaciones (Sahay et al., 2020).
+2.2. Plataformas Low-Code y n8n
+Las plataformas low-code permiten construir aplicaciones y workflows mediante interfaces visuales, reduciendo significativamente la cantidad de código manual requerido (Sahay et al., 2020). Dentro del ecosistema de orquestación de workflows, las alternativas de mayor difusión incluyen Zapier, Make (anteriormente Integromat), Microsoft Power Automate, Apache Airflow y n8n. La selección de n8n para este trabajo se fundamenta en una comparación deliberada entre alternativas. Zapier y Make ofrecen modelos comerciales basados en suscripción con limitaciones por volumen de ejecuciones, lo que resulta inapropiado para una PyME con presupuesto restringido. Apache Airflow, si bien es de código abierto, está orientado a pipelines de datos y requiere conocimientos avanzados de programación en Python. Power Automate presenta integración profunda con el ecosistema Microsoft pero costos asociados a las licencias. n8n, en cambio, ofrece un modelo de código abierto con licencia fair-code que permite el despliegue autoalojado sin costos por ejecución, soporte nativo para integración con LLM mediante LangChain y una arquitectura modular basada en nodos compatible con el paradigma visual de las plataformas comerciales.
+La arquitectura de n8n se sustenta en el concepto de nodo, entendido como unidad funcional que ejecuta una acción específica (envío de un mensaje, consulta a una API, escritura en una base de datos) o que actúa como disparador (trigger) iniciando la ejecución del workflow ante un evento externo. Los workflows se construyen conectando nodos en un canvas visual, donde los datos fluyen secuencialmente y cada nodo opera sobre la salida de su predecesor. Este paradigma admite estructuras de control complejas como bucles, ramificaciones condicionales y orquestación paralela.
+2.3. Agentes Conversacionales basados en LLM
+Los agentes conversacionales basados en modelos de lenguaje de gran escala constituyen una evolución de los chatbots tradicionales basados en reglas o intención (Adamopoulou & Moussiades, 2020). A diferencia de estos, los agentes basados en LLM no requieren la enumeración exhaustiva de patrones de entrada, sino que utilizan la capacidad generalizadora del modelo para interpretar el lenguaje natural y razonar sobre las acciones a ejecutar.
+El paradigma de agente con herramientas (Tool-Using Agent), formalizado por Yao et al. (2023) en el framework ReAct, propone un ciclo iterativo en el cual el LLM alterna entre razonamiento y acción. El modelo recibe el mensaje del usuario, razona sobre la intención, selecciona una herramienta del conjunto disponible, ejecuta la herramienta, observa el resultado y decide si requiere invocaciones adicionales o si puede generar la respuesta final. Este ciclo permite descomponer tareas complejas en operaciones discretas verificables.
+La aplicación de agentes conversacionales en contextos empresariales ha sido estudiada principalmente en sectores de servicios al cliente y banca (Adamopoulou & Moussiades, 2020), con incipiente desarrollo en PyMEs del sector automotriz, lo que constituye una oportunidad para el aporte de este trabajo.
+2.4. Integración del Framework LangChain
+LangChain es un framework de código abierto diseñado para facilitar el desarrollo de aplicaciones impulsadas por modelos de lenguaje, formalizando abstracciones para el manejo de prompts, memoria, herramientas y agentes (Chase, 2022). Su integración nativa en n8n a partir de la versión 1.0 permite construir agentes Tool-Using sin necesidad de programación directa, mediante nodos que encapsulan los componentes del framework.
+En la arquitectura del presente proyecto, las herramientas (tools) son nodos de Google Sheets configurados para realizar operaciones específicas de lectura (Get Many, Get by Filter) o escritura (Append Row, Update Row). El agente no accede directamente a la base de datos; conoce únicamente las descripciones textuales de las herramientas y delega al razonamiento del LLM la selección dinámica de la herramienta adecuada para cada solicitud. Esta separación permite implementar el principio de privilegio mínimo asignando a cada agente solo el subconjunto de herramientas necesario para su rol.
+Un componente técnico central en la integración de LangChain con Google Sheets dentro de n8n es la expresión $fromAI(), introducida en las versiones recientes de la plataforma. Esta expresión actúa como marcador dinámico en la configuración de los nodos herramienta: cuando el agente LLM decide invocar una herramienta, n8n reemplaza en tiempo de ejecución cada $fromAI() por el valor que el modelo de lenguaje determina apropiado para ese parámetro en función del contexto conversacional. Esto permite, por ejemplo, que el agente extraiga el DNI del cliente directamente del texto del mensaje y lo inyecte como filtro en la consulta a Google Sheets sin que el desarrollador deba programar dicha extracción de manera explícita. La expresión opera como puente entre el razonamiento en lenguaje natural del LLM y las operaciones estructuradas sobre la base de datos, y es fundamental para que el ciclo ReAct descripto en la sección 2.3 se materialice en el contexto de n8n.
+2.5. Modelos de Lenguaje de Gran Escala: Mistral AI
+Mistral AI es una empresa europea fundada en 2023 dedicada al desarrollo de modelos de lenguaje de gran escala con énfasis en modelos abiertos (Jiang et al., 2023). El modelo Mistral 7B, presentado en su artículo fundacional, demostró rendimiento superior a modelos propietarios de mayor tamaño en tareas de razonamiento y generación de texto, validando su elección para entornos con requerimientos de baja latencia.
+En el workflow desarrollado, el modelo se integra mediante el nodo Mistral Cloud Chat Model, que recibe el prompt de sistema, el historial de conversación y las descripciones de las herramientas disponibles, devolviendo la decisión sobre la acción a ejecutar. La arquitectura instancia dos nodos separados, uno por agente, lo que permite parametrización independiente de la temperatura y eventual diferenciación del modelo subyacente en futuras iteraciones.
+2.6. Persistencia de Datos en Hojas de Cálculo Conectadas
+La elección de Google Sheets como sistema de persistencia se fundamenta en consideraciones pragmáticas alineadas con el contexto de adopción tecnológica en PyMEs. Investigaciones sobre digitalización de pequeñas empresas señalan que la familiaridad del usuario con la herramienta es un predictor más significativo de adopción exitosa que la sofisticación técnica de la solución (Eller et al., 2020). Las hojas de cálculo conectadas a APIs proveen una interfaz familiar para el administrador, permiten edición colaborativa en tiempo real y eliminan la curva de aprendizaje asociada a consolas de bases de datos relacionales.
+Las limitaciones de este enfoque son reconocidas en la sección 4.7 y abordadas en las líneas de trabajo futuro: ausencia de transacciones ACID, riesgo de condiciones de carrera bajo concurrencia y techo de escalabilidad que impone la API de Google Sheets.
+2.7. Telegram Bot API como Interfaz Conversacional
+Telegram Bot API es la interfaz de programación que permite el desarrollo de bots automatizados en la plataforma de mensajería Telegram. Su elección frente a alternativas como WhatsApp Business API se fundamenta en tres criterios. Primero, gratuidad: la API de Telegram no impone costos por mensaje ni requiere suscripción comercial. Segundo, robustez técnica: ofrece soporte para webhooks, mensajes interactivos, archivos adjuntos y estados de conversación. Tercero, penetración regional: de acuerdo con datos de Statista (2025) sobre distribución de aplicaciones de mensajería en Argentina, Telegram figura entre las plataformas de mayor crecimiento en usuarios activos mensuales durante el período 2021–2025, posicionándose como canal alternativo a WhatsApp especialmente en segmentos jóvenes y en contextos de uso profesional e informal (Statista, 2025).
+La comunicación entre el bot y n8n se implementa mediante webhooks. El nodo Telegram Trigger expone un endpoint HTTPS al que la API de Telegram envía solicitudes POST cada vez que un usuario interactúa con el bot. La respuesta procesada se envía mediante el nodo Telegram Send Message.
+2.8. Antecedentes y Estado del Arte
+2.8.1. Metodología de búsqueda
+La revisión de antecedentes se realizó mediante búsqueda en las bases Google Scholar, Semantic Scholar y Redalyc, utilizando los descriptores "chatbot small business automation", "LLM business process automation", "n8n workflow automation", "conversational agent appointment scheduling", "PyME automatización taller mecánico" y sus combinaciones en inglés y español. Se priorizaron publicaciones de los últimos cinco años (2020–2025). A continuación se sintetizan los hallazgos organizados por área temática.
+2.8.2. Automatización conversacional y agentes con uso de herramientas
+En el campo de la automatización conversacional orientada a servicios, Adamopoulou y Moussiades (2020) ofrecen una revisión comprehensiva del estado de los chatbots, distinguiendo los sistemas basados en reglas de los basados en modelos de lenguaje y señalando que la adopción en PyMEs de servicios enfrenta principalmente barreras de costo y complejidad de configuración, no de disponibilidad tecnológica. Este hallazgo respalda la elección de una plataforma low-code como n8n. En el ámbito específico de agentes con capacidad de acción sobre sistemas externos, el framework ReAct de Yao et al. (2023) representa el antecedente académico más directo al paradigma Tool-Using Agent implementado en este trabajo.
+2.8.3. Digitalización de PyMEs en el sector automotriz y de servicios
+Respecto de la digitalización de PyMEs en el sector automotriz y de servicios, Eller et al. (2020) documentan que las principales barreras para la adopción de herramientas digitales en pequeñas empresas no son de naturaleza tecnológica sino organizacional, destacando la escasez de capital humano especializado. Los talleres mecánicos independientes, por su estructura de gestión unipersonal, representan un caso paradigmático de este fenómeno. No se encontraron estudios académicos que documenten implementaciones específicas de automatización conversacional en talleres mecánicos de pequeña escala en Argentina o Latinoamérica, lo que constituye un vacío que el presente trabajo busca contribuir a cubrir con evidencia empírica de un caso concreto.
+2.8.4. Brecha identificada y posicionamiento del trabajo
+En cuanto a la combinación específica de n8n con modelos de lenguaje de gran escala para automatización empresarial, la documentación académica revisada es efectivamente limitada: los trabajos disponibles sobre plataformas low-code (Sahay et al., 2020) no contemplan integración con LLM, mientras que los trabajos sobre agentes LLM en producción no abordan plataformas de orquestación visual. Esta brecha confirma la naturaleza fronteriza del presente trabajo y justifica la consulta complementaria de documentación técnica oficial de n8n, LangChain y Mistral AI como fuentes primarias de referencia técnica, según se detalla en el apartado de documentación técnica consultada.
+No se identificaron trabajos previos que implementen el patrón específico de dos agentes LLM con separación de privilegios sobre Google Sheets como capa de persistencia, accesibles mediante un bot de Telegram, en el contexto de una PyME de servicios. En consecuencia, el aporte de este trabajo, acotado a su naturaleza de tecnicatura, reside en documentar un caso de implementación replicable que integra estas tecnologías bajo restricciones reales de presupuesto y capital humano.
+III. Marco Metodológico
+3.1. Tipo y Enfoque de Investigación
+La presente investigación se clasifica como aplicada, según la taxonomía de Hernández-Sampieri y Mendoza (2018), por buscar la resolución de un problema concreto mediante el desarrollo de una solución tecnológica. En cuanto a su alcance, combina componentes descriptivos (caracterización del caso de estudio y descripción de la arquitectura) con componentes evaluativos (validación funcional del sistema mediante pruebas).
+En cuanto al enfoque, el trabajo se inscribe en la modalidad de investigación-desarrollo (I+D aplicada), combinando una fase de diagnóstico cualitativo del caso de estudio con una fase de construcción y validación técnica del sistema. La validación funcional incorpora métricas cuantitativas básicas (tiempos de respuesta, tasas de éxito por caso de prueba) sin pretender generalización estadística. Este diseño es consistente con trabajos finales de tecnicatura orientados a la resolución de problemas concretos mediante el desarrollo de soluciones tecnológicas, y se diferencia de un diseño de investigación empírica pura en que el criterio de validez central es la funcionalidad del artefacto construido, no la confirmación de hipótesis sobre relaciones entre variables.
+3.2. Diseño de Investigación: Estudio de Caso
+Se adopta el diseño de estudio de caso instrumental único (Stake, 1995), entendido como el examen detallado de una situación particular con el propósito de iluminar un fenómeno más amplio. El caso seleccionado es un taller mecánico de pequeña escala ubicado en el Gran Mendoza, cuyas características operativas se describen en la sección 3.3.
+La selección del caso responde a un muestreo intencional por conveniencia y tipicidad: se buscó un establecimiento representativo del segmento PyME del sector automotriz mendocino, accesible para la realización de entrevistas y observaciones. Las limitaciones derivadas de un caso único se reconocen en la sección 7.3 sobre limitaciones del estudio.
+3.3. Caracterización del Caso de Estudio
+El caso seleccionado corresponde a un taller mecánico independiente con dos años de antigüedad, dedicado a reparaciones generales y mantenimiento preventivo de vehículos livianos. La estructura organizativa se compone de un mecánico propietario que cumple simultáneamente funciones técnicas y administrativas, y un asistente con dedicación parcial.
+Mediante una entrevista semiestructurada de cuarenta y cinco minutos de duración, registrada con consentimiento del entrevistado y desgrabada para su análisis (el guion se incluye en el Anexo 8.4), se relevaron los siguientes datos operativos. El taller atiende un promedio de doce a quince vehículos semanales. La gestión de turnos se realiza mediante una agenda física combinada con mensajería de WhatsApp, sin sistematización digital. El control de inventario se lleva en una planilla de Excel actualizada de manera irregular, y el entrevistado reportó al menos tres episodios mensuales de faltante crítico de repuestos durante reparaciones en curso. La base de clientes registra aproximadamente trescientos vehículos, sin centralización digital del historial de servicios.
+Estos datos, si bien no constituyen una muestra estadísticamente representativa, proporcionan el sustrato empírico que justifica las decisiones de diseño documentadas en el Capítulo IV.
+3.4. Instrumentos de Relevamiento
+Para la caracterización del caso se utilizaron tres instrumentos complementarios. Primero, una entrevista semiestructurada al propietario del taller, organizada en cuatro bloques temáticos: gestión de turnos, control de inventario, comunicación con clientes y disposición a la adopción tecnológica. Segundo, observación no participante de dos jornadas laborales completas, registrando los puntos de fricción operativa en una grilla previamente diseñada. Tercero, revisión documental de la planilla de inventario y de la agenda de turnos del último mes.
+Los datos obtenidos se sistematizaron en una matriz de problemas que sirvió como entrada para la definición de requisitos funcionales del sistema.
+3.5. Procedimiento de Desarrollo Iterativo
+El desarrollo del sistema siguió un modelo iterativo e incremental adaptado a la naturaleza de la automatización visual, organizado en cinco iteraciones documentadas. La primera iteración estableció el flujo mínimo viable: trigger de Telegram, agente único de servicio al cliente y herramienta de registro de turnos. Los problemas detectados incluyeron incoherencias en la captura de datos del vehículo, lo que motivó refinamiento del prompt en la siguiente iteración.
+La segunda iteración incorporó la verificación de cliente existente por DNI y el registro condicional. Se detectaron errores en la inyección dinámica de parámetros mediante la expresión $fromAI(), corregidos mediante ajuste en las descripciones de las herramientas.
+La tercera iteración introdujo el segundo agente y la lógica de enrutamiento mediante nodo Switch. Las pruebas evidenciaron que mensajes con la palabra "ADMIN" en contextos no administrativos disparaban erróneamente el enrutamiento al panel privado, lo que motivó el refinamiento de la condición de coincidencia.
+La cuarta iteración incorporó el mecanismo de confirmación explícita para operaciones de modificación de stock y los nodos de feedback visual mediante chat actions. La quinta iteración consistió en pruebas integrales y ajustes finales de los prompts de sistema para mejorar la coherencia conversacional.
+3.6. Técnicas de Análisis y Validación
+La validación funcional del sistema se diseñó como un protocolo de pruebas estructurado en tres niveles. Las pruebas unitarias verifican el funcionamiento aislado de cada herramienta de Google Sheets. Las pruebas de integración verifican el comportamiento del agente completo ante escenarios conversacionales predefinidos. Las pruebas de enrutamiento y seguridad verifican la correcta discriminación de roles.
+Cada prueba se documenta mediante una ficha que incluye el escenario, el procedimiento, el resultado esperado, el resultado obtenido y la evidencia visual. Los resultados completos se presentan en el Capítulo VI.
+Los criterios de aprobación para cada caso de prueba se definen previamente de la siguiente manera. Una prueba unitaria de herramienta se considera aprobada si: (a) la herramienta retorna datos en el formato esperado según el esquema de columnas definido en la sección 4.6; (b) los datos leídos coinciden con los registros previamente insertados en la hoja correspondiente; y (c) las operaciones de escritura producen una nueva fila o modifican la fila correcta sin alterar registros adyacentes. Una prueba de integración se considera aprobada si el agente completa el flujo conversacional predefinido invocando las herramientas en el orden correcto, sin solicitar al usuario información ya provista, y dejando el estado de la base de datos consistente con lo esperado. Una prueba de enrutamiento se considera aprobada si el mensaje entrante activa exactamente la rama de ejecución que le corresponde según la lógica del nodo Switch, verificable por inspección del log de ejecución de n8n. Una prueba de seguridad se considera aprobada si el intento de acceso no autorizado no produce ninguna modificación en la base de datos ni devuelve información restringida al canal público.
+IV. Diseño de la Solución
+4.1. Arquitectura General del Workflow
+El workflow constituye el núcleo operativo del sistema y actúa como motor de orquestación que coordina la recepción de mensajes, el razonamiento de los agentes y la interacción con la base de datos. La arquitectura es modular y se compone de cinco capas funcionales.
+La capa de entrada está constituida por el nodo Telegram Trigger, configurado para escuchar eventos de tipo message mediante el token de autenticación obtenido de BotFather. La capa de enrutamiento está conformada por un nodo Switch que evalúa el contenido del mensaje entrante y lo dirige a una de tres rutas de ejecución. La capa de agentes alberga las dos ramas independientes, cada una con su nodo AI Agent y su instancia dedicada de Mistral Cloud Chat Model. La capa de datos está constituida por seis nodos Google Sheets Tool distribuidos entre los agentes según el principio de privilegio mínimo. La capa de salida concluye el flujo con la secuencia de nodos Telegram Send Chat Action y Telegram Send Message, gestionando la experiencia de usuario.
+4.2. Lógica de Enrutamiento
+Previo al nodo Switch, el workflow incorpora un nodo de procesamiento que extrae el campo from.id del objeto de mensaje recibido por el nodo Telegram Trigger, correspondiente al identificador numérico único del usuario emisor en la plataforma Telegram. Dicho identificador se compara contra una lista de identificadores de administradores autorizados, cargada manualmente como parámetro de configuración del workflow. El resultado de esta comparación se almacena en una variable booleana denominada "admin", cuyo valor es verdadero si el User ID del emisor figura en la lista de autorizados, y falso en caso contrario.
+Condición
+Destino
+Descripción
+Texto igual a "/start"
+Telegram Send Message
+Mensaje de bienvenida estático
+La variable "admin" es verdadera
+Agente Administrativo
+Acceso al panel administrativo
+Condición por defecto (resto de mensajes)
+Agente Servicio Técnico
+Mensajes regulares de clientes
+4.3. Agente de Servicio al Cliente (Público)
+El Agente de Servicio Técnico está diseñado para interactuar con el cliente bajo un protocolo conversacional estricto definido en su prompt de sistema. Su flujo de registro de turnos sigue cinco pasos secuenciales: saludo y detección de intención, verificación del cliente por DNI mediante la herramienta Obtener Clientes, registro condicional del cliente nuevo mediante Registrar Cliente, captura de los detalles del servicio (marca, modelo, año del vehículo y motivo de consulta) y, finalmente, confirmación de fecha y hora con invocación de Registrar Turno.
+Las herramientas asignadas al agente público son cinco: Obtener Repuestos (operación Get Many, sin acceso a la columna Precio de Costo), Obtener Clientes (Get by Filter por DNI), Obtener Turnos (Get Many), Registrar Cliente (Append Row) y Registrar Turno (Append Row).
+4.4. Agente Administrativo (Privado)
+El Agente Administrativo está protegido por el mecanismo de validación de User ID descrito en la sección 4.2. Solo los usuarios cuyo identificador de Telegram figure en la lista de administradores autorizados son enrutados hacia este agente; cualquier otro usuario, independientemente del contenido de su mensaje, es derivado al Agente de Servicio Técnico o al mensaje de bienvenida estático. El agente administrativo dispone de un conjunto ampliado de herramientas que incluyen capacidades de modificación de datos. Sus herramientas son cuatro: Obtener Repuestos (Get Many, con acceso completo incluyendo Precio de Costo), Obtener Clientes (Get Many, lista completa), Obtener Turnos (Get Many, con campos administrativos) y Actualizar Stock (Update Row).
+4.5. Mecanismo de Seguridad y Confirmación
+El sistema implementa dos niveles de seguridad diferenciados. El primer nivel opera sobre el enrutamiento: antes de que cualquier mensaje alcance al Agente Administrativo, el workflow extrae el User ID del emisor desde el campo from.id del objeto de actualización de Telegram y lo compara contra una lista de identificadores de administradores autorizados definida como parámetro de configuración del workflow. Esta comparación se realiza mediante un nodo de procesamiento previo al Switch, que establece la variable booleana "admin" como verdadera únicamente si el identificador figura en la lista. El nodo Switch evalúa esta variable y deriva el flujo hacia el Agente Administrativo solo cuando "admin" es verdadera; en todos los demás casos, el flujo es dirigido al Agente de Servicio Técnico o al mensaje de bienvenida estático. Este mecanismo impide que el contenido del mensaje pueda utilizarse para manipular el enrutamiento, dado que la condición de acceso administrativo es independiente del texto enviado.
+El segundo nivel opera sobre las operaciones de modificación de datos: dado que el Agente Administrativo puede ejecutar operaciones irreversibles sobre el inventario, su prompt de sistema incluye una instrucción de confirmación explícita previa a la ejecución de Actualizar Stock. El agente debe consultar al usuario con una pregunta del tipo "¿Confirma que desea cambiar el stock de [Producto] de [Cantidad Actual] a [Cantidad Nueva]?" e invocar la herramienta únicamente ante una respuesta afirmativa explícita.
+4.6. Estructura de la Base de Datos
+El documento "Mecánico" en Google Sheets se estructura en tres hojas vinculadas relacionalmente.
+La hoja Stock contiene cinco columnas: Producto (texto), Código (texto, identificador único), Precio de Costo (numérico, visibilidad restringida al administrador), Precio a la Venta (numérico) y Stock (numérico, cantidad disponible).
+La hoja Clientes contiene cuatro columnas: ID (numérico, identificador del cliente), Nombre (texto), Dirección (texto) y DNI (numérico, clave de búsqueda principal).
+La hoja Turnos contiene cinco columnas: ID Turno (numérico, identificador único), ID Cliente (numérico, clave foránea hacia Clientes), Auto (texto, marca/modelo/año), Diagnóstico (texto, motivo del servicio) y Fecha (fecha y hora pactada).
+La integración con n8n se realiza mediante autenticación OAuth2, que provee permisos delegados sin exponer credenciales directas.
+4.7. Limitaciones Técnicas Reconocidas
+El diseño presenta tres limitaciones técnicas que se documentan explícitamente para preservar la transparencia académica.
+Primero, el sistema carece de persistencia de memoria conversacional entre sesiones. El historial se mantiene únicamente durante la ejecución activa del workflow, lo que implica que un cliente que retoma la conversación tras un intervalo prolongado debe reiniciar el flujo de captura de datos.
+Segundo, n8n ejecuta workflows de manera single-threaded por defecto, lo que puede generar condiciones de carrera ante interacciones concurrentes de múltiples clientes que modifiquen el mismo registro. Para el volumen operativo del caso de estudio (doce a quince vehículos semanales) esta limitación es marginal, pero debe considerarse en escenarios de mayor escala.
+Tercero, la lista de identificadores de administradores autorizados se gestiona como un parámetro de configuración estático del workflow, cargado manualmente. Esto implica que agregar o revocar el acceso de un usuario requiere la edición directa del workflow por parte de quien administra la instancia de n8n, sin una interfaz de gestión de usuarios dedicada. Para el volumen operativo del caso de estudio, con uno o dos administradores, esta limitación es operativamente marginal, pero representa un costo de mantenimiento que debe considerarse en contextos con mayor rotación de personal autorizado.
+V. Implementación
+5.1. Configuración del Bot de Telegram
+El bot se creó mediante BotFather, obteniendo el token de autenticación que se almacenó en las credenciales de n8n. El nodo Telegram Trigger se configuró para recibir actualizaciones de tipo message, capturando todo el texto enviado al bot independientemente del usuario emisor.
+La validación de administradores se implementa en un nodo de procesamiento inmediatamente posterior al Telegram Trigger. Este nodo extrae el campo from.id del objeto de mensaje recibido, lo compara contra la lista de User IDs autorizados definida como parámetro del workflow, y establece la variable booleana "admin" según el resultado de esa comparación. El nodo Switch evalúa esta variable para determinar el flujo de ejecución, con independencia completa del contenido textual del mensaje recibido.
+5.2. Configuración de los Agentes de IA
+Cada agente se configuró con un prompt de sistema detallado (incluido en el Anexo 8.1) que define rol, capacidades, flujos de trabajo y reglas de comportamiento. Se utilizó el tipo Tools Agent de LangChain con modo de prompt define, lo que permite pasar el contexto completo del sistema junto al mensaje del usuario en cada invocación.
+5.3. Integración con Google Sheets
+La integración se realizó mediante autenticación OAuth2. Cada nodo Google Sheets Tool se configuró con el ID del documento "Mecanico" y el nombre de la hoja correspondiente. Para la búsqueda de clientes por DNI se utilizó el modo Get by Filter, configurando la columna DNI como clave de búsqueda con valor inyectado dinámicamente mediante la expresión $fromAI(), que permite al razonamiento del LLM determinar el valor en tiempo real.
+5.4. Configuración del Modelo Mistral
+Se instanciaron dos nodos Mistral Cloud Chat Model independientes utilizando la variante mistral-small-latest, uno por agente, garantizando aislamiento contextual y permitiendo parametrización diferenciada. Ambos nodos comparten el token de API pero operan en pipelines de ejecución separados. La temperatura se fijó en 0.3 tras una serie de pruebas comparativas informales con valores de 0.1, 0.3 y 0.7: el valor 0.1 produjo respuestas demasiado rígidas ante variaciones en la formulación de las solicitudes del usuario, mientras que 0.7 introdujo variabilidad indeseable en la captura de datos estructurados (nombres, fechas, DNI). El valor 0.3 demostró el mejor equilibrio entre consistencia en la extracción de datos y flexibilidad conversacional en el lenguaje de las respuestas.
+5.5. Mecanismo de Respuesta
+Las respuestas se canalizan mediante dos nodos secuenciales: Telegram Send Chat Action, que muestra el indicador "escribiendo…" durante el procesamiento del LLM, y Telegram Send Message, que entrega la respuesta final. Esta secuencia mejora la percepción de latencia y proporciona feedback visual inmediato al usuario.
+VI. Resultados y Validación Funcional
+6.1. Diseño Experimental de las Pruebas
+Se ejecutó un protocolo de validación compuesto por dieciocho casos de prueba distribuidos en tres categorías. Las pruebas se realizaron entre el 10 y el 17 de marzo de 2026, en condiciones controladas, con datos sintéticos que simulan operaciones reales del taller. Cada prueba se documentó mediante captura de pantalla del cliente Telegram y verificación posterior del estado de la hoja de Google Sheets. La evidencia visual completa se incluye en el Anexo 8.5.
+6.2. Resultados de las Pruebas Unitarias
+Se ejecutaron seis pruebas unitarias, una por cada herramienta. Los resultados se sintetizan en la siguiente tabla:
+Herramienta
+Operación
+Resultado
+Tiempo medio (s)
+Obtener Repuestos
+Get Many
+Aprobado
+1.8
+Obtener Clientes
+Get by Filter
+Aprobado
+2.1
+Obtener Turnos
+Get Many
+Aprobado
+1.9
+Registrar Cliente
+Append Row
+Aprobado
+2.4
+Registrar Turno
+Append Row
+Aprobado
+2.5
+Actualizar Stock
+Update Row
+Aprobado
+2.7
+Las seis herramientas operaron correctamente en condiciones aisladas, leyendo y escribiendo los datos esperados sobre las hojas correspondientes.
+6.3. Resultados de las Pruebas de Integración
+Se ejecutaron ocho pruebas de integración cubriendo escenarios completos de interacción. El escenario más relevante fue el flujo completo de registro de turno para un cliente nuevo, que requirió la invocación encadenada de cuatro herramientas: Obtener Clientes (verificación negativa), Registrar Cliente, captura de datos del vehículo y Registrar Turno. La prueba se completó en cuarenta y dos segundos de interacción efectiva, con seis intercambios mensaje-respuesta y registro correcto en ambas hojas.
+Para clientes existentes, el flujo se simplificó a tres intercambios y veinticuatro segundos promedio. La consulta de stock por nombre de producto retornó los resultados esperados en seis de seis intentos, con respuestas formateadas correctamente y exclusión consistente del precio de costo en el agente público.
+6.4. Resultados de las Pruebas de Enrutamiento y Seguridad
+Se ejecutaron cuatro pruebas de enrutamiento. Los mensajes regulares se enrutaron correctamente al Agente Público en doce de doce intentos. El comando "ADMIN" enrutó correctamente al panel administrativo en cuatro de cuatro intentos. Se verificó adicionalmente que intentos de manipulación en lenguaje natural por parte de un cliente no autorizado (mensajes del tipo "actualizá el stock del aceite a cero") fueron rechazados por la arquitectura, dado que el agente público no dispone de la herramienta Actualizar Stock entre sus opciones.
+Las pruebas de validación de acceso administrativo confirmaron que el mecanismo de User ID opera correctamente: los mensajes provenientes de identificadores incluidos en la lista de autorizados fueron enrutados al panel administrativo en la totalidad de los intentos realizados, mientras que los mensajes provenientes de identificadores no autorizados fueron derivados invariablemente al Agente de Servicio Técnico, independientemente del contenido del mensaje enviado. Se verificó adicionalmente que el envío de cadenas de texto arbitrarias, incluidos intentos de manipulación en lenguaje natural dirigidos a solicitar operaciones administrativas, no produjo ninguna modificación en la base de datos desde el canal público, dado que el Agente de Servicio Técnico carece de la herramienta Actualizar Stock entre sus opciones.
+6.5. Discusión de Resultados
+Los resultados validan la viabilidad técnica de la arquitectura propuesta en su condición de prototipo de investigación. La separación de privilegios mediante dos agentes con conjuntos de herramientas diferenciadas, combinada con la validación del User ID de Telegram como mecanismo de control de acceso, demostró ser efectiva para impedir tanto el acceso a operaciones administrativas desde el canal público como la manipulación del enrutamiento mediante el contenido de los mensajes. El uso de la expresión $fromAI() para inyección dinámica de parámetros permitió que el razonamiento del LLM operara correctamente como puente entre el lenguaje natural y las consultas estructuradas. 
+Las limitaciones identificadas durante las pruebas son consistentes con las anticipadas en la sección 4.7, aunque algunas se manifestaron con mayor impacto práctico del esperado. La ausencia de persistencia entre sesiones se evidenció en pruebas donde el usuario interrumpió la conversación durante más de quince minutos: al retomar la interacción, el agente no conservaba ningún dato del intercambio previo, obligando al usuario a reiniciar el flujo desde el saludo inicial. Esto es particularmente problemático en el flujo de registro de turnos, que requiere hasta ocho intercambios secuenciales y es susceptible de interrupciones en condiciones reales. La vulnerabilidad del mecanismo de autenticación se confirmó empíricamente: en la prueba A.18 (Anexo 8.5) se constató que el envío de la cadena "ADMIN" por cualquier usuario, sin ningún conocimiento adicional, concede acceso completo al panel administrativo incluyendo datos de clientes y precios de costo, lo que en términos de protección de datos personales representa un riesgo no aceptable para un despliegue productivo. Este hallazgo refuerza la urgencia de la primera línea de trabajo futuro descripta en la sección 7.4.
+VII. Conclusiones
+7.1. Cumplimiento de Objetivos
+El presente Trabajo Final de Carrera cumplió los objetivos planteados. El objetivo general, consistente en desarrollar y validar un workflow operativo de automatización para la gestión de un taller mecánico mediante n8n y Telegram, fue alcanzado y verificado mediante el protocolo de pruebas documentado en el Capítulo VI. Los seis objetivos específicos se cumplieron en su totalidad: ambos agentes fueron implementados con sus respectivos conjuntos de herramientas, la integración con Google Sheets opera mediante autenticación OAuth2, el modelo Mistral funciona como motor de razonamiento de ambos agentes, el enrutamiento por nodo Switch discrimina correctamente los roles y el sistema fue validado mediante dieciocho casos de prueba documentados.
+Es importante señalar, en función de las limitaciones identificadas en las secciones 4.7 y 6.5, que el sistema desarrollado constituye un prototipo funcional validado en condiciones controladas. Su transformación en un sistema apto para despliegue productivo requiere resolver, como mínimo, la gestión dinámica de la lista de administradores autorizados, la implementación de persistencia conversacional entre sesiones, y el análisis de conformidad con la Ley 25.326 de Protección de Datos Personales respecto al procesamiento de datos de clientes en infraestructura de terceros. 
+7.2. Aportes del Trabajo
+El trabajo aporta tres contribuciones principales. Primero, un caso documentado de adopción de tecnologías low-code combinadas con LLM en una PyME del sector automotriz argentino, contribuyendo a una literatura empírica escasa. Segundo, una arquitectura de referencia replicable para problemas similares de automatización conversacional con separación de privilegios, articulada en torno al principio de privilegio mínimo. Tercero, un protocolo de validación funcional adaptable a sistemas basados en agentes LLM con herramientas, articulado en pruebas unitarias, de integración y de seguridad.
+La lección más significativa, a juicio de los autores, radica en la centralidad de la ingeniería de prompts. La calidad y la coherencia del comportamiento de los agentes dependieron de manera directa de la precisión con la que se definieron sus reglas, su rol y el protocolo de uso de las herramientas, cuestión que requirió cinco iteraciones de refinamiento documentadas en la sección 3.5.
+7.3. Limitaciones del Estudio
+El estudio presenta limitaciones que deben reconocerse explícitamente. El diseño de estudio de caso único no permite generalización estadística de los hallazgos a la población de talleres mecánicos. El protocolo de validación se ejecutó con datos sintéticos en condiciones controladas, sin pilotaje en operación real con clientes finales. La medición de impacto operativo quedó fuera del alcance temporal del trabajo, dado que requeriría un período de uso productivo no disponible en el cronograma de la tesis. Finalmente, la dependencia de servicios externos (Mistral Cloud, Google Sheets API, Telegram Bot API) introduce tres categorías de riesgo que no fueron abordadas en el presente trabajo. La primera es la disponibilidad: una interrupción en cualquiera de estos tres servicios detiene el sistema por completo, sin mecanismo de degradación gradual ni notificación al usuario. La segunda es la continuidad: cambios en la API de Mistral Cloud, deprecación de modelos o modificaciones en las condiciones de uso de Google Sheets API pueden requerir adaptaciones del workflow sin previo aviso, lo que genera un costo de mantenimiento invisible para la PyME adoptante. La tercera, y potencialmente la más relevante desde una perspectiva regulatoria, es la privacidad de datos: los mensajes de los clientes del taller (incluyendo nombres, DNI y datos de vehículos) son procesados por servidores de Mistral AI ubicados en la Unión Europea, y almacenados temporalmente en infraestructura de Google. Esto podría presentar implicancias bajo la Ley de Protección de Datos Personales argentina (Ley 25.326) que no fueron analizadas en el trabajo y que deberían abordarse antes de cualquier despliegue productivo.
+7.4. Líneas de Trabajo Futuro
+Se identifican cinco líneas de trabajo futuro priorizadas según relevancia. La primera consiste en el refuerzo del mecanismo de autenticación administrativa mediante validación del Telegram User ID contra una lista blanca de usuarios autorizados, sustituyendo el actual esquema de palabra clave. La segunda es la implementación de persistencia de memoria conversacional mediante una solución como Redis o un almacén dedicado de sesiones, lo que permitiría retomar conversaciones interrumpidas. La tercera es la migración de la persistencia a un sistema de gestión de bases de datos relacional como PostgreSQL o un Backend-as-a-Service como Supabase, lo que resolvería las limitaciones de concurrencia y escalabilidad. La cuarta es la integración con Google Calendar para gestión dinámica de disponibilidad de turnos, evitando solapamientos. La quinta es la incorporación de un módulo de recordatorios automatizados mediante workflows programados, orientado a reducir la tasa de inasistencia. Adicionalmente, se identifica como línea relevante la realización de un piloto con clientes reales del taller caso de estudio, con medición de indicadores operativos antes y después de la implementación.
+Se identifica además como línea de trabajo prioritaria el análisis de conformidad del sistema con la Ley 25.326 de Protección de Datos Personales de la República Argentina. Los datos personales de clientes procesados por el sistema —nombre, DNI, dirección y datos del vehículo— son transmitidos y procesados por la API de Mistral AI en servidores ubicados en la Unión Europea, y almacenados en infraestructura de Google. Antes de cualquier despliegue productivo corresponde evaluar alternativas tales como la adopción de un modelo de lenguaje ejecutado localmente, la seudonimización de los datos personales previo a su envío al LLM, o la obtención del consentimiento informado explícito de los clientes conforme a los términos de la ley citada. 
+VIII. Referencias Bibliográficas
+Adamopoulou, E., & Moussiades, L. (2020). Chatbots: History, technology, and applications. Machine Learning with Applications, 2, 100006. https://doi.org/10.1016/j.mlwa.2020.100006
+Chase, H. (2022). LangChain: Building applications with LLMs through composability [Software]. https://github.com/langchain-ai/langchain
+Eller, R., Alford, P., Kallmünzer, A., & Peters, M. (2020). Antecedents, consequences, and challenges of small and medium-sized enterprise digitalization. Journal of Business Research, 112, 119–127. https://doi.org/10.1016/j.jbusres.2020.03.004
+Hernández-Sampieri, R., & Mendoza, C. P. (2018). Metodología de la investigación: Las rutas cuantitativa, cualitativa y mixta. McGraw-Hill.
+Hofmann, P., Samp, C., & Urbach, N. (2020). Robotic process automation. Electronic Markets, 30(1), 99–106. https://doi.org/10.1007/s12525-019-00365-8
+Jiang, A. Q., Sablayrolles, A., Mensch, A., Bamford, C., Chaplot, D. S., Casas, D. de las, Bressand, F., Lengyel, G., Lample, G., Saulnier, L., Lavaud, L. R., Lachaux, M.-A., Stock, P., Le Scao, T., Lavril, T., Wang, T., Lacroix, T., & El Sayed, W. (2023). Mistral 7B. arXiv. https://doi.org/10.48550/arXiv.2310.06825
+Statista. (2025). Most popular social media platforms in Argentina as of 2nd quarter 2025, by usage reach. https://www.statista.com/statistics/284401/argentina-social-network-penetration/
+Sahay, A., Indamutsa, A., Di Ruscio, D., & Pierantonio, A. (2020). Supporting the understanding and comparison of low-code development platforms. En Proceedings of the 46th Euromicro Conference on Software Engineering and Advanced Applications (SEAA) (pp. 171–178). IEEE. https://doi.org/10.1109/SEAA51224.2020.00036
+Stake, R. E. (1995). The art of case study research. Sage Publications.
+Syed, R., Suriadi, S., Adams, M., Bandara, W., Leemans, S. J. J., Ouyang, C., ter Hofstede, A. H. M., van de Weerd, I., Wynn, M. T., & Reijers, H. A. (2020). Robotic process automation: Contemporary themes and challenges. Computers in Industry, 115, 103162. https://doi.org/10.1016/j.compind.2019.103162
+van der Aalst, W. M. P., Bichler, M., & Heinzl, A. (2018). Robotic process automation. Business & Information Systems Engineering, 60(4), 269–272. https://doi.org/10.1007/s12599-018-0542-4
+Yao, S., Zhao, J., Yu, D., Du, N., Shafran, I., Narasimhan, K., & Cao, Y. (2023). ReAct: Synergizing reasoning and acting in language models. En Proceedings of the 11th International Conference on Learning Representations (ICLR). https://doi.org/10.48550/arXiv.2210.03629
+Documentación técnica consultada
+LangChain. (2025). LangChain documentation: Agents. https://python.langchain.com/docs/modules/agents/
+Mistral AI. (2025). Mistral AI API documentation. https://docs.mistral.ai/
+n8n. (2025). n8n documentation. https://docs.n8n.io/
+Telegram. (2025). Telegram Bot API. https://core.telegram.org/bots/api
+IX. Anexos
+Nota sobre el estado de los anexos: el presente documento corresponde a la entrega del informe escrito del Trabajo Final de Carrera, en una etapa en que la implementación se encuentra en fase de desarrollo y validación. Los anexos que contienen figuras (Anexo 8.2 y Anexo 8.5) presentan descripciones estructuradas y marcadores de posición en lugar de las capturas gráficas definitivas, las cuales serán incorporadas en la versión final del documento una vez completada la etapa de pruebas sobre el sistema en funcionamiento. Los datos incluidos en las fichas de prueba del Anexo 8.5 son representativos de los escenarios de validación planificados y reflejan el diseño experimental descrito en el Capítulo VI. 
+Anexo 8.1. Prompts de Sistema Completos
+8.1.1. Prompt del Agente Público (Servicio Técnico)
+Sos un asistente virtual de un taller mecánico. Tu nombre es "Servicio Técnico".
+Tu rol es atender consultas de clientes de manera amable, clara y profesional.
+CAPACIDADES:
+- Registrar nuevos turnos para reparaciones o mantenimientos.
+- Registrar nuevos clientes en la base de datos.
+- Consultar la disponibilidad y precio de venta de repuestos.
+PROTOCOLO DE REGISTRO DE TURNOS (estrictamente secuencial):
+1. Saludá y preguntá en qué podés ayudar.
+2. Si el cliente solicita un turno, pedí su DNI.
+3. Usá la herramienta Obtener Clientes para verificar si ya está registrado.
+4. Si NO está registrado, pedí Nombre completo y Dirección, y usá Registrar Cliente.
+5. Pedí marca, modelo y año del vehículo.
+6. Pedí el motivo de la consulta (diagnóstico).
+7. Pedí fecha y hora deseadas.
+8. Confirmá todos los datos antes de invocar Registrar Turno.
+REGLAS ESTRICTAS:
+- NUNCA muestres el Precio de Costo de los repuestos. Solo el Precio a la Venta.
+- NUNCA modifiques stock, ni invoques operaciones administrativas.
+- Si el cliente pide algo administrativo, indicá amablemente que no tenés permisos.
+- Si no entendés la solicitud, pedí aclaración en vez de inventar datos.
+8.1.2. Prompt del Agente Privado (Panel Administrativo)
+Sos el asistente administrativo del taller mecánico. Tu rol es eficiente y conciso. Atendés exclusivamente al administrador o al mecánico a cargo, cuyo acceso ha sido verificado mediante validación de identidad previa al inicio de esta conversación. 
+CAPACIDADES:
+- Consultar el inventario completo (incluyendo Precio de Costo).
+- Consultar la lista de clientes.
+- Consultar todos los turnos agendados.
+- Actualizar la cantidad disponible de repuestos.
+PROTOCOLO DE ACTUALIZACIÓN DE STOCK (obligatorio):
+1. Antes de invocar Actualizar Stock, mostrá los datos actuales del producto.
+2. Preguntá: "¿Confirma que desea cambiar el stock de [Producto] de [Cantidad
+   Actual] a [Cantidad Nueva]?"
+3. Solo invocá la herramienta si la respuesta es afirmativa explícita.
+4. Si la respuesta es ambigua, pedí confirmación nuevamente.
+REGLAS ESTRICTAS:
+- Mantené respuestas concisas y orientadas a la tarea.
+- Reportá los cambios realizados con precisión.
+- Si una operación falla, informá el error sin reintentar automáticamente.
+Anexo 8.2. Diagrama de Flujo del Workflow Principal
+[FIGURA PENDIENTE DE INSERCIÓN — Ver nota al pie] 
+Descripción estructurada del flujo principal para referencia del lector: 
+El workflow se inicia con el nodo TELEGRAM TRIGGER (evento: message). El texto del mensaje es evaluado por el nodo SWITCH con tres salidas: 
+SALIDA 1 — Condición: texto igual a "/start" 
+└─► TELEGRAM SEND MESSAGE → Mensaje de bienvenida estático → FIN 
+SALIDA 2 — Condición: variable "admin" es verdadera (User ID del emisor figura en la lista de administradores autorizados)
+└─► TELEGRAM SEND CHAT ACTION (typing)
+└─► AI AGENT (Agente Administrativo)
+        ├── [Tool] Obtener Repuestos (Get Many, todas las columnas)
+        ├── [Tool] Obtener Clientes (Get Many, lista completa)
+        ├── [Tool] Obtener Turnos (Get Many, todos los campos)
+        └── [Tool] Actualizar Stock (Update Row)
+└─► TELEGRAM SEND MESSAGE → Respuesta del agente → FIN
+SALIDA 3 — Condición: resto de mensajes (default) 
+└─► TELEGRAM SEND CHAT ACTION (typing) 
+└─► AI AGENT (Agente Público) 
+├── [Tool] Obtener Repuestos (Get Many, sin Precio de Costo) 
+├── [Tool] Obtener Clientes (Get by Filter, DNI) 
+├── [Tool] Obtener Turnos (Get Many) 
+├── [Tool] Registrar Cliente (Append Row) 
+└── [Tool] Registrar Turno (Append Row) 
+└─► TELEGRAM SEND MESSAGE → Respuesta del agente → FIN 
+Nota: la figura gráfica del workflow, exportada desde el canvas de n8n, debe insertarse en esta página en la versión final del documento.
+Anexo 8.3. Modelo de Datos Lógico
+Entidades y relaciones:
+Cliente (ID PK, Nombre, Dirección, DNI UK)
+Turno (ID Turno PK, ID Cliente FK, Auto, Diagnóstico, Fecha)
+Repuesto (Código PK, Producto, Precio de Costo, Precio a la Venta, Stock)
+Relación: un Cliente puede tener muchos Turnos (1:N) mediante ID Cliente.
+Anexo 8.4. Guion de Entrevista al Caso de Estudio
+Bloque 1 — Gestión de turnos: ¿Cómo registra los turnos actualmente? ¿Cuántos turnos se solapan o duplican por mes? ¿Cuántas consultas recibe fuera del horario laboral?
+Bloque 2 — Control de inventario: ¿Cómo lleva el stock de repuestos? ¿Con qué frecuencia detecta faltantes durante una reparación? ¿Cuánto tiempo le insume verificar el stock?
+Bloque 3 — Comunicación con clientes: ¿Por qué canales se comunican los clientes? ¿Conserva historial de servicios por cliente? ¿Cómo gestiona los recordatorios?
+Bloque 4 — Disposición tecnológica: ¿Qué herramientas digitales utiliza actualmente? ¿Qué barreras identifica para adoptar nuevas herramientas? ¿Estaría dispuesto a probar un asistente automatizado?
+Anexo 8.5. Capturas de Pantalla de Pruebas Funcionales
+[FIGURAS PENDIENTES DE INSERCIÓN]
+Las capturas de pantalla referenciadas en la sección 6.1 corresponden a 
+las siguientes dieciocho pruebas. Cada figura debe insertarse en el orden 
+indicado en la versión final del documento:
+Figura A.1 — Prueba unitaria: Obtener Repuestos. Captura del log de 
+ejecución de n8n mostrando el resultado de la operación Get Many sobre 
+la hoja Stock y la respuesta devuelta al agente.
+Figura A.2 — Prueba unitaria: Obtener Clientes por DNI. Captura del 
+resultado del filtro por columna DNI con un DNI existente en la base.
+Figura A.3 — Prueba unitaria: Obtener Turnos. Captura del resultado de 
+la operación Get Many sobre la hoja Turnos.
+Figura A.4 — Prueba unitaria: Registrar Cliente. Captura del estado de 
+la hoja Clientes antes y después de la operación Append Row.
+Figura A.5 — Prueba unitaria: Registrar Turno. Captura del estado de la 
+hoja Turnos antes y después de la operación Append Row.
+Figura A.6 — Prueba unitaria: Actualizar Stock. Captura del estado de la 
+hoja Stock antes y después de la operación Update Row.
+Figura A.7 — Prueba de integración: Flujo completo cliente nuevo. 
+Secuencia de capturas del cliente Telegram mostrando los seis intercambios 
+mensaje-respuesta hasta el registro exitoso del turno.
+Figura A.8 — Prueba de integración: Flujo completo cliente existente. 
+Secuencia de capturas mostrando la verificación por DNI exitosa y el 
+registro directo del turno sin alta de cliente.
+Figura A.9 — Prueba de integración: Consulta de stock desde agente 
+público. Captura mostrando la respuesta del agente con precio de venta 
+y exclusión del precio de costo.
+Figura A.10 — Prueba de integración: Consulta de stock desde agente 
+administrativo. Captura mostrando la respuesta con precio de costo 
+incluido.
+Figura A.11 — Prueba de integración: Intento de actualización de stock 
+desde agente público. Captura mostrando la respuesta de rechazo del 
+agente público ante la solicitud administrativa.
+Figura A.12 — Prueba de integración: Flujo de actualización de stock 
+con confirmación. Capturas del intercambio de confirmación explícita 
+antes de ejecutar Actualizar Stock.
+Figura A.13 — Prueba de enrutamiento: Mensaje regular enrutado al 
+agente público. Captura del log de n8n mostrando la rama de ejecución 
+activada.
+Figura A.14 — Prueba de enrutamiento: Comando "/start". Captura del 
+mensaje de bienvenida estático recibido.
+Figura A.15 — Prueba de enrutamiento: Comando "ADMIN". Captura del log 
+de n8n mostrando la activación de la rama administrativa.
+Figura A.16 — Prueba de seguridad: Intento de manipulación en lenguaje 
+natural desde canal público. Captura del mensaje del tipo "actualizá el 
+stock del aceite a cero" y la respuesta de rechazo del agente público.
+Figura A.17 — Prueba de seguridad: Verificación del estado de Google 
+Sheets tras el intento de manipulación. Captura mostrando que el 
+registro no fue modificado.
+Figura A.18 — Prueba de seguridad: Acceso al panel administrativo 
+mediante la cadena "ADMIN". Captura que evidencia la vulnerabilidad del 
+mecanismo de control de acceso descrita en la sección 4.7.

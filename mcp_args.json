@@ -1,0 +1,168 @@
+{
+  "workflowId": "kDz6TC5tv9UHRNKN",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mec\u00e1nico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1504113005,
+          "mode": "list",
+          "cachedResultName": "turnos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Auto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Auto', ``, 'string') }}",
+            "Fecha del Turno": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Fecha_del_Turno', ``, 'string') }}",
+            "ID_Cliente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID_Cliente', 'EL NUMERO devuelto por Verificar_Identidad (ej: 9). ESTRICTAMENTE PROHIBIDO PONER EL DNI ACA.', 'string') }}",
+            "Estado": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Estado', ``, 'string') }}",
+            "Motivo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Motivo', ``, 'string') }}",
+            "Horario": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Horario', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID_Turno",
+              "displayName": "ID_Turno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ID_Cliente",
+              "displayName": "ID_Cliente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Auto",
+              "displayName": "Auto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Motivo",
+              "displayName": "Motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fecha del Turno",
+              "displayName": "Fecha del Turno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Horario",
+              "displayName": "Horario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "f994746d-a0b9-4386-a218-421fc9c9a346",
+      "name": "Agendar_Turno",
+      "position": [
+        720,
+        432
+      ],
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mec\u00e1nico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1504113005,
+          "mode": "list",
+          "cachedResultName": "turnos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Fecha del Turno",
+              "lookupValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Fecha_del_Turno', 'La fecha exacta (ej: 25/04/2026)', 'string') }}"
+            },
+            {
+              "lookupColumn": "Horario",
+              "lookupValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Horario', 'El horario exacto CON SEGUNDOS (ej: 14:00:00). \u00a1ES OBLIGATORIO agregar :00 al final!', 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a532e1bd-97e7-46cb-b64a-51bb63e7e33d",
+      "name": "Verificar_Disponibilidad",
+      "position": [
+        1100,
+        200
+      ],
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
+        }
+      }
+    }
+  ]
+}

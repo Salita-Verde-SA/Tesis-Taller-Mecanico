@@ -1,0 +1,295 @@
+{
+  "name": "SubWorkflow_Agendar_Turno",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e1",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1504113005,
+          "mode": "list",
+          "cachedResultName": "turnos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
+        },
+        "options": {}
+      },
+      "id": "e2",
+      "name": "Leer Todos Los Turnos",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        200,
+        0
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const turnos = $input.all();\nconst targetCliente = $('Execute Workflow Trigger').item.json.ID_Cliente;\nconst targetFecha = $('Execute Workflow Trigger').item.json.Fecha;\nconst targetHorario = $('Execute Workflow Trigger').item.json.Horario;\n\nlet turnosActivos = 0;\nlet horarioOcupado = false;\n\nfor (const turno of turnos) {\n    if (turno.json.Estado !== 'Cancelado') {\n        // Check limit\n        if (String(turno.json.ID_Cliente) === String(targetCliente)) {\n            turnosActivos++;\n        }\n        // Check availability\n        if (turno.json['Fecha del Turno'] === targetFecha && turno.json['Horario'] === targetHorario) {\n            horarioOcupado = true;\n        }\n    }\n}\n\nlet action = 'AGENDAR';\nlet errorMsg = '';\n\nif (turnosActivos >= 3) {\n    action = 'ERROR';\n    errorMsg = 'El cliente ya alcanzó el límite máximo de 3 turnos activos.';\n} else if (horarioOcupado) {\n    action = 'ERROR';\n    errorMsg = 'El horario seleccionado ya se encuentra ocupado por otro turno.';\n}\n\nreturn { json: { action, errorMsg, ...$('Execute Workflow Trigger').item.json } };"
+      },
+      "id": "e3",
+      "name": "Validar Logica",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cond-error",
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "ERROR"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ERROR"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "cond-agendar",
+                    "leftValue": "={{ $json.action }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "AGENDAR"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AGENDAR"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e4",
+      "name": "Check Action",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        600,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "return { json: { success: false, respuesta: $('Validar Logica').item.json.errorMsg } };"
+      },
+      "id": "e5",
+      "name": "Return Error",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mecánico"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1504113005,
+          "mode": "list",
+          "cachedResultName": "turnos"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Auto": "={{ $json.Auto }}",
+            "Fecha del Turno": "={{ $json.Fecha }}",
+            "ID_Cliente": "={{ $json.ID_Cliente }}",
+            "Estado": "Pendiente",
+            "Motivo": "={{ $json.Motivo }}",
+            "Horario": "={{ $json.Horario }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID_Turno",
+              "type": "string"
+            },
+            {
+              "id": "ID_Cliente",
+              "type": "string"
+            },
+            {
+              "id": "Auto",
+              "type": "string"
+            },
+            {
+              "id": "Motivo",
+              "type": "string"
+            },
+            {
+              "id": "Fecha del Turno",
+              "type": "string"
+            },
+            {
+              "id": "Estado",
+              "type": "string"
+            },
+            {
+              "id": "Horario",
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "e6",
+      "name": "Insertar Turno",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        800,
+        100
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "w36ZBcQ5PHQ5laFk",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return { json: { success: true, respuesta: 'Turno agendado exitosamente en Google Sheets.' } };"
+      },
+      "id": "e7",
+      "name": "Return Success",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        100
+      ]
+    }
+  ],
+  "connections": {
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Leer Todos Los Turnos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer Todos Los Turnos": {
+      "main": [
+        [
+          {
+            "node": "Validar Logica",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Logica": {
+      "main": [
+        [
+          {
+            "node": "Check Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Action": {
+      "main": [
+        [
+          {
+            "node": "Return Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Insertar Turno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insertar Turno": {
+      "main": [
+        [
+          {
+            "node": "Return Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {}
+}

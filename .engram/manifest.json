@@ -16,6 +16,14 @@
       "sessions": 0,
       "memories": 1,
       "prompts": 21
+    },
+    {
+      "id": "aa2721cb",
+      "created_by": "manu",
+      "created_at": "2026-06-30T04:16:46Z",
+      "sessions": 0,
+      "memories": 1,
+      "prompts": 1
     }
   ]
 }

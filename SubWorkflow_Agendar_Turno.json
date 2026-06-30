@@ -40,8 +40,7 @@
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -70,6 +69,7 @@
                   "typeValidation": "strict",
                   "version": 3
                 },
+                "combinator": "and",
                 "conditions": [
                   {
                     "id": "cond-error",
@@ -80,8 +80,7 @@
                     },
                     "rightValue": "ERROR"
                   }
-                ],
-                "combinator": "and"
+                ]
               },
               "renameOutput": true,
               "outputKey": "ERROR"
@@ -94,6 +93,7 @@
                   "typeValidation": "strict",
                   "version": 3
                 },
+                "combinator": "and",
                 "conditions": [
                   {
                     "id": "cond-agendar",
@@ -104,8 +104,7 @@
                     },
                     "rightValue": "AGENDAR"
                   }
-                ],
-                "combinator": "and"
+                ]
               },
               "renameOutput": true,
               "outputKey": "AGENDAR"
@@ -207,8 +206,7 @@
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -290,6 +288,11 @@
       ]
     }
   },
-  "active": false,
-  "settings": {}
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "pinData": null
 }

@@ -1,105 +1,6 @@
 {
   "name": "Taller Mecanico v2",
-  "description": null,
   "nodes": [
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
-                "conditions": [
-                  {
-                    "id": "cond-admin",
-                    "leftValue": "={{ $json.message.text }}",
-                    "operator": {
-                      "operation": "equals",
-                      "type": "string"
-                    },
-                    "rightValue": "ADMIN"
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "ADMIN"
-            },
-            {
-              "conditions": {
-                "combinator": "and",
-                "conditions": [
-                  {
-                    "id": "cond-start",
-                    "leftValue": "={{ $json.message.text }}",
-                    "operator": {
-                      "operation": "equals",
-                      "type": "string"
-                    },
-                    "rightValue": "/start"
-                  }
-                ],
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                }
-              },
-              "renameOutput": true,
-              "outputKey": "Bienvenida"
-            },
-            {
-              "conditions": {
-                "combinator": "and",
-                "conditions": [
-                  {
-                    "id": "cond-other1",
-                    "leftValue": "={{ $json.message.text }}",
-                    "operator": {
-                      "operation": "notEquals",
-                      "type": "string"
-                    },
-                    "rightValue": "/start"
-                  },
-                  {
-                    "id": "cond-other2",
-                    "leftValue": "={{ $json.message.text }}",
-                    "operator": {
-                      "operation": "notEquals",
-                      "type": "string"
-                    },
-                    "rightValue": "ADMIN"
-                  }
-                ],
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                }
-              },
-              "renameOutput": true,
-              "outputKey": "Cliente"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "id": "2d63149d-4b7c-4df4-b966-2c81af017c58",
-      "name": "Switch",
-      "position": [
-        240,
-        -112
-      ],
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.4
-    },
     {
       "parameters": {
         "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
@@ -111,16 +12,15 @@
       "id": "ba755404-9874-4192-b125-271eeb4d7983",
       "name": "Mensaje Bienvenida",
       "position": [
-        848,
-        -96
+        688,
+        -192
       ],
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "webhookId": "03c55aaa-8c2f-481c-a748-4a6fd99a3e75",
       "credentials": {
         "telegramApi": {
-          "id": "igtGzqD9iOepnDBv",
-          "name": "Telegram account"
+          "name": "electroencefalograma_bot"
         }
       }
     },
@@ -129,14 +29,14 @@
         "promptType": "define",
         "text": "={{ $json.message.text }}\n",
         "options": {
-          "systemMessage": "Sos el asistente virtual del Taller Mecánico. Tu función es atender a los clientes por Telegram de forma amable, profesional y eficiente.\n\nCONTEXTO TEMPORAL Y CALENDARIO:\nLa hora actual es {{ $now.setLocale('es').format('HH:mm') }}. \nHoy es {{ $now.setLocale('es').format('cccc dd/MM/yyyy') }}.\n- Mañana: {{ $now.plus({days:1}).setLocale('es').format('cccc dd/MM/yyyy') }}\n- En 2 días: {{ $now.plus({days:2}).setLocale('es').format('cccc dd/MM/yyyy') }}\n- En 3 días: {{ $now.plus({days:3}).setLocale('es').format('cccc dd/MM/yyyy') }}\n- En 4 días: {{ $now.plus({days:4}).setLocale('es').format('cccc dd/MM/yyyy') }}\n- En 5 días: {{ $now.plus({days:5}).setLocale('es').format('cccc dd/MM/yyyy') }}\n- En 6 días: {{ $now.plus({days:6}).setLocale('es').format('cccc dd/MM/yyyy') }}\n- En 7 días: {{ $now.plus({days:7}).setLocale('es').format('cccc dd/MM/yyyy') }}\n\nLOS DOMINGOS ESTÁ CERRADO.\n\n## TUS HERRAMIENTAS\n1. Herramienta_Verificar_DNI: para obtener ID_Cliente\n2. Registrar Cliente\n3. Intentar_Agendar_Tool: Manda los datos del turno al sistema. El sistema validará si hay cupo o si se supera el límite de turnos.\n4. Herramienta_Cancelar_Turno: para cancelar\n\n## FLUJO DE ATENCIÓN (PASO A PASO)\n### Para agendar un turno:\n1. Usá \"Herramienta_Verificar_DNI\" con el DNI del cliente. Obtené el `ID_Cliente`.\n2. Preguntá: Auto, Motivo exacto, Fecha y Horario.\n3. Usá \"Intentar_Agendar_Tool\". Pasale todos los datos.\n   - Si la herramienta devuelve un error (\"Límite\", \"Ocupado\"): Pedile disculpas al cliente y explicale por qué no se pudo agendar.\n   - Si devuelve éxito: Confirmale al cliente.\n\n¡El sistema hace la validación dura por vos! Solo enfocáte en hablar con el cliente y usar las herramientas correctamente."
+          "systemMessage": "Sos un asistente virtual de un taller mecánico. Tu nombre es \"Servicio Técnico\".\nTu rol es atender consultas de clientes de manera amable, clara y profesional.\n\nCAPACIDADES:\n- Registrar nuevos turnos para reparaciones o mantenimientos.\n- Registrar nuevos clientes en la base de datos.\n- Consultar la disponibilidad y precio de venta de repuestos.\n\nPROTOCOLO DE REGISTRO DE TURNOS (estrictamente secuencial):\n1. Saludá y preguntá en qué podés ayudar.\n2. Si el cliente solicita un turno, pedí su DNI.\n3. Usá la herramienta Obtener Clientes para verificar si ya está registrado.\n4. Si NO está registrado, pedí Nombre completo y Dirección, y usá Registrar Cliente.\n5. Pedí marca, modelo y año del vehículo.\n6. Pedí el motivo de la consulta (diagnóstico).\n7. Pedí fecha y hora deseadas.\n8. Confirmá todos los datos antes de invocar Registrar Turno.\n\nREGLAS ESTRICTAS:\n- NUNCA muestres el Precio de Costo de los repuestos. Solo el Precio a la Venta.\n- NUNCA modifiques stock, ni invoques operaciones administrativas.\n- Si el cliente pide algo administrativo, indicá amablemente que no tenés permisos.\n- Si no entendés la solicitud, pedí aclaración en vez de inventar datos."
         }
       },
       "id": "8658ae6a-023c-4b33-a20a-db949580e8d3",
       "name": "Servicio Tecnico",
       "position": [
-        784,
-        208
+        1288,
+        8
       ],
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1
@@ -146,13 +46,13 @@
         "promptType": "define",
         "text": "={{ $('Telegram Trigger').item.json.message.text }}",
         "options": {
-          "systemMessage": "Sos el asistente de gestión interna del Taller Mecánico, accesible solo para el administrador o mecánico a cargo. Tu función es ayudar a gestionar el stock, los turnos y los clientes de forma eficiente.\n\n## TUS CAPACIDADES\nPodés realizar las siguientes acciones:\n- Consultar el stock completo de repuestos\n- Actualizar el stock de un repuesto (cantidad disponible)\n- Consultar todos los turnos registrados\n- Consultar la lista de clientes\n\n## COMANDOS DISPONIBLES\n\n### Gestión de Stock:\n- Para ver el stock completo, el admin puede escribir \"ver stock\" o \"stock\"\n- Para actualizar el stock de un repuesto, pedile: nombre o código del repuesto y la nueva cantidad\n- Mostrá siempre: Producto, Código, Precio de costo, Precio de venta y Stock actual\n- Usá \"Obtener Repuestos1\" para consultar y \"Actualizar Stock\" para modificar\n\n### Gestión de Turnos:\n- Para ver todos los turnos, el admin puede escribir \"ver turnos\" o \"turnos\"\n- Mostrá: ID, cliente, auto, diagnóstico, repuestos usados, presupuesto y fecha\n- Usá \"Obtener Turnos1\" para consultar\n\n### Gestión de Clientes:\n- Para ver todos los clientes, escribir \"ver clientes\" o \"clientes\"\n- Mostrá: ID, nombre, dirección y DNI\n- Usá \"Obtener Clientes1\" para consultar\n\n## REGLAS\n- Este panel es solo para uso interno — no revelar información sensible fuera de este contexto\n- Confirmá siempre las modificaciones antes de ejecutarlas: \"¿Confirmás actualizar el stock de [producto] a [cantidad]?\"\n- Si el administrador da una instrucción ambigua, pedí confirmación antes de actuar\n- Hablá de forma directa y técnica, sin exceso de formalidades\n- Para actualizar stock, necesitás el ID o código exacto del repuesto\n\n## FORMATO DE RESPUESTAS\n- Usá tablas o listas cuando muestres múltiples registros\n- Confirmá cada acción con ✅ o ❌ según el resultado\n- Si hay un error o el dato no existe, informalo claramente\n\nEstás listo para recibir instrucciones del administrador."
+          "systemMessage": "Sos el asistente administrativo del taller mecánico. Tu rol es eficiente y conciso. Atendés exclusivamente al administrador o al mecánico a cargo, cuyo acceso ha sido verificado mediante validación de identidad previa al inicio de esta conversación.\n\nCAPACIDADES:\n- Consultar el inventario completo (incluyendo Precio de Costo).\n- Consultar la lista de clientes.\n- Consultar todos los turnos agendados.\n- Actualizar la cantidad disponible de repuestos.\n\nPROTOCOLO DE ACTUALIZACIÓN DE STOCK (obligatorio):\n1. Antes de invocar Actualizar Stock, mostrá los datos actuales del producto.\n2. Preguntá: \"¿Confirma que desea cambiar el stock de [Producto] de [Cantidad Actual] a [Cantidad Nueva]?\"\n3. Solo invocá la herramienta si la respuesta es afirmativa explícita.\n4. Si la respuesta es ambigua, pedí confirmación nuevamente.\n\nREGLAS ESTRICTAS:\n- Mantené respuestas concisas y orientadas a la tarea.\n- Reportá los cambios realizados con precisión.\n- Si una operación falla, informá el error sin reintentar automáticamente."
         }
       },
       "id": "0365da28-4c36-4be9-ba79-b7f1618de664",
-      "name": "AI Agent1",
+      "name": "Agente Administrador",
       "position": [
-        784,
+        1288,
         -496
       ],
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -165,15 +65,14 @@
       "id": "3e67b700-4671-4de4-a7ba-2d555ad16bac",
       "name": "Mistral Cloud Chat Model",
       "position": [
-        464,
-        432
+        912,
+        232
       ],
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "credentials": {
         "mistralCloudApi": {
-          "id": "tJWypELWeudSZvrL",
-          "name": "Mistral Cloud account"
+          "name": "Mistral"
         }
       }
     },
@@ -184,15 +83,14 @@
       "id": "631981e7-ba6a-4b40-bc7a-153faa34b4bb",
       "name": "Mistral Cloud Chat Model1",
       "position": [
-        528,
+        1040,
         -272
       ],
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "credentials": {
         "mistralCloudApi": {
-          "id": "tJWypELWeudSZvrL",
-          "name": "Mistral Cloud account"
+          "name": "Mistral"
         }
       }
     },
@@ -217,15 +115,14 @@
       "id": "68b3c3b3-f630-414c-b28d-50f9ad0fab83",
       "name": "Consultar_Stock_Publico",
       "position": [
-        848,
-        432
+        1168,
+        232
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -258,15 +155,14 @@
       "id": "bc01e80d-cbab-4ad6-bc81-00031b579259",
       "name": "Herramienta_Verificar_DNI",
       "position": [
-        1232,
-        432
+        1424,
+        232
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -358,15 +254,14 @@
       "id": "24e70b49-eaa0-4f99-abd6-51cf0f5d43f1",
       "name": "Registrar Cliente",
       "position": [
-        1104,
-        432
+        1296,
+        232
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -391,14 +286,13 @@
       "id": "9810fc87-d34d-4462-a6e2-7b4d262c33a5",
       "name": "Obtener Repuestos1",
       "position": [
-        1040,
+        1552,
         -272
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "1THgsRyZ6SDDFD36",
           "name": "Google Sheets account"
         }
       }
@@ -424,15 +318,14 @@
       "id": "3f96260a-dc34-4817-98c9-bc87177ecc06",
       "name": "Obtener Clientes1",
       "position": [
-        912,
+        1424,
         -272
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -457,15 +350,14 @@
       "id": "616b65bf-4153-4f3a-88ee-e0484bf49c3f",
       "name": "Obtener Turnos1",
       "position": [
-        1168,
+        1680,
         -272
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -567,15 +459,14 @@
       "id": "48096228-ca1c-4eb3-b4cc-fa1cae192b1f",
       "name": "Actualizar Stock",
       "position": [
-        784,
+        1296,
         -272
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -590,16 +481,15 @@
       "id": "18f592ee-34e8-4c9a-8786-797386535b13",
       "name": "Responder Cliente",
       "position": [
-        1440,
-        208
+        2016,
+        8
       ],
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "webhookId": "baa309a5-52a4-41cc-98c2-72f47bfdc996",
       "credentials": {
         "telegramApi": {
-          "id": "igtGzqD9iOepnDBv",
-          "name": "Telegram account"
+          "name": "electroencefalograma_bot"
         }
       }
     },
@@ -614,16 +504,15 @@
       "id": "53a18e2b-0fab-4312-aea3-ab419c605dd6",
       "name": "Responder Admin",
       "position": [
-        1440,
-        -400
+        2016,
+        -392
       ],
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "webhookId": "4aa146de-0978-4d79-ae49-3301fd213c9e",
       "credentials": {
         "telegramApi": {
-          "id": "igtGzqD9iOepnDBv",
-          "name": "Telegram account"
+          "name": "electroencefalograma_bot"
         }
       }
     },
@@ -634,46 +523,48 @@
         ],
         "additionalFields": {}
       },
-      "type": "n8n-nodes-base.telegramTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        16,
-        -96
-      ],
       "id": "674095f6-0d38-46da-8b76-69e8dae76cdb",
       "name": "Telegram Trigger",
+      "position": [
+        16,
+        -192
+      ],
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
       "webhookId": "c9f3ef40-653d-4fce-9383-161c0f9f20d5",
       "credentials": {
         "telegramApi": {
-          "id": "igtGzqD9iOepnDBv",
-          "name": "Telegram account"
+          "name": "electroencefalograma_bot"
         }
       }
     },
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $json.message.chat.id }}-v"
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
       },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
-      "position": [
-        592,
-        432
-      ],
       "id": "bd66b841-47a0-48a6-985e-f1076b5cef4a",
-      "name": "Simple Memory2"
+      "name": "Simple Memory2",
+      "position": [
+        1040,
+        232
+      ],
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3
     },
     {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
-      "typeVersion": 1.3,
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "id": "02133630-d6c6-4d66-b530-bc7ee9370bcd",
+      "name": "Simple Memory",
       "position": [
-        656,
+        1168,
         -272
       ],
-      "id": "02133630-d6c6-4d66-b530-bc7ee9370bcd",
-      "name": "Simple Memory"
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3
     },
     {
       "parameters": {
@@ -733,13 +624,12 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        950,
-        650
+        1552,
+        232
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -749,73 +639,8 @@
         "description": "Llama a esta herramienta cuando tengas todos los datos para agendar. Validará límites y disponibilidad automáticamente.",
         "workflowId": {
           "__rl": true,
-          "value": "",
+          "value": "MvoUOpMnlKcdJe98",
           "mode": "id"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "ID_Cliente": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID_Cliente', 'El número de ID_Cliente devuelto por Verificar_Identidad', 'string') }}",
-            "Auto": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Auto', 'Vehículo a reparar (ej: Fiat Cronos)', 'string') }}",
-            "Motivo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Motivo', 'El motivo exacto dicho por el cliente. NO INVENTES NADA.', 'string') }}",
-            "Fecha": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Fecha', 'Fecha en formato dd/MM/yyyy (ej: 25/06/2026)', 'string') }}",
-            "Horario": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Horario', 'Horario con segundos (ej: 14:00:00)', 'string') }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "ID_Cliente",
-              "displayName": "ID_Cliente",
-              "type": "string",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Auto",
-              "displayName": "Auto",
-              "type": "string",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Motivo",
-              "displayName": "Motivo",
-              "type": "string",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Fecha",
-              "displayName": "Fecha",
-              "type": "string",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Horario",
-              "displayName": "Horario",
-              "type": "string",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
         }
       },
       "id": "a480d636-f2e0-443d-bc4b-51145e97fa82",
@@ -823,13 +648,185 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 1.2,
       "position": [
-        950,
-        450
+        1680,
+        232
       ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const adminIds = [1320251824];\nconst userId = $json.message.from.id;\nreturn {\n  json: {\n    admin: adminIds.includes(userId),\n    ...$json\n  }\n};"
+      },
+      "id": "55d06e48-99c2-4607-be11-befae6dc6b4e",
+      "name": "Validar Admin",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "cond-admin",
+                    "leftValue": "={{ $json.admin }}",
+                    "operator": {
+                      "operation": "true",
+                      "type": "boolean"
+                    }
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "ADMIN"
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "cond-start",
+                    "leftValue": "={{ $json.message.text }}",
+                    "operator": {
+                      "operation": "equals",
+                      "type": "string"
+                    },
+                    "rightValue": "/start"
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "Bienvenida"
+            },
+            {
+              "conditions": {
+                "combinator": "and",
+                "conditions": [
+                  {
+                    "id": "cond-default",
+                    "leftValue": "={{ $json.admin }}",
+                    "operator": {
+                      "operation": "false",
+                      "type": "boolean"
+                    }
+                  }
+                ],
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                }
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f079cf5c-7269-4dc6-8fe3-ad6c8840691b",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        -208
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+          "mode": "list",
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1504113005,
+          "mode": "list",
+          "cachedResultName": "turnos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
+        },
+        "options": {}
+      },
+      "id": "55ad7031-501c-4352-9f8c-74a3ffb9e40a",
+      "name": "Obtener Turnos",
+      "position": [
+        1808,
+        232
+      ],
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "id": "00c7d1db-a05f-41a1-9a43-20f803dc8e48",
+      "name": "Chat Action Admin",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        -392
+      ],
+      "webhookId": "b610605c-f347-4364-b573-7dddbd63e4b2",
+      "credentials": {
+        "telegramApi": {
+          "name": "electroencefalograma_bot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "id": "97b3a961-a81c-4bb0-a6d2-007ae06ecde2",
+      "name": "Chat Action Cliente",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        8
+      ],
+      "webhookId": "7bb63551-feca-4f96-9903-d2b25b1be3ea",
+      "credentials": {
+        "telegramApi": {
+          "name": "electroencefalograma_bot"
+        }
+      }
     }
   ],
   "connections": {
-    "AI Agent1": {
+    "Agente Administrador": {
       "main": [
         [
           {
@@ -844,7 +841,7 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Agente Administrador",
             "type": "ai_tool",
             "index": 0
           }
@@ -877,7 +874,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Agente Administrador",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -888,7 +885,7 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Agente Administrador",
             "type": "ai_tool",
             "index": 0
           }
@@ -899,7 +896,7 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Agente Administrador",
             "type": "ai_tool",
             "index": 0
           }
@@ -910,7 +907,7 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Agente Administrador",
             "type": "ai_tool",
             "index": 0
           }
@@ -939,48 +936,12 @@
         ]
       ]
     },
-    "Switch": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Mensaje Bienvenida",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Servicio Tecnico",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Herramienta_Verificar_DNI": {
       "ai_tool": [
         [
           {
             "node": "Servicio Tecnico",
             "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Telegram Trigger": {
-      "main": [
-        [
-          {
-            "node": "Switch",
-            "type": "main",
             "index": 0
           }
         ]
@@ -1001,7 +962,7 @@
       "ai_memory": [
         [
           {
-            "node": "AI Agent1",
+            "node": "Agente Administrador",
             "type": "ai_memory",
             "index": 0
           }
@@ -1029,14 +990,94 @@
           }
         ]
       ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Validar Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar Admin": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Chat Action Admin",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mensaje Bienvenida",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Chat Action Cliente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Turnos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Servicio Tecnico",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Action Admin": {
+      "main": [
+        [
+          {
+            "node": "Agente Administrador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Action Cliente": {
+      "main": [
+        [
+          {
+            "node": "Servicio Tecnico",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
   },
   "staticData": null,
-  "pinData": {},
-  "tags": []
+  "pinData": {}
 }

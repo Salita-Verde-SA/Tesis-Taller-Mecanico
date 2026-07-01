@@ -7,8 +7,7 @@ Sos el asistente de desarrollo del Taller Mecánico. Tu responsabilidad es mante
 ## Source of Truth — Flujo de n8n
 
 Los archivos JSON en este repositorio son la fuente de verdad definitiva del flujo de n8n:
-- `Taller Mecanico.json` — Workflow principal (20 nodos)
-- `SubWorkflow_Agendar_Turno.json` — Subworkflow de agendado de turnos
+- `Taller Mecanico.json` — Workflow principal
 
 ## Documentación de referencia (tesis)
 

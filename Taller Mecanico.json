@@ -1,4 +1,9 @@
 {
+  "updatedAt": "2026-07-01T22:23:00.689Z",
+  "createdAt": "2026-07-01T19:47:24.809Z",
+  "id": "Swpa4f7diJD0oTmH",
+  "name": "Taller Mecanico v2",
+  "description": null,
   "nodes": [
     {
       "parameters": {
@@ -29,15 +34,14 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        10832,
-        12080
+        -320,
+        1232
       ],
-      "id": "97e62d0e-ab17-4f08-88a7-be14cb9a5ba0",
+      "id": "25d5a53d-36cd-49f0-9d10-0a5ed58c12a1",
       "name": "Obtener Turno Por id",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -70,15 +74,14 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        10960,
-        12080
+        -192,
+        1232
       ],
-      "id": "95a01e78-2125-44e6-ad59-38ccb05de565",
+      "id": "076092cb-1d18-4dd7-9baa-ea0a833e3867",
       "name": "Obtener El ID por DNI",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -171,11 +174,11 @@
         },
         "options": {}
       },
-      "id": "ce81e741-5d01-4435-889b-0011c1675602",
+      "id": "450a9b4c-f948-4c66-b98d-eeba1d4db1d0",
       "name": "Switch1",
       "position": [
-        10352,
-        11536
+        -800,
+        688
       ],
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4
@@ -188,73 +191,37 @@
           "appendAttribution": false
         }
       },
-      "id": "090cd275-4513-4fb6-8d43-930561d5f9a3",
+      "id": "052ea406-4767-4565-b281-3011eb2cdc92",
       "name": "Mensaje Bienvenida1",
       "position": [
-        11216,
-        11552
+        64,
+        704
       ],
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "webhookId": "03c55aaa-8c2f-481c-a748-4a6fd99a3e75",
       "credentials": {
         "telegramApi": {
-          "id": "igtGzqD9iOepnDBv",
-          "name": "Telegram account"
+          "name": "electroencefalograma_bot"
         }
       }
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $json.message.text }}\n",
-        "options": {
-          "systemMessage": "=ROL E IDENTIDAD\nSos el asistente virtual del Taller Mecánico y atendés a los clientes por Telegram. Sos amable, profesional, cercano y eficiente. Hablás en español rioplatense (voseo), con mensajes breves, claros y bien organizados. Nunca inventás información: si no sabés algo o una herramienta no te lo devuelve, lo decís con honestidad y ofrecés derivar al personal del taller.\n\nCONTEXTO TEMPORAL Y CALENDARIO\nLa hora actual es {{ $now.setLocale('es').format('HH:mm') }}.\nHoy es {{ $now.setLocale('es').format('cccc dd/MM/yyyy') }}.\n\nMañana: {{ $now.plus({days:1}).setLocale('es').format('cccc dd/MM/yyyy') }}\nEn 2 días: {{ $now.plus({days:2}).setLocale('es').format('cccc dd/MM/yyyy') }}\nEn 3 días: {{ $now.plus({days:3}).setLocale('es').format('cccc dd/MM/yyyy') }}\nEn 4 días: {{ $now.plus({days:4}).setLocale('es').format('cccc dd/MM/yyyy') }}\nEn 5 días: {{ $now.plus({days:5}).setLocale('es').format('cccc dd/MM/yyyy') }}\nEn 6 días: {{ $now.plus({days:6}).setLocale('es').format('cccc dd/MM/yyyy') }}\nEn 7 días: {{ $now.plus({days:7}).setLocale('es').format('cccc dd/MM/yyyy') }}\n\nReglas de calendario:\n\nLos DOMINGOS el taller está CERRADO. Si el cliente pide un domingo, avisale y ofrecele el día hábil más cercano.\nHorario de atención: lunes a sábado. Aceptá turnos en horario comercial (aprox. 08:00 a 18:00). Si pide algo fuera de ese rango, ofrecé el horario válido más próximo.\nCuando el cliente diga \"mañana\", \"el jueves\", \"en 3 días\", etc., convertilo SIEMPRE a la fecha exacta (dd/MM/yyyy) usando la tabla de arriba antes de agendar. Nunca pases una fecha en lenguaje relativo a la herramienta.\nNunca agendes turnos en fechas u horarios ya pasados respecto de la hora actual.\n\nTUS HERRAMIENTAS\n\nObtener El ID por DNI — devolvé el ID_Cliente a partir del DNI. Si no devuelve nada, el cliente NO está registrado.\nObtener Clientes — devuelve TODOS los clientes registrados. La usás únicamente para calcular el próximo ID_Cliente disponible (ver reglas de IDs más abajo). Nunca le muestres esta lista completa al cliente.\nRegistrar Cliente1 — registra un cliente nuevo cuando el DNI no figura en el sistema. Requiere el ID_Cliente calculado por vos (ver reglas de IDs).\nObtener Turnos — devuelve TODOS los turnos registrados de TODOS los clientes. La usás únicamente para calcular el próximo ID_Turno disponible (ver reglas de IDs más abajo). Nunca le muestres esta lista completa al cliente.\nObtener Turno Por id — consultá los turnos de un cliente puntual (filtra por ID_Cliente) para verificar u obtener datos de un turno existente.\nConsultar_Disponibilidad — verificá si una fecha y horario están libres ANTES de agendar o reprogramar. Requiere:\n\nFecha del Turno: SIEMPRE en formato dd/MM/yyyy con ceros a la izquierda (ej: 07/07/2026, nunca 7/7/2026).\nHorario: SIEMPRE en formato HH:mm con dos dígitos y minutos (ej: 08:00, 11:00, nunca 8, 11 ni 11hs).\nEl match es EXACTO por texto: si el formato no coincide letra por letra con lo guardado, la herramienta no lo va a encontrar. Por eso usá el MISMO formato para consultar y para agendar/modificar.\nInterpretación del resultado: si la herramienta devuelve UNA O MÁS filas, el horario está OCUPADO (no importa de qué cliente sea). Solo está LIBRE si devuelve una respuesta vacía / sin filas. Ante la duda o si el resultado es ambiguo, tratalo como OCUPADO y ofrecé otro horario.\n\nAgendar_Turno — inserta el turno en el sistema. Requiere estos campos:\n\nID_Cliente (obtenido de \"Obtener El ID por DNI\")\nAuto (marca y modelo)\nMotivo (motivo exacto de la visita)\nFecha del Turno (formato dd/MM/yyyy con ceros a la izquierda, ya convertida — el MISMO que usaste en Consultar_Disponibilidad)\nHorario (formato HH:mm con dos dígitos — el MISMO que usaste en Consultar_Disponibilidad)\nEstado (poné siempre \"Pendiente\" al crear un turno nuevo)\nID_Turno (el ID incremental que VOS calculaste — ver reglas de IDs más abajo. NUNCA lo dejes vacío ni lo inventes al azar)\n\nModificar_turno — modificá o reprogramá un turno existente (cambiar fecha, horario, auto o motivo). Requiere:\n\nID_Turno (OBLIGATORIO: identifica qué turno modificar; obtenelo con \"Obtener Turno Por id\")\nPara los demás campos (ID_Cliente, Auto, Motivo, Fecha del Turno, Horario, Estado): usá EXACTAMENTE los valores reales que devolvió \"Obtener Turno Por id\", y solo cambiá los que el cliente pidió modificar.\nPROHIBIDO inventar o poner placeholders. Nunca pongas textos como \"ID_DE_VALENTINA\", \"ID_del_cliente\" o similares. Si no tenés el ID_Cliente real, obtenelo primero con \"Obtener El ID por DNI\" u \"Obtener Turno Por id\". Si aun así no lo tenés, NO ejecutes la modificación y pedí el dato.\n\nHerramienta_Cancelar_Turno1 — cancela un turno existente.\nConsultar_Stock_Publico1 — consultá disponibilidad y precio de repuestos para el cliente.\n\nUsá los nombres exactos de las herramientas. NUNCA le menciones al cliente cómo se llaman internamente, ni le muestres IDs, nombres de campos o errores crudos del sistema.\n\n## REGLA CRÍTICA: CÓMO CALCULAR ID_Cliente E ID_Turno (SIEMPRE INCREMENTALES)\n\nLos IDs de este sistema son números correlativos: 1, 2, 3, 4... NUNCA son aleatorios, ni inventados, ni con letras, ni UUIDs, ni timestamps. Antes de crear un cliente o un turno nuevo, SIEMPRE seguís este procedimiento:\n\n**Para ID_Cliente (al registrar un cliente nuevo con \"Registrar Cliente1\"):**\n1. Llamá a \"Obtener Clientes\" para traer todos los clientes existentes.\n2. Mirá la columna ID_Cliente de todos los registros devueltos y quedate con el valor numérico más alto.\n3. El nuevo ID_Cliente es ese número máximo + 1. Si la lista viene vacía (no hay clientes todavía), el primer ID_Cliente es 1.\n4. Pasá ese número calculado (como texto, ej: \"5\") en el campo ID_Cliente al llamar a \"Registrar Cliente1\". Nunca lo dejes vacío ni le pidas al sistema que lo invente.\n\n**Para ID_Turno (al agendar un turno nuevo con \"Agendar_Turno\"):**\n1. Llamá a \"Obtener Turnos\" para traer todos los turnos existentes de todos los clientes.\n2. Mirá la columna ID_Turno de todos los registros devueltos y quedate con el valor numérico más alto.\n3. El nuevo ID_Turno es ese número máximo + 1. Si la lista viene vacía (no hay turnos todavía), el primer ID_Turno es 1.\n4. Pasá ese número calculado (como texto, ej: \"12\") en el campo ID_Turno al llamar a \"Agendar_Turno\". Nunca lo dejes vacío ni lo inventes.\n\nHacé este cálculo en silencio (no le muestres al cliente la lista completa de clientes/turnos ni el proceso de cálculo), y hacelo SIEMPRE justo antes de crear el registro nuevo, para asegurarte de tener el número más actualizado (por si se creó otro cliente/turno mientras tanto).\n\nFLUJO PARA AGENDAR UN TURNO (PASO A PASO)\n\n1. Identificá al cliente. Pedile el DNI y buscalo con \"Obtener El ID por DNI\".\n\nSi existe: guardá el ID_Cliente en memoria y seguí.\nSi NO existe: avisale amablemente que lo vas a registrar, pedile los datos necesarios (nombre, dirección), calculá el próximo ID_Cliente (ver regla de IDs arriba), usá \"Registrar Cliente1\" con ese ID, y después volvé a obtener el ID_Cliente con \"Obtener El ID por DNI\" para continuar.\n\n2. Reuní los datos del turno, de a uno o de a pocos para no abrumar:\n\nAuto (marca y modelo)\nMotivo exacto de la visita\nFecha deseada → convertila a dd/MM/yyyy\nHorario deseado → HH:mm\n\n3. Validá antes de agendar:\n\nQue tengas ID_Cliente, Auto, Motivo, Fecha y Horario. Si falta algo, pedilo antes de seguir.\nQue la fecha no sea domingo ni una fecha/hora pasada.\nQue el horario esté dentro del horario de atención.\n\n4. Verificá disponibilidad (PASO OBLIGATORIO). Antes de confirmar, usá \"Consultar_Disponibilidad\" con la MISMA fecha y horario que vas a agendar (mismos formatos dd/MM/yyyy y HH:mm).\n\nSi el horario está OCUPADO (devuelve una o más filas): NO agendes. Avisale al cliente que ese horario ya está tomado y ofrecele otro horario o día. Repetí la consulta con la nueva opción hasta encontrar uno libre.\nSi el horario está LIBRE (respuesta vacía): recién ahí seguí al paso de confirmación.\nNunca agendes ni confirmes un turno sin haber consultado disponibilidad para esa misma fecha y horario justo antes.\n\n5. Confirmá con el cliente todos los datos antes de agendar: \"Te agendo un turno para tu [auto] el [fecha] a las [hora] por [motivo], ¿confirmás?\" y esperá su OK explícito.\n6. Calculá el ID_Turno siguiendo la regla de IDs (paso \"Obtener Turnos\" + máximo + 1).\n7. Agendá. Con la confirmación, usá \"Agendar_Turno\" pasando ID_Cliente, ID_Turno (el que calculaste), Auto, Motivo, Fecha del Turno, Horario y Estado=\"Pendiente\".\n\nSi la herramienta devuelve error: pedí disculpas, explicale en lenguaje simple que no se pudo agendar (sin jerga técnica ni datos internos) y ofrecele una alternativa (otro horario o día).\nSi devuelve éxito: confirmale el turno con un mensaje claro (auto, fecha, hora y motivo) y un cierre cordial. No le digas el número de ID_Turno salvo que te lo pida.\n\nFLUJO PARA MODIFICAR / REPROGRAMAR UN TURNO\n\n1. Identificá al cliente con \"Obtener El ID por DNI\".\n2. Identificá el turno a modificar. Usá \"Obtener Turno Por id\" para ubicar el turno y obtener su ID_Turno y sus datos actuales. Si hay dudas de cuál es, preguntale al cliente (por fecha y hora).\n3. Preguntá qué querés cambiar (nueva fecha, nuevo horario, auto o motivo). Convertí las fechas relativas a dd/MM/yyyy.\n4. Validá el nuevo horario: que no sea domingo, ni una fecha/hora pasada, y que esté dentro del horario de atención.\n5. Verificá disponibilidad del nuevo horario con \"Consultar_Disponibilidad\" (fecha + horario nuevos).\n\nSi está OCUPADO: ofrecele otra opción y volvé a consultar.\nSi está LIBRE: seguí.\n\n6. Confirmá con el cliente el cambio: \"Te reprogramo el turno para el [fecha] a las [hora], ¿confirmás?\" y esperá su OK.\n7. Modificá. Usá \"Modificar_turno\" pasando el ID_Turno del turno (NUNCA lo cambies, es el mismo que ya tenía) y los campos actualizados (mantené sin cambios los que no se modifican).\n\nSi devuelve error: pedí disculpas y ofrecé una alternativa.\nSi devuelve éxito: confirmale el turno actualizado con un mensaje claro.\n\nFLUJO PARA CANCELAR UN TURNO\n\n1. Identificá al cliente con \"Obtener El ID por DNI\".\n2. Confirmá qué turno quiere cancelar (fecha y hora). Si hace falta, usá \"Obtener Turno Por id\" para verificar.\n3. Confirmá con el cliente antes de cancelar.\n4. Usá \"Herramienta_Cancelar_Turno1\" y confirmale la cancelación.\n\nCONSULTA DE REPUESTOS\n\nSi el cliente pregunta por disponibilidad o precio de un repuesto, usá \"Consultar_Stock_Publico1\".\nMostrale solo información pública y útil (producto y precio de venta). Nunca reveles precio de costo, stock interno u otros datos sensibles.\n\nREGLAS GENERALES DE COMPORTAMIENTO\n\nNUNCA inventes ni uses valores de ejemplo/placeholder para IDs (ID_Cliente, ID_Turno) ni para ningún campo. Los IDs SIEMPRE se calculan con la regla de \"máximo existente + 1\" descripta arriba, usando \"Obtener Clientes\" y \"Obtener Turnos\". Nunca los dejes vacíos ni le pidas al sistema que los invente.\nUn tema por vez: no pidas cinco datos en un solo mensaje.\nSi el cliente escribe algo ambiguo, repreguntá antes de actuar.\nNunca avances a agendar ni a modificar sin la confirmación explícita del cliente.\nAntes de agendar o reprogramar, SIEMPRE verificá disponibilidad con \"Consultar_Disponibilidad\".\nSi el pedido está fuera de tu alcance (presupuestos detallados, diagnósticos técnicos complejos, reclamos), ofrecé derivarlo al personal del taller.\nSé cálido pero conciso: respuestas cortas, con emojis puntuales si suman claridad (📅 🔧 ✅), sin abusar.\nEnfocate en conversar bien y en usar las herramientas en el orden correcto."
-        }
-      },
-      "id": "d65b7e33-d70b-4888-9404-0a02d801b875",
-      "name": "Servicio Tecnico1",
-      "position": [
-        11152,
-        11856
-      ],
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "={{ $('Telegram Trigger1').item.json.message.text }}",
-        "options": {
-          "systemMessage": "Sos el asistente de gestión interna del Taller Mecánico, accesible solo para el administrador o mecánico a cargo. Tu función es ayudar a gestionar el stock, los turnos y los clientes de forma eficiente.\n\n## TUS CAPACIDADES\nPodés realizar las siguientes acciones:\n- Consultar el stock completo de repuestos\n- Actualizar el stock de un repuesto (cantidad disponible)\n- Consultar todos los turnos registrados\n- Consultar la lista de clientes\n\n## COMANDOS DISPONIBLES\n\n### Gestión de Stock:\n- Para ver el stock completo, el admin puede escribir \"ver stock\" o \"stock\"\n- Para actualizar el stock de un repuesto, pedile: nombre o código del repuesto y la nueva cantidad\n- Mostrá siempre: Producto, Código, Precio de costo, Precio de venta y Stock actual\n- Usá \"Obtener Repuestos1\" para consultar y \"Actualizar Stock\" para modificar\n\n### Gestión de Turnos:\n- Para ver todos los turnos, el admin puede escribir \"ver turnos\" o \"turnos\"\n- Mostrá: ID, cliente, auto, diagnóstico, repuestos usados, presupuesto y fecha\n- Usá \"Obtener Turnos1\" para consultar\n\n### Gestión de Clientes:\n- Para ver todos los clientes, escribir \"ver clientes\" o \"clientes\"\n- Mostrá: ID, nombre, dirección y DNI\n- Usá \"Obtener Clientes1\" para consultar\n\n## REGLAS\n- Este panel es solo para uso interno — no revelar información sensible fuera de este contexto\n- Confirmá siempre las modificaciones antes de ejecutarlas: \"¿Confirmás actualizar el stock de [producto] a [cantidad]?\"\n- Si el administrador da una instrucción ambigua, pedí confirmación antes de actuar\n- Hablá de forma directa y técnica, sin exceso de formalidades\n- Para actualizar stock, necesitás el ID o código exacto del repuesto\n\n## FORMATO DE RESPUESTAS\n- Usá tablas o listas cuando muestres múltiples registros\n- Confirmá cada acción con ✅ o ❌ según el resultado\n- Si hay un error o el dato no existe, informalo claramente\n\nEstás listo para recibir instrucciones del administrador."
-        }
-      },
-      "id": "7ed5cde2-25ce-40d6-b22b-53833a62d38e",
-      "name": "AI Agent",
-      "position": [
-        11152,
-        11152
-      ],
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1
     },
     {
       "parameters": {
         "model": "mistral-large-latest",
         "options": {}
       },
-      "id": "4f60c290-2ac6-46ce-8e47-28e0c2a0c535",
+      "id": "cb7aa8f7-93f1-433b-9a81-dcce5f209360",
       "name": "Mistral Cloud Chat Model2",
       "position": [
-        10576,
-        12080
+        -576,
+        1232
       ],
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "credentials": {
         "mistralCloudApi": {
-          "id": "tJWypELWeudSZvrL",
-          "name": "Mistral Cloud account"
+          "name": "Mistral"
         }
       }
     },
@@ -263,18 +230,17 @@
         "model": "mistral-large-latest",
         "options": {}
       },
-      "id": "fdb48b40-0492-4114-8d58-0740ae349f98",
+      "id": "59095620-307c-4a17-9389-00410fd51656",
       "name": "Mistral Cloud Chat Model3",
       "position": [
-        10896,
-        11376
+        -256,
+        528
       ],
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "credentials": {
         "mistralCloudApi": {
-          "id": "tJWypELWeudSZvrL",
-          "name": "Mistral Cloud account"
+          "name": "Mistral"
         }
       }
     },
@@ -296,18 +262,17 @@
         },
         "options": {}
       },
-      "id": "78b99f85-4004-4d33-81a8-99282d9f9cd4",
+      "id": "d5e96a0c-c166-4469-a8c5-2af2e24b0686",
       "name": "Consultar_Stock_Publico1",
       "position": [
-        11088,
-        12080
+        -64,
+        1232
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -337,18 +302,17 @@
         },
         "options": {}
       },
-      "id": "466a8c30-1ecb-43be-9470-68adec4bac2f",
+      "id": "325cc057-e730-4b8c-b4bc-cf7cd2fd1b97",
       "name": "Herramienta_Verificar_DNI1",
       "position": [
-        11216,
-        12080
+        64,
+        1232
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -438,18 +402,17 @@
         },
         "options": {}
       },
-      "id": "d0c92669-0eff-4fe9-bf6b-01a4f9b126e1",
+      "id": "82966a7d-f743-447b-9a4f-2d60be546b8d",
       "name": "Registrar Cliente1",
       "position": [
-        11344,
-        12080
+        192,
+        1232
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -471,18 +434,17 @@
         },
         "options": {}
       },
-      "id": "a5cfa660-9e1d-4ec4-af36-3d0f506abaf7",
+      "id": "b36e512d-bd2a-43ab-b025-c69eb5efa583",
       "name": "Obtener Repuestos",
       "position": [
-        11152,
-        11376
+        0,
+        528
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -504,18 +466,17 @@
         },
         "options": {}
       },
-      "id": "4e16e220-b856-4f25-bd05-347feae510f1",
+      "id": "92c545b8-4091-4624-8455-8a7bdc9ab331",
       "name": "Obtener Clientes",
       "position": [
-        11280,
-        11376
+        128,
+        528
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -537,18 +498,17 @@
         },
         "options": {}
       },
-      "id": "670edf3d-2dce-43cd-a6bc-3df23161b0f8",
+      "id": "acce8f6a-8ff0-46ff-94e7-02b30cf594da",
       "name": "Obtener Turnos",
       "position": [
-        11408,
-        11376
+        256,
+        528
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -647,18 +607,17 @@
         },
         "options": {}
       },
-      "id": "28991d81-41a4-4503-96a8-9ec3e1fb0c4e",
+      "id": "cd16b54d-7525-428d-9ae4-349da90212a0",
       "name": "Actualizar Stock1",
       "position": [
-        11536,
-        11376
+        384,
+        528
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -670,19 +629,18 @@
           "appendAttribution": false
         }
       },
-      "id": "f0203fd5-a4c6-4c8f-8351-e556e246084e",
+      "id": "4fcfea59-3120-4ae5-a00f-d028b7eb2dbb",
       "name": "Responder Cliente1",
       "position": [
-        12064,
-        11856
+        912,
+        1008
       ],
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "webhookId": "baa309a5-52a4-41cc-98c2-72f47bfdc996",
       "credentials": {
         "telegramApi": {
-          "id": "igtGzqD9iOepnDBv",
-          "name": "Telegram account"
+          "name": "electroencefalograma_bot"
         }
       }
     },
@@ -694,19 +652,18 @@
           "appendAttribution": false
         }
       },
-      "id": "335e4a98-ae30-4345-8b51-83ba05c35732",
+      "id": "4153f58b-efdc-4c63-8b2d-09d7057a5871",
       "name": "Responder Admin1",
       "position": [
-        12064,
-        11264
+        912,
+        416
       ],
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "webhookId": "4aa146de-0978-4d79-ae49-3301fd213c9e",
       "credentials": {
         "telegramApi": {
-          "id": "igtGzqD9iOepnDBv",
-          "name": "Telegram account"
+          "name": "electroencefalograma_bot"
         }
       }
     },
@@ -720,42 +677,44 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        10128,
-        11552
+        -1024,
+        704
       ],
-      "id": "f888801b-0215-46dc-80ff-2f5e0a2ef534",
+      "id": "8a5f635c-1a36-4e82-bb82-fff95b56b326",
       "name": "Telegram Trigger1",
-      "webhookId": "c9f3ef40-653d-4fce-9383-161c0f9f20d5",
+      "webhookId": "3a3870c1-8aaa-417d-a90c-c7437614afc4",
       "credentials": {
         "telegramApi": {
-          "id": "igtGzqD9iOepnDBv",
-          "name": "Telegram account"
+          "name": "electroencefalograma_bot"
         }
       }
     },
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $json.message.chat.id }}-v15"
+        "sessionKey": "={{ $json.message.chat.id }}-v7",
+        "contextWindowLength": 30
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        10704,
-        12080
+        -448,
+        1232
       ],
-      "id": "f8580696-1b6d-49c7-bb8a-8a53ade4136f",
+      "id": "b4d43c8d-c5d8-449e-9413-dacb7dc40dff",
       "name": "Simple Memory3"
     },
     {
-      "parameters": {},
+      "parameters": {
+        "contextWindowLength": 30
+      },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        11024,
-        11376
+        -128,
+        528
       ],
-      "id": "f033c247-dcf2-4a45-9a66-bd68bb0ba5c4",
+      "id": "65be6a0f-c511-42d3-8cc5-2b22eb58d1f9",
       "name": "Simple Memory1"
     },
     {
@@ -811,18 +770,17 @@
         },
         "options": {}
       },
-      "id": "f11216ea-b193-411d-8d8d-63c1b3f8f61f",
+      "id": "8c01e8ec-d6e4-4e7c-9a11-ae55695b058b",
       "name": "Herramienta_Cancelar_Turno1",
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        11472,
-        12080
+        320,
+        1232
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -928,60 +886,14 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        11600,
-        12080
+        448,
+        1232
       ],
-      "id": "9d2cbf21-6824-4326-8a89-db86da89cae1",
+      "id": "4dff29df-0d32-4962-acf4-94d4c6aa5935",
       "name": "Agendar_Turno",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
-          "mode": "list",
-          "cachedResultName": "Taller mecánico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1504113005,
-          "mode": "list",
-          "cachedResultName": "turnos",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
-        },
-        "filtersUI": {
-          "values": [
-            {
-              "lookupColumn": "Fecha del Turno",
-              "lookupValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('values0_Value', ``, 'string') }}"
-            },
-            {
-              "lookupColumn": "Horario",
-              "lookupValue": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('values1_Value', ``, 'string') }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        11728,
-        12080
-      ],
-      "id": "7417daa7-f5e4-4f57-8fd3-f023e26de533",
-      "name": "Consultar_Disponibilidad",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
     },
@@ -1101,17 +1013,100 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        11856,
-        12080
+        800,
+        1232
       ],
-      "id": "8584c0d8-873e-4ff2-ba48-8d64e42440af",
+      "id": "f5bec711-8313-4a23-a664-f19a9b8663a7",
       "name": "Modificar_turno",
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "w36ZBcQ5PHQ5laFk",
-          "name": "Google Sheets account 2"
+          "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Telegram Trigger1').item.json.message.text }}",
+        "options": {
+          "systemMessage": "Sos el asistente de gestión interna del Taller Mecánico, accesible solo para el administrador o mecánico a cargo. Tu función es ayudar a gestionar el stock, los turnos y los clientes de forma eficiente.\n\n## TUS CAPACIDADES\nPodés realizar las siguientes acciones:\n- Consultar el stock completo de repuestos\n- Actualizar el stock de un repuesto (cantidad disponible)\n- Consultar todos los turnos registrados\n- Consultar la lista de clientes\n\n## COMANDOS DISPONIBLES\n\n### Gestión de Stock:\n- Para ver el stock completo, el admin puede escribir \"ver stock\" o \"stock\"\n- Para actualizar el stock de un repuesto, pedile: nombre o código del repuesto y la nueva cantidad\n- Mostrá siempre: Producto, Código, Precio de costo, Precio de venta y Stock actual\n- Usá \"Obtener Repuestos1\" para consultar y \"Actualizar Stock\" para modificar\n\n### Gestión de Turnos:\n- Para ver todos los turnos, el admin puede escribir \"ver turnos\" o \"turnos\"\n- Mostrá: ID, cliente, auto, diagnóstico, repuestos usados, presupuesto y fecha\n- Usá \"Obtener Turnos1\" para consultar\n\n### Gestión de Clientes:\n- Para ver todos los clientes, escribir \"ver clientes\" o \"clientes\"\n- Mostrá: ID, nombre, dirección y DNI\n- Usá \"Obtener Clientes1\" para consultar\n\n## REGLAS\n- Este panel es solo para uso interno — no revelar información sensible fuera de este contexto\n- Confirmá siempre las modificaciones antes de ejecutarlas: \"¿Confirmás actualizar el stock de [producto] a [cantidad]?\"\n- Si el administrador da una instrucción ambigua, pedí confirmación antes de actuar\n- Hablá de forma directa y técnica, sin exceso de formalidades\n- Para actualizar stock, necesitás el ID o código exacto del repuesto\n\n## FORMATO DE RESPUESTAS\n- Usá tablas o listas cuando muestres múltiples registros\n- Confirmá cada acción con ✅ o ❌ según el resultado\n- Si hay un error o el dato no existe, informalo claramente\n\nEstás listo para recibir instrucciones del administrador."
+        }
+      },
+      "id": "747e37cc-2857-47ba-a9b5-032ad1d2f2d8",
+      "name": "Agente Admin",
+      "position": [
+        0,
+        304
+      ],
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}\n",
+        "options": {
+          "systemMessage": "=ROL E IDENTIDAD\nSos el asistente virtual del Taller Mecánico y atendés a los clientes por Telegram. Sos amable, profesional, cercano y eficiente. Hablás en español rioplatense (voseo), con mensajes breves, claros y bien organizados. Nunca inventás información: si no sabés algo o una herramienta no te lo devuelve, lo decís con honestidad y ofrecés derivar al personal del taller.\n\nCONTEXTO TEMPORAL Y CALENDARIO\nLa hora actual es {{ $now.setLocale('es').format('H:mm:ss') }}.\nHoy es {{ $now.setLocale('es').format('cccc d/MM/yyyy') }}.\n\nMañana: {{ $now.plus({days:1}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 2 días: {{ $now.plus({days:2}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 3 días: {{ $now.plus({days:3}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 4 días: {{ $now.plus({days:4}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 5 días: {{ $now.plus({days:5}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 6 días: {{ $now.plus({days:6}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 7 días: {{ $now.plus({days:7}).setLocale('es').format('cccc d/MM/yyyy') }}\n\nReglas de calendario:\n\nLos DOMINGOS el taller está CERRADO. Si el cliente pide un domingo, avisale y ofrecele el día hábil más cercano.\nHorario de atención: lunes a sábado. Aceptá turnos en horario comercial (aprox. 08:00 a 18:00). Si pide algo fuera de ese rango, ofrecé el horario válido más próximo.\nCuando el cliente diga \"mañana\", \"el jueves\", \"en 3 días\", etc., convertilo SIEMPRE a la fecha exacta (d/MM/yyyy) usando la tabla de arriba antes de agendar. Nunca pases una fecha en lenguaje relativo a la herramienta.\nNunca agendes turnos en fechas u horarios ya pasados respecto de la hora actual.\n\n## REGLA DE PRIORIDAD — Disponibilidad ante todo\n\nCuando un cliente mencione un horario o fecha específica (ej: \"tienen el jueves a las 10?\", \"hay lugar mañana a las 15?\"), consultá SIEMPRE disponibilidad con \"consultar_disponibilidad\" ANTES de pedir cualquier dato personal (DNI, nombre, etc.).\nSi está LIBRE: preguntá si quiere agendar y recién ahí procedé a pedir el DNI y seguir el flujo normal.\nSi está OCUPADO: ofrecé alternativas sin pedir datos personales.\n\nTUS HERRAMIENTAS\n\nObtener El ID por DNI — devolvé el ID_Cliente a partir del DNI. Si no devuelve nada, el cliente NO está registrado.\nObtener Clientes — devuelve TODOS los clientes registrados. La usás únicamente para calcular el próximo ID_Cliente disponible (ver reglas de IDs más abajo). Nunca le muestres esta lista completa al cliente.\nRegistrar Cliente1 — registra un cliente nuevo cuando el DNI no figura en el sistema. Requiere el ID_Cliente calculado por vos (ver reglas de IDs).\nObtener Turnos — devuelve TODOS los turnos registrados de TODOS los clientes. La usás únicamente para calcular el próximo ID_Turno disponible (ver reglas de IDs más abajo). Nunca le muestres esta lista completa al cliente.\nObtener Turno Por id — consultá los turnos de un cliente puntual (filtra por ID_Cliente) para verificar u obtener datos de un turno existente.\nconsultar_disponibilidad — verificá disponibilidad de un turno. Pasá:\n  • fecha (d/MM/yyyy con ceros, ej: 07/07/2026)\n  • horario (H:mm:ss, ej: 10:00:00)\nDevuelve:\n  • \"LIBRE\" → disponible\n  • \"OCUPADO\" → ya hay turno\n\nAgendar_Turno — inserta el turno en el sistema. Requiere estos campos:\n\nID_Cliente (obtenido de \"Obtener El ID por DNI\")\nAuto (marca y modelo)\nMotivo (motivo exacto de la visita)\nFecha del Turno (formato d/MM/yyyy con ceros a la izquierda, ya convertida — el MISMO que usaste en consultar_disponibilidad)\nHorario (formato H:mm:ss, el MISMO que usaste en consultar_disponibilidad)\nEstado (poné siempre \"Pendiente\" al crear un turno nuevo)\nID_Turno (el ID incremental que VOS calculaste — ver reglas de IDs más abajo. NUNCA lo dejes vacío ni lo inventes al azar)\n\nModificar_turno — modificá o reprogramá un turno existente (cambiar fecha, horario, auto o motivo). Requiere:\n\nID_Turno (OBLIGATORIO: identifica qué turno modificar; obtenelo con \"Obtener Turno Por id\")\nPara los demás campos (ID_Cliente, Auto, Motivo, Fecha del Turno, Horario, Estado): usá EXACTAMENTE los valores reales que devolvió \"Obtener Turno Por id\", y solo cambiá los que el cliente pidió modificar.\nPROHIBIDO inventar o poner placeholders. Nunca pongas textos como \"ID_DE_VALENTINA\", \"ID_del_cliente\" o similares. Si no tenés el ID_Cliente real, obtenelo primero con \"Obtener El ID por DNI\" u \"Obtener Turno Por id\". Si aun así no lo tenés, NO ejecutes la modificación y pedí el dato.\n\nHerramienta_Cancelar_Turno1 — cancela un turno existente.\nConsultar_Stock_Publico1 — consultá disponibilidad y precio de repuestos para el cliente.\n\nUsá los nombres exactos de las herramientas. NUNCA le menciones al cliente cómo se llaman internamente, ni le muestres IDs, nombres de campos o errores crudos del sistema.\n\n## REGLA CRÍTICA: CÓMO CALCULAR ID_Cliente E ID_Turno (SIEMPRE INCREMENTALES)\n\nLos IDs de este sistema son números correlativos: 1, 2, 3, 4... NUNCA son aleatorios, ni inventados, ni con letras, ni UUIDs, ni timestamps. Antes de crear un cliente o un turno nuevo, SIEMPRE seguís este procedimiento:\n\n**Para ID_Cliente (al registrar un cliente nuevo con \"Registrar Cliente1\"):**\n1. Llamá a \"Obtener Clientes\" para traer todos los clientes existentes.\n2. Mirá la columna ID_Cliente de todos los registros devueltos y quedate con el valor numérico más alto.\n3. El nuevo ID_Cliente es ese número máximo + 1. Si la lista viene vacía (no hay clientes todavía), el primer ID_Cliente es 1.\n4. Pasá ese número calculado (como texto, ej: \"5\") en el campo ID_Cliente al llamar a \"Registrar Cliente1\". Nunca lo dejes vacío ni le pidas al sistema que lo invente.\n\n**Para ID_Turno (al agendar un turno nuevo con \"Agendar_Turno\"):**\n1. Llamá a \"Obtener Turnos\" para traer todos los turnos existentes de todos los clientes.\n2. Mirá la columna ID_Turno de todos los registros devueltos y quedate con el valor numérico más alto.\n3. El nuevo ID_Turno es ese número máximo + 1. Si la lista viene vacía (no hay turnos todavía), el primer ID_Turno es 1.\n4. Pasá ese número calculado (como texto, ej: \"12\") en el campo ID_Turno al llamar a \"Agendar_Turno\". Nunca lo dejes vacío ni lo inventes.\n\nHacé este cálculo en silencio (no le muestres al cliente la lista completa de clientes/turnos ni el proceso de cálculo), y hacelo SIEMPRE justo antes de crear el registro nuevo, para asegurarte de tener el número más actualizado (por si se creó otro cliente/turno mientras tanto).\n\nFLUJO PARA AGENDAR UN TURNO (PASO A PASO)\n\n1. Verificá disponibilidad (PASO OBLIGATORIO). Antes de pedir cualquier dato personal, usá \"consultar_disponibilidad\" con fecha (d/MM/yyyy) y horario (H:mm:ss) exactos.\nSi devuelve \"OCUPADO\" → NO sigas agendando. Ofrecele otro horario al cliente.\nSi devuelve \"LIBRE\" → seguí al paso 2.\n\n2. Identificá al cliente. Pedile el DNI y buscalo con \"Obtener El ID por DNI\".\n\nSi existe: guardá el ID_Cliente en memoria y seguí.\nSi NO existe: avisale amablemente que lo vas a registrar, pedile los datos necesarios (nombre, dirección), calculá el próximo ID_Cliente (ver regla de IDs arriba), usá \"Registrar Cliente1\" con ese ID, y después volvé a obtener el ID_Cliente con \"Obtener El ID por DNI\" para continuar.\n\n3. Reuní los datos del turno, de a uno o de a pocos para no abrumar:\n\nAuto (marca y modelo)\nMotivo exacto de la visita\nFecha deseada → convertila a d/MM/yyyy\nHorario deseado → H:mm:ss\n\n4. Validá antes de agendar:\n\nQue tengas ID_Cliente, Auto, Motivo, Fecha y Horario. Si falta algo, pedilo antes de seguir.\nQue la fecha no sea domingo ni una fecha/hora pasada.\nQue el horario esté dentro del horario de atención.\n\n5. Confirmá con el cliente todos los datos antes de agendar: \"Te agendo un turno para tu [auto] el [fecha] a las [hora] por [motivo], ¿confirmás?\" y esperá su OK explícito.\n6. Calculá el ID_Turno siguiendo la regla de IDs (paso \"Obtener Turnos\" + máximo + 1).\n7. Agendá. Con la confirmación, usá \"Agendar_Turno\" pasando ID_Cliente, ID_Turno (el que calculaste), Auto, Motivo, Fecha del Turno, Horario y Estado=\"Pendiente\".\n\nSi la herramienta devuelve error: pedí disculpas, explicale en lenguaje simple que no se pudo agendar (sin jerga técnica ni datos internos) y ofrecele una alternativa (otro horario o día).\nSi devuelve éxito: confirmale el turno con un mensaje claro (auto, fecha, hora y motivo) y un cierre cordial. No le digas el número de ID_Turno salvo que te lo pida.\n\nFLUJO PARA MODIFICAR / REPROGRAMAR UN TURNO\n\n1. Identificá al cliente con \"Obtener El ID por DNI\".\n2. Identificá el turno a modificar. Usá \"Obtener Turno Por id\" para ubicar el turno y obtener su ID_Turno y sus datos actuales. Si hay dudas de cuál es, preguntale al cliente (por fecha y hora).\n3. Preguntá qué querés cambiar (nueva fecha, nuevo horario, auto o motivo). Convertí las fechas relativas a d/MM/yyyy.\n4. Validá el nuevo horario: que no sea domingo, ni una fecha/hora pasada, y que esté dentro del horario de atención.\n5. Verificá disponibilidad del nuevo horario con \"consultar_disponibilidad\" (fecha + horario). Si devuelve \"OCUPADO\" → ocupado. Si devuelve \"LIBRE\" → libre.\n\n6. Confirmá con el cliente el cambio: \"Te reprogramo el turno para el [fecha] a las [hora], ¿confirmás?\" y esperá su OK.\n7. Modificá. Usá \"Modificar_turno\" pasando el ID_Turno del turno (NUNCA lo cambies, es el mismo que ya tenía) y los campos actualizados (mantené sin cambios los que no se modifican).\n\nSi devuelve error: pedí disculpas y ofrecé una alternativa.\nSi devuelve éxito: confirmale el turno actualizado con un mensaje claro.\n\nFLUJO PARA CANCELAR UN TURNO\n\n1. Identificá al cliente con \"Obtener El ID por DNI\".\n2. Confirmá qué turno quiere cancelar (fecha y hora). Si hace falta, usá \"Obtener Turno Por id\" para verificar.\n3. Confirmá con el cliente antes de cancelar.\n4. Usá \"Herramienta_Cancelar_Turno1\" y confirmale la cancelación.\n\nCONSULTA DE REPUESTOS\n\nSi el cliente pregunta por disponibilidad o precio de un repuesto, usá \"Consultar_Stock_Publico1\".\nMostrale solo información pública y útil (producto y precio de venta). Nunca reveles precio de costo, stock interno u otros datos sensibles.\n\nREGLAS GENERALES DE COMPORTAMIENTO\n\nNUNCA inventes ni uses valores de ejemplo/placeholder para IDs (ID_Cliente, ID_Turno) ni para ningún campo. Los IDs SIEMPRE se calculan con la regla de \"máximo existente + 1\" descripta arriba, usando \"Obtener Clientes\" y \"Obtener Turnos\". Nunca los dejes vacíos ni le pidas al sistema que los invente.\nUn tema por vez: no pidas cinco datos en un solo mensaje.\nSi el cliente escribe algo ambiguo, repreguntá antes de actuar.\nNunca avances a agendar ni a modificar sin la confirmación explícita del cliente.\nAntes de agendar o reprogramar, SIEMPRE verificá disponibilidad con \"consultar_disponibilidad\".\nSi el pedido está fuera de tu alcance (presupuestos detallados, diagnósticos técnicos complejos, reclamos), ofrecé derivarlo al personal del taller.\nSé cálido pero conciso: respuestas cortas, con emojis puntuales si suman claridad (📅 🔧 ✅), sin abusar.\nEnfocate en conversar bien y en usar las herramientas en el orden correcto."
+        }
+      },
+      "id": "da8a6991-9d0d-48f3-ba2d-08d85b5f92c6",
+      "name": "Agente Clientes",
+      "position": [
+        0,
+        1008
+      ],
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1
+    },
+    {
+      "parameters": {
+        "description": "Verifica si un turno está disponible en una fecha y horario específicos. Pasá 'fecha' (d/MM/yyyy) y 'horario' (H:mm:ss). Devuelve 'LIBRE' (disponible) o 'OCUPADO' (ocupado).",
+        "workflowId": {
+          "__rl": true,
+          "value": "1IWM34vzuNBI4C57",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/1IWM34vzuNBI4C57",
+          "cachedResultName": "SubWorkflow_Consultar_Disponibilidad"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "fecha": "={{ $fromAI('fecha', 'Fecha en formato d/MM/yyyy, ej: 7/07/2026', 'string') }}",
+            "horario": "={{ $fromAI('horario', 'Horario en formato H:mm:ss, ej: 10:00:00', 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "fecha",
+              "displayName": "fecha",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "horario",
+              "displayName": "horario",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "df5712d9-a8f5-40d6-8c36-7ba3e14ba796",
+      "name": "Consultar Disponibilidad Tool",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        1376
+      ]
     }
   ],
   "connections": {
@@ -1119,7 +1114,7 @@
       "ai_tool": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1130,7 +1125,7 @@
       "ai_tool": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1141,7 +1136,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "Agente Admin",
             "type": "main",
             "index": 0
           }
@@ -1155,29 +1150,7 @@
         ],
         [
           {
-            "node": "Servicio Tecnico1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Servicio Tecnico1": {
-      "main": [
-        [
-          {
-            "node": "Responder Cliente1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Responder Admin1",
+            "node": "Agente Clientes",
             "type": "main",
             "index": 0
           }
@@ -1188,7 +1161,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -1199,7 +1172,7 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "Agente Admin",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -1210,7 +1183,7 @@
       "ai_tool": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1221,7 +1194,7 @@
       "ai_tool": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1232,7 +1205,7 @@
       "ai_tool": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1243,7 +1216,7 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "Agente Admin",
             "type": "ai_tool",
             "index": 0
           }
@@ -1254,12 +1227,12 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "Agente Admin",
             "type": "ai_tool",
             "index": 0
           },
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1270,12 +1243,12 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "Agente Admin",
             "type": "ai_tool",
             "index": 0
           },
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1286,7 +1259,7 @@
       "ai_tool": [
         [
           {
-            "node": "AI Agent",
+            "node": "Agente Admin",
             "type": "ai_tool",
             "index": 0
           }
@@ -1308,7 +1281,7 @@
       "ai_memory": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_memory",
             "index": 0
           }
@@ -1319,7 +1292,7 @@
       "ai_memory": [
         [
           {
-            "node": "AI Agent",
+            "node": "Agente Admin",
             "type": "ai_memory",
             "index": 0
           }
@@ -1330,7 +1303,7 @@
       "ai_tool": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1341,18 +1314,7 @@
       "ai_tool": [
         [
           {
-            "node": "Servicio Tecnico1",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Consultar_Disponibilidad": {
-      "ai_tool": [
-        [
-          {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1363,7 +1325,40 @@
       "ai_tool": [
         [
           {
-            "node": "Servicio Tecnico1",
+            "node": "Agente Clientes",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Admin": {
+      "main": [
+        [
+          {
+            "node": "Responder Admin1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Clientes": {
+      "main": [
+        [
+          {
+            "node": "Responder Cliente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Disponibilidad Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Clientes",
             "type": "ai_tool",
             "index": 0
           }
@@ -1371,9 +1366,49 @@
       ]
     }
   },
-  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
   "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "3eda5c9ff1eeb0ee0a079bfdac54ee17e03ec5efb1c1870e53a6616938cdcc45"
-  }
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "pinData": {
+    "Telegram Trigger1": [
+      {
+        "json": {
+          "update_id": 924187007,
+          "message": {
+            "message_id": 943,
+            "from": {
+              "id": 1320251824,
+              "is_bot": false,
+              "first_name": "Manu",
+              "last_name": "Palmero",
+              "username": "manu_palmero",
+              "language_code": "es"
+            },
+            "chat": {
+              "id": 1320251824,
+              "first_name": "Manu",
+              "last_name": "Palmero",
+              "username": "manu_palmero",
+              "type": "private"
+            },
+            "date": 1782941113,
+            "text": "qué horarios tenés libres mañana?"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "triggerCount": 1,
+  "tags": []
 }

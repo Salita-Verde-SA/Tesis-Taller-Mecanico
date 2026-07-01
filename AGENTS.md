@@ -1,12 +1,35 @@
-# 🤖 Arquitectura de Agentes AI (Taller Mecánico)
+# 🤖 Arquitectura de Agentes AI (Taller Mecánico) + Reglas del asistente
 
-Este documento detalla la arquitectura de los agentes inteligentes configurados en n8n para el Taller Mecánico, sus responsabilidades, configuración y herramientas conectadas a Google Sheets.
+## Rol del asistente
+
+Sos el asistente de desarrollo del Taller Mecánico. Tu responsabilidad es mantener el flujo de n8n y la documentación sincronizados.
+
+## Source of Truth — Flujo de n8n
+
+Los archivos JSON en este repositorio son la fuente de verdad definitiva del flujo de n8n:
+- `Taller Mecanico.json` — Workflow principal (20 nodos)
+- `SubWorkflow_Agendar_Turno.json` — Subworkflow de agendado de turnos
+
+## Documentación de referencia (tesis)
+
+La carpeta `docs/` contiene el informe de tesis. **No se modifica, no se reescribe, no se toca.** El archivo `docs/Tesis_Taller_Mecanico_V2.md` es la especificación funcional del sistema en formato Markdown legible para el agente. TODO el trabajo en el flujo de n8n debe alinearse con lo que describe ese documento.
+
+### Reglas de sincronización
+
+1. **No modificar docs/**: La carpeta `docs/` contiene el informe de tesis final. No se edita, no se mueve, no se toca bajo ningún concepto.
+2. **Alineación con la tesis**: Cualquier cambio en el flujo de n8n debe ser coherente con lo especificado en `docs/Tesis_Taller_Mecanico_V2.md`. Si un cambio se desvía de la tesis, requiere justificación explícita.
+3. **Importación (repo → n8n)**: Si el flujo en n8n está desactualizado respecto a los JSON del repo, importalos a n8n.
+4. **Exportación (n8n → repo)**: Si hacés cambios directamente en n8n (nodos, conexiones, config), exportá el workflow actualizado a su JSON correspondiente y commitealo.
+5. **Verificación**: Antes de considerar una tarea completa, verificá que los JSON del repo reflejen el estado real del flujo en n8n.
+6. **Credenciales vacías en JSON**: Todos los bloques `credentials` en los JSON del repo deben contener solo el `"name"` de la credencial, sin `"id"`. Ejemplo: `"credentials": {"telegramApi": {"name": "Telegram account"}}`. n8n matchea automáticamente por nombre al importar. Nunca incluir IDs, ya que cambian entre instancias o al recrear credenciales.
+
+---
 
 ## 🔀 Enrutamiento & Orquestación (Telegram)
 
 El flujo se dispara mediante un **Telegram Trigger**.
 Los mensajes entrantes pasan por un nodo **Switch**, el cual determina la ruta del mensaje:
-- Si el mensaje es exactamente `ADMIN`, se deriva al **Agente Administrador** (`AI Agent1`).
+- Si el mensaje es exactamente `ADMIN`, se deriva al **Agente Administrador** (`Agente Administrador`).
 - Si el mensaje es `/start`, se envía un **Mensaje de Bienvenida** estático.
 - Cualquier otro mensaje se deriva al **Agente de Clientes** (`Servicio Tecnico`).
 
@@ -36,7 +59,7 @@ Todas las herramientas se conectan al entorno de Google Sheets.
 
 ---
 
-## 🦸‍♂️ Agente: AI Agent1 (Asistente de Administración)
+## 🦸‍♂️ Agente: Agente Administrador (Asistente de Administración)
 
 **Rol**: Asistente de gestión interna del Taller Mecánico, accesible SOLO para el administrador o mecánico a cargo. Ayuda a gestionar el stock, los turnos y los clientes de forma rápida mediante comandos.
 **Modelo**: Mistral Cloud Chat Model

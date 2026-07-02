@@ -25,4 +25,5 @@ Set columns.matchingColumns to a non-empty string\[\] of header names that uniqu
 - [ ] No debe pasar el código al consultar el stock.
 - [ ] Antes de intentar agendar un turno, a la hora de preguntar, comprobar si tiene tres turnos, no puede tener más de tres turnos.
 - [ ] No formatear como markdown, ni "#", ni "---", ni otras cosas que puedan haber.
-- [ ] No debe responder a temas no relacionados al taller, ni aceptar bromas
+- [ ] No debe responder a temas no relacionados al taller, ni aceptar bromas.
+- [ ] El usuario no debe, bajo ninguna circunstancia, efectuar acciones que no le correspondan, como crear más de un usuario a la vez, borrar turnos de otras personas, romper el sistema para crear turnos superpuestos, etc. Y el agente debería rechazarlo por más justificación que el usuario dé.

@@ -2,14 +2,6 @@
   "name": "SubWorkflow_Consultar_Disponibilidad",
   "nodes": [
     {
-      "id": "trigger",
-      "name": "Execute Workflow Trigger",
-      "type": "n8n-nodes-base.executeWorkflowTrigger",
-      "typeVersion": 1.2,
-      "position": [
-        0,
-        304
-      ],
       "parameters": {
         "workflowInputs": {
           "values": [
@@ -21,17 +13,17 @@
             }
           ]
         }
-      }
+      },
+      "id": "trigger",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        304
+      ]
     },
     {
-      "id": "gs-read",
-      "name": "Consultar Disponibilidad",
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        304,
-        304
-      ],
       "parameters": {
         "documentId": {
           "__rl": true,
@@ -49,6 +41,14 @@
         },
         "options": {}
       },
+      "id": "gs-read",
+      "name": "Consultar Disponibilidad",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        304,
+        304
+      ],
       "credentials": {
         "googleSheetsOAuth2Api": {
           "name": "Google Sheets account"
@@ -56,6 +56,9 @@
       }
     },
     {
+      "parameters": {
+        "jsCode": "const { fecha, horario } = $('Execute Workflow Trigger').first().json;\nconst rows = $input.all();\nconst match = rows.find(r => r.json['Fecha del Turno'] === fecha && r.json['Horario'] === horario && r.json['Estado'] !== 'Cancelado');\nif (match) {\n  return [{ json: { result: 'OCUPADO', disponibilidad: false } }];\n}\nreturn [{ json: { result: 'LIBRE', disponibilidad: true } }];"
+      },
       "id": "code-result",
       "name": "Formatear Resultado",
       "type": "n8n-nodes-base.code",
@@ -63,10 +66,7 @@
       "position": [
         608,
         304
-      ],
-      "parameters": {
-        "jsCode": "const { fecha, horario } = $('Execute Workflow Trigger').first().json;\nconst rows = $input.all();\nconst match = rows.find(r => r.json['Fecha del Turno'] === fecha && r.json['Horario'] === horario && r.json['Estado'] !== 'Cancelado');\nif (match) {\n  return [{ json: { result: 'OCUPADO', disponibilidad: false } }];\n}\nreturn [{ json: { result: 'LIBRE', disponibilidad: true } }];"
-      }
+      ]
     }
   ],
   "connections": {
@@ -103,5 +103,6 @@
     "availableInMCP": false,
     "binaryMode": "separate"
   },
+  "staticData": null,
   "tags": []
 }

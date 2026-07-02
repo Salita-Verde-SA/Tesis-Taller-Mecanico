@@ -30,8 +30,8 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        -208,
-        1264
+        16,
+        1072
       ],
       "id": "25d5a53d-36cd-49f0-9d10-0a5ed58c12a1",
       "name": "Obtener Turno Por id",
@@ -70,8 +70,8 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        -80,
-        1264
+        144,
+        1072
       ],
       "id": "076092cb-1d18-4dd7-9baa-ea0a833e3867",
       "name": "Obtener El ID por DNI",
@@ -175,7 +175,7 @@
       "name": "Switch1",
       "position": [
         -688,
-        720
+        624
       ],
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4
@@ -191,8 +191,8 @@
       "id": "052ea406-4767-4565-b281-3011eb2cdc92",
       "name": "Mensaje Bienvenida1",
       "position": [
-        176,
-        736
+        -464,
+        640
       ],
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
@@ -211,8 +211,8 @@
       "id": "cb7aa8f7-93f1-433b-9a81-dcce5f209360",
       "name": "Mistral Cloud Chat Model2",
       "position": [
-        -464,
-        1264
+        -240,
+        1072
       ],
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
@@ -230,7 +230,7 @@
       "id": "59095620-307c-4a17-9389-00410fd51656",
       "name": "Mistral Cloud Chat Model3",
       "position": [
-        -144,
+        80,
         560
       ],
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
@@ -262,8 +262,8 @@
       "id": "d5e96a0c-c166-4469-a8c5-2af2e24b0686",
       "name": "Consultar_Stock_Publico1",
       "position": [
-        48,
-        1264
+        272,
+        1072
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
@@ -302,8 +302,8 @@
       "id": "325cc057-e730-4b8c-b4bc-cf7cd2fd1b97",
       "name": "Herramienta_Verificar_DNI1",
       "position": [
-        176,
-        1264
+        400,
+        1072
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
@@ -402,8 +402,8 @@
       "id": "82966a7d-f743-447b-9a4f-2d60be546b8d",
       "name": "Registrar Cliente1",
       "position": [
-        304,
-        1264
+        528,
+        1072
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
@@ -434,7 +434,7 @@
       "id": "b36e512d-bd2a-43ab-b025-c69eb5efa583",
       "name": "Obtener Repuestos",
       "position": [
-        112,
+        336,
         560
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
@@ -466,7 +466,7 @@
       "id": "92c545b8-4091-4624-8455-8a7bdc9ab331",
       "name": "Obtener Clientes",
       "position": [
-        240,
+        464,
         560
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
@@ -498,7 +498,7 @@
       "id": "acce8f6a-8ff0-46ff-94e7-02b30cf594da",
       "name": "Obtener Turnos",
       "position": [
-        368,
+        592,
         560
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
@@ -607,7 +607,7 @@
       "id": "cd16b54d-7525-428d-9ae4-349da90212a0",
       "name": "Actualizar Stock1",
       "position": [
-        496,
+        720,
         560
       ],
       "type": "n8n-nodes-base.googleSheetsTool",
@@ -629,8 +629,8 @@
       "id": "4fcfea59-3120-4ae5-a00f-d028b7eb2dbb",
       "name": "Responder Cliente1",
       "position": [
-        1024,
-        1040
+        1248,
+        848
       ],
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
@@ -652,7 +652,7 @@
       "id": "4153f58b-efdc-4c63-8b2d-09d7057a5871",
       "name": "Responder Admin1",
       "position": [
-        1024,
+        1248,
         448
       ],
       "type": "n8n-nodes-base.telegram",
@@ -675,7 +675,7 @@
       "typeVersion": 1.2,
       "position": [
         -1136,
-        736
+        640
       ],
       "id": "8a5f635c-1a36-4e82-bb82-fff95b56b326",
       "name": "Telegram Trigger1",
@@ -695,8 +695,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -336,
-        1264
+        -112,
+        1072
       ],
       "id": "b4d43c8d-c5d8-449e-9413-dacb7dc40dff",
       "name": "Simple Memory3"
@@ -710,7 +710,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -16,
+        208,
         560
       ],
       "id": "65be6a0f-c511-42d3-8cc5-2b22eb58d1f9",
@@ -774,8 +774,8 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        432,
-        1264
+        656,
+        1072
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -885,8 +885,8 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        560,
-        1264
+        784,
+        1072
       ],
       "id": "4dff29df-0d32-4962-acf4-94d4c6aa5935",
       "name": "Agendar_Turno",
@@ -1012,8 +1012,8 @@
       "type": "n8n-nodes-base.googleSheetsTool",
       "typeVersion": 4.7,
       "position": [
-        688,
-        1264
+        912,
+        1072
       ],
       "id": "f5bec711-8313-4a23-a664-f19a9b8663a7",
       "name": "Modificar_turno",
@@ -1028,13 +1028,13 @@
         "promptType": "define",
         "text": "={{ $('Telegram Trigger1').item.json.message.text }}",
         "options": {
-          "systemMessage": "Sos el asistente de gestion interna del Taller Mecanico, accesible solo para el administrador o mecanico a cargo. Tu funcion es ayudar a gestionar el stock, los turnos y los clientes de forma eficiente.\n\n## TUS CAPACIDADES\n- Consultar el stock completo de repuestos\n- Actualizar el stock de un repuesto (cantidad disponible)\n- Consultar todos los turnos registrados\n- Consultar la lista de clientes\n\n## COMANDOS DISPONIBLES\n\n### Gestion de Stock:\n- Para ver el stock, el admin puede pedir 'ver stock'\n- Para actualizar el stock: pedi el nombre o codigo del repuesto y la nueva cantidad\n- Mostra: Producto, Codigo, Precio de costo, Precio de venta y Stock actual\n- Usa 'Obtener Repuestos' para consultar y 'Actualizar Stock1' para modificar\n\n### Gestion de Turnos:\n- Para ver turnos, el admin puede pedir 'ver turnos'\n- Mostra: ID_Turno, ID_Cliente, Auto, Motivo, Fecha, Horario y Estado\n- Usa 'Obtener Turnos' para consultar\n\n### Gestion de Clientes:\n- Para ver clientes, el admin puede pedir 'ver clientes'\n- Mostra: ID_Cliente, Nombre, DNI, Direccion y Telefono\n- Usa 'Obtener Clientes' para consultar\n\n## REGLAS\n- Panel solo para uso interno. No reveles info sensible.\n- Confirma siempre las modificaciones antes de ejecutarlas.\n- Si la instruccion es ambigua, pedi confirmacion.\n- Habla directo y tecnico, sin formalidades.\n- Para actualizar stock, usa el codigo exacto del repuesto.\n\n## FORMATO DE RESPUESTAS (Telegram)\n- NO USES TABLAS MARKDOWN. Telegram no las renderiza bien.\n- Usa listas con guiones (-) o numeros (1., 2.).\n- Datos en lineas separadas, no en columnas.\n- Ejemplo correcto:\n  Producto: Filtro de aceite\n  Codigo: FIL-001\n  Precio: $2500\n  Stock: 15 unidades\n- Confirmaciones: usa [OK] o [ERROR] segun el resultado.\n- Si hay error o el dato no existe, informalo claro.\n\nEstas listo para recibir instrucciones del administrador."
+          "systemMessage": "=Sos el asistente de gestion interna del Taller Mecanico, accesible solo para el administrador o mecanico a cargo. Tu funcion es ayudar a gestionar el stock, los turnos y los clientes de forma eficiente.\n\n## CONTEXTO TEMPORAL Y CALENDARIO\nLa hora actual es {{ $now.setLocale('es').format('H:mm:ss') }}.\nHoy es {{ $now.setLocale('es').format('cccc d/MM/yyyy') }}.\n\nMañana: {{ $now.plus({days:1}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 2 días: {{ $now.plus({days:2}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 3 días: {{ $now.plus({days:3}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 4 días: {{ $now.plus({days:4}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 5 días: {{ $now.plus({days:5}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 6 días: {{ $now.plus({days:6}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 7 días: {{ $now.plus({days:7}).setLocale('es').format('cccc d/MM/yyyy') }}\n\n\n## TUS CAPACIDADES\n- Consultar el stock completo de repuestos\n- Actualizar el stock de un repuesto (cantidad disponible)\n- Consultar todos los turnos registrados\n- Consultar la lista de clientes\n\n## COMANDOS DISPONIBLES\n\n### Gestion de Stock:\n- Para ver el stock, el admin puede pedir 'ver stock'\n- Para actualizar el stock: pedi el nombre o codigo del repuesto y la nueva cantidad\n- Mostra: Producto, Codigo, Precio de costo, Precio de venta y Stock actual\n- Usa 'Obtener Repuestos' para consultar y 'Actualizar Stock1' para modificar\n\n### Gestion de Turnos:\n- Para ver turnos, el admin puede pedir 'ver turnos'\n- Mostra: ID_Turno, ID_Cliente, Auto, Motivo, Fecha, Horario y Estado\n- Usa 'Obtener Turnos' para consultar\n\n### Gestion de Clientes:\n- Para ver clientes, el admin puede pedir 'ver clientes'\n- Mostra: ID_Cliente, Nombre, DNI, Direccion y Telefono\n- Usa 'Obtener Clientes' para consultar\n\n## REGLAS\n- Panel solo para uso interno. No reveles info sensible.\n- Confirma siempre las modificaciones antes de ejecutarlas.\n- Si la instruccion es ambigua, pedi confirmacion.\n- Habla directo y tecnico, sin formalidades.\n- Para actualizar stock, usa el codigo exacto del repuesto.\n\n## FORMATO DE RESPUESTAS (Telegram)\n- NO USES TABLAS MARKDOWN. Telegram no las renderiza bien.\n- NO uses separadores de secciones de markdown como el \"---\".\n- Usa listas con guiones (-) o numeros (1., 2.).\n- Datos en lineas separadas, no en columnas.\n- Ejemplo correcto:\n  Producto: Filtro de aceite\n  Codigo: FIL-001\n  Precio: $2500\n  Stock: 15 unidades\n- Confirmaciones: usa [OK] o [ERROR] segun el resultado.\n- Si hay error o el dato no existe, informalo claro.\n\nEstas listo para recibir instrucciones del administrador."
         }
       },
       "id": "747e37cc-2857-47ba-a9b5-032ad1d2f2d8",
       "name": "Agente Admin",
       "position": [
-        112,
+        336,
         336
       ],
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -1051,8 +1051,8 @@
       "id": "da8a6991-9d0d-48f3-ba2d-08d85b5f92c6",
       "name": "Agente Clientes",
       "position": [
-        112,
-        1040
+        336,
+        848
       ],
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1
@@ -1103,8 +1103,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        816,
-        1264
+        1040,
+        1072
       ]
     },
     {
@@ -1117,52 +1117,48 @@
       "typeVersion": 2,
       "position": [
         -912,
-        736
+        640
       ]
     },
     {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}"
+      },
       "id": "0c0bbca8-ab2e-4b8c-9c02-70c753db42b9",
       "name": "Typing Admin",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -400,
-        640
+        -464,
+        448
       ],
-      "parameters": {
-        "resource": "message",
-        "operation": "sendChatAction",
-        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
-        "action": "typing"
-      },
+      "webhookId": "b5fce7b2-3b31-443f-ad08-83081be16713",
       "credentials": {
         "telegramApi": {
           "name": "electroencefalograma_bot"
         }
-      },
-      "webhookId": "b5fce7b2-3b31-443f-ad08-83081be16713"
+      }
     },
     {
+      "parameters": {
+        "operation": "sendChatAction",
+        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}"
+      },
       "id": "4479c618-942e-4384-8b56-bfc2fce6ce4a",
       "name": "Typing Cliente",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -400,
-        1040
+        -464,
+        848
       ],
-      "parameters": {
-        "resource": "message",
-        "operation": "sendChatAction",
-        "chatId": "={{ $('Telegram Trigger1').item.json.message.chat.id }}",
-        "action": "typing"
-      },
+      "webhookId": "f939c8dd-22a4-462a-b899-11d38b86d03b",
       "credentials": {
         "telegramApi": {
           "name": "electroencefalograma_bot"
         }
-      },
-      "webhookId": "f939c8dd-22a4-462a-b899-11d38b86d03b"
+      }
     }
   ],
   "connections": {
@@ -1461,42 +1457,6 @@
     "availableInMCP": false,
     "callerPolicy": "workflowsFromSameOwner"
   },
-  "tags": [],
   "staticData": null,
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
-  "nodeGroups": [],
-  "pinData": {
-    "Telegram Trigger1": [
-      {
-        "json": {
-          "update_id": 924187007,
-          "message": {
-            "message_id": 943,
-            "from": {
-              "id": 1320251824,
-              "is_bot": false,
-              "first_name": "Manu",
-              "last_name": "Palmero",
-              "username": "manu_palmero",
-              "language_code": "es"
-            },
-            "chat": {
-              "id": 1320251824,
-              "first_name": "Manu",
-              "last_name": "Palmero",
-              "username": "manu_palmero",
-              "type": "private"
-            },
-            "date": 1782941113,
-            "text": "/start"
-          }
-        }
-      }
-    ]
-  },
-  "versionId": "5a7e5fe6-72d7-45ef-8348-d51add9e8ef7",
-  "versionCounter": 218,
-  "sourceWorkflowId": null
+  "tags": []
 }

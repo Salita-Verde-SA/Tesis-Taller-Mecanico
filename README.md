@@ -21,10 +21,10 @@ Set columns.matchingColumns to a non-empty string\[\] of header names that uniqu
 
 #### Cliente
 
-- [ ] Cuando hace una recomendación de fecha al estar ocupada la que se solicita, que también compruebe la disponibilidad antes de recomendar, actualmente no lo hace y recomienda fechas y horarios que pueden estar ocupados.
-- [ ] Elaborar mejor el mensaje de turno confirmado, está usando la dirección del cliente como dirección del taller al intentar decir "te esperamos en...".
-- [ ] No debe pasar el código al consultar el stock.
-- [ ] Antes de intentar agendar un turno, a la hora de preguntar, comprobar si tiene tres turnos, no puede tener más de tres turnos.
-- [ ] No formatear como markdown, ni "#", ni "---", ni otras cosas que puedan haber.
-- [ ] No debe responder a temas no relacionados al taller, ni aceptar bromas.
-- [ ] El usuario no debe, bajo ninguna circunstancia, efectuar acciones que no le correspondan, como crear más de un usuario a la vez, borrar turnos de otras personas, romper el sistema para crear turnos superpuestos, etc. Y el agente debería rechazarlo por más justificación que el usuario dé.
+- [x] Cuando hace una recomendación de fecha al estar ocupada la que se solicita, que también compruebe la disponibilidad antes de recomendar (reemplazado por: no recomendar ninguna fecha/hora, que el cliente proponga).
+- [x] Elaborar mejor el mensaje de turno confirmado, está usando la dirección del cliente como dirección del taller al intentar decir "te esperamos en...".
+- [x] No debe pasar el código al consultar el stock.
+- [x] Antes de intentar agendar un turno, a la hora de preguntar, comprobar si tiene tres turnos, no puede tener más de tres turnos.
+- [x] No formatear como markdown, ni "#", ni "---", ni otras cosas que puedan haber.
+- [x] No debe responder a temas no relacionados al taller, ni aceptar bromas.
+- [x] El usuario no debe, bajo ninguna circunstancia, efectuar acciones que no le correspondan, como crear más de un usuario a la vez, borrar turnos de otras personas, romper el sistema para crear turnos superpuestos, etc. Y el agente debería rechazarlo por más justificación que el usuario dé.

@@ -14,9 +14,10 @@ Las instrucciones del agente están en AGENTS.md.
 
 - [x] Modificar el prompt para que muestre los clientes y el stock de forma correcta, actualmente los formatea como tablas de markdown.
 - [x] Mostrar de forma más corta las consultas de clientes, turnos, stock, que pueden llegar a ser muy largas; y paginar de a 4 resultados usando botones de telegram para pasar de pestaña. Consultar la API de telegram para el uso de botones y mensajes dinámicos.
-- [ ] Que se maneje todo por botones en lugar de decir textualmente, por ejemplo, "si para confirmar, no para cancelar". Que el mensaje de bienvenida tenga botones inline para mandar mensajes que digan "ver clientes", "ver stock", etc.
+- [X] Que se maneje todo por botones en lugar de decir textualmente, por ejemplo, "si para confirmar, no para cancelar". Que el mensaje de bienvenida tenga botones inline para mandar mensajes que digan "ver clientes", "ver stock", etc.
 - [x] Corregir problema al actualizar stock, está mal la herramienta, devuelve el siguiente error: "columns.matchingColumns is required for the Append or Update Row operation
 Set columns.matchingColumns to a non-empty string\[\] of header names that uniquely identify the row to update (e.g. \["id"\] or \["email"\]). If there is no key column to match on, use the append operation instead."
+- [ ] Si se detecta que es administrador, que publique automáticamente la lista de comandos disponibles (por ahora solo /start) usando un nodo o la API de telegram si no hay nodo. Si se detecta que es usuario, publicar una lista de comandos para el usuario.
 
 #### Cliente
 

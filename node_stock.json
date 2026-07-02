@@ -1,0 +1,32 @@
+{
+  "parameters": {
+    "documentId": {
+      "__rl": true,
+      "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
+      "mode": "list",
+      "cachedResultName": "Taller mecánico",
+      "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+    },
+    "sheetName": {
+      "__rl": true,
+      "value": 214945978,
+      "mode": "list",
+      "cachedResultName": "stock",
+      "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=214945978"
+    },
+    "options": {}
+  },
+  "id": "d5e96a0c-c166-4469-a8c5-2af2e24b0686",
+  "name": "Consultar_Stock_Publico1",
+  "position": [
+    272,
+    1792
+  ],
+  "type": "n8n-nodes-base.googleSheetsTool",
+  "typeVersion": 4.7,
+  "credentials": {
+    "googleSheetsOAuth2Api": {
+      "name": "Google Sheets account"
+    }
+  }
+}

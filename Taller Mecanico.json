@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-02T08:09:48.667Z",
+  "updatedAt": "2026-07-02T14:04:32.954Z",
   "createdAt": "2026-07-01T19:47:24.809Z",
   "id": "Swpa4f7diJD0oTmH",
   "name": "Taller Mecanico v2",
@@ -1625,7 +1625,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const mcItems = $items('Manejar Callback');\nconst mc = mcItems[0].json;\nconst queryId = mc.queryId;\nconst chatId = mc.chatId;\nconst messageId = mc.messageId;\nconst page = mc.page || 1;\nconst type = mc.type || '';\n\n// GS devuelve UN ITEM POR FILA, no un array en un solo item\nconst allItems = $input.all();\nlet dataArray = [];\n\nif (allItems.length > 0) {\n  const first = allItems[0].json;\n  if (Array.isArray(first)) {\n    dataArray = first;\n  } else if (first.results && Array.isArray(first.results)) {\n    dataArray = first.results;\n  } else if (first.data && Array.isArray(first.data)) {\n    dataArray = first.data;\n  } else {\n    // Normal: cada item del input es una fila\n    dataArray = allItems.map(i => i.json);\n  }\n}\n\nconst pageSize = 4;\nconst totalPages = Math.ceil(dataArray.length / pageSize);\nconst start = (page - 1) * pageSize;\nconst pageItems = dataArray.slice(start, start + pageSize);\n\nvar title = '';\nif (type === 'Clientes') title = 'Clientes';\nelse if (type === 'Stock') title = 'Stock';\nelse if (type === 'Turnos') title = 'Turnos';\nvar text = title + '\\n';\ntext += 'Página ' + page + ' de ' + totalPages + '\\n\\n';\nfor (let i = 0; i < pageItems.length; i++) {\n  const item = pageItems[i];\n  const num = start + i + 1;\n  if (type === 'Clientes') {\n    text += num + '. ' + (item['Nombre y Apellido'] || '-') + '\\n';\n    text += 'DNI: ' + (item['DNI'] != null ? item['DNI'] : '-') + '\\n';\n    text += 'Tel: ' + (item['Número De Teléfono'] != null ? item['Número De Teléfono'] : '-') + '\\n';\n    text += 'Dirección: ' + (item['Dirección'] || '-') + '\\n';\n  } else if (type === 'Stock') {\n    text += num + '. ' + (item['Producto'] || '-') + '\\n';\n    text += 'Código: ' + (item['Código'] || '-') + '\\n';\n    text += 'Precio: \\u0024' + (item['Precio de venta'] != null ? item['Precio de venta'] : '-') + '\\n';\n    text += 'Stock: ' + (item['Stock actual'] != null ? item['Stock actual'] : '-') + '\\n';\n  } else if (type === 'Turnos') {\n    text += num + '. ' + (item['Auto'] || item['Nombre y Apellido'] || '-') + '\\n';\n    text += 'Motivo: ' + (item['Motivo'] || '-') + '\\n';\n    text += 'Fecha: ' + (item['Fecha del Turno'] || '-') + '\\n';\n    text += 'Horario: ' + (item['Horario'] || '-') + '\\n';\n    text += 'Estado: ' + (item['Estado'] || '-') + '\\n';\n  } else {\n    text += num + '. ';\n    const fields = Object.keys(item).filter(k => k !== 'row_number');\n    for (let k = 0; k < fields.length; k++) {\n      text += (item[fields[k]] || '-') + '\\n';\n    }\n  }\n  text += '\\n';\n}\ntext += '\\u00bfQuer\\u00e9s avanzar a la siguiente p\\u00e1gina o volver a la anterior?';\n\nconst prevBtnData = (totalPages > 1 && page > 1) ? 'paginate:' + type + ':' + (page - 1) : 'noop';\nconst nextBtnData = (totalPages > 1 && page < totalPages) ? 'paginate:' + type + ':' + (page + 1) : 'noop';\n\nconst r = {pageText: text, chatId, messageId, queryId, prevBtnData, nextBtnData, currentPage: page, totalPages};\nreturn [{json: r}];"
+        "jsCode": "const mcItems = $items('Manejar Callback');\nconst mc = mcItems[0].json;\nconst queryId = mc.queryId;\nconst chatId = mc.chatId;\nconst messageId = mc.messageId;\nconst page = mc.page || 1;\nconst type = mc.type || '';\n\n// GS devuelve UN ITEM POR FILA, no un array en un solo item\nconst allItems = $input.all();\nlet dataArray = [];\n\nif (allItems.length > 0) {\n  const first = allItems[0].json;\n  if (Array.isArray(first)) {\n    dataArray = first;\n  } else if (first.results && Array.isArray(first.results)) {\n    dataArray = first.results;\n  } else if (first.data && Array.isArray(first.data)) {\n    dataArray = first.data;\n  } else {\n    // Normal: cada item del input es una fila\n    dataArray = allItems.map(i => i.json);\n  }\n}\n\nconst pageSize = 4;\nconst totalPages = Math.ceil(dataArray.length / pageSize);\nconst start = (page - 1) * pageSize;\nconst pageItems = dataArray.slice(start, start + pageSize);\n\nvar title = '';\nif (type === 'Clientes') title = 'Clientes';\nelse if (type === 'Stock') title = 'Stock';\nelse if (type === 'Turnos') title = 'Turnos';\nvar text = title + '\\n';\ntext += 'Página ' + page + ' de ' + totalPages + '\\n\\n';\nfor (let i = 0; i < pageItems.length; i++) {\n  const item = pageItems[i];\n  const num = start + i + 1;\n  if (type === 'Clientes') {\n    text += num + '. ' + (item['Nombre y Apellido'] || '-') + '\\n';\n    text += 'DNI: ' + (item['DNI'] != null ? item['DNI'] : '-') + '\\n';\n    text += 'Tel: ' + (item['Número De Teléfono'] != null ? item['Número De Teléfono'] : '-') + '\\n';\n    text += 'Dirección: ' + (item['Dirección'] || '-') + '\\n';\n  } else if (type === 'Stock') {\n    text += num + '. ' + (item['Repuesto'] || '-') + '\\n';\n    text += 'Código: ' + (item['Código'] || '-') + '\\n';\n    text += 'Precio: \\u0024' + (item['Precio Unitario'] != null ? item['Precio Unitario'] : '-') + '\\n';\n    text += 'Stock: ' + (item['Stock Actual'] != null ? item['Stock Actual'] : '-') + '\\n';\n  } else if (type === 'Turnos') {\n    text += num + '. ' + (item['Auto'] || item['Nombre y Apellido'] || '-') + '\\n';\n    text += 'Motivo: ' + (item['Motivo'] || '-') + '\\n';\n    text += 'Fecha: ' + (item['Fecha del Turno'] || '-') + '\\n';\n    text += 'Horario: ' + (item['Horario'] || '-') + '\\n';\n    text += 'Estado: ' + (item['Estado'] || '-') + '\\n';\n  } else {\n    text += num + '. ';\n    const fields = Object.keys(item).filter(k => k !== 'row_number');\n    for (let k = 0; k < fields.length; k++) {\n      text += (item[fields[k]] || '-') + '\\n';\n    }\n  }\n  text += '\\n';\n}\ntext += '\\u00bfQuer\\u00e9s avanzar a la siguiente p\\u00e1gina o volver a la anterior?';\n\nconst prevBtnData = (totalPages > 1 && page > 1) ? 'paginate:' + type + ':' + (page - 1) : 'noop';\nconst nextBtnData = (totalPages > 1 && page < totalPages) ? 'paginate:' + type + ':' + (page + 1) : 'noop';\n\nconst r = {pageText: text, chatId, messageId, queryId, prevBtnData, nextBtnData, currentPage: page, totalPages};\nreturn [{json: r}];"
       },
       "id": "2895ec86-070c-4107-9fb3-07f5e40407bf",
       "name": "Build Pagination CB",
@@ -2147,63 +2147,6 @@
     "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
-  "pinData": {
-    "Telegram Trigger1": [
-      {
-        "json": {
-          "update_id": 924187114,
-          "callback_query": {
-            "id": "5670438409360360386",
-            "from": {
-              "id": 1320251824,
-              "is_bot": false,
-              "first_name": "Manu",
-              "last_name": "Palmero",
-              "username": "manu_palmero",
-              "language_code": "es"
-            },
-            "message": {
-              "message_id": 1100,
-              "from": {
-                "id": 6073288871,
-                "is_bot": true,
-                "first_name": "Electroencefalografista",
-                "username": "electroencefalograma_bot"
-              },
-              "chat": {
-                "id": 1320251824,
-                "first_name": "Manu",
-                "last_name": "Palmero",
-                "username": "manu_palmero",
-                "type": "private"
-              },
-              "date": 1782978763,
-              "text": "1. Filtro de aceite\nCódigo: FA-101\nStock: 17\nStock mínimo: 5\nPrecio: $2500\nCategoría: Filtros\n\n2. Pastillas de freno\nCódigo: PF-202\nStock: 8\nStock mínimo: 4\nPrecio: $12000\nCategoría: Frenos\n\n3. Bujía Iridium\nCódigo: BI-303\nStock: 24\nStock mínimo: 10\nPrecio: $3500\nCategoría: Encendido\n\n4. Correa de distribución\nCódigo: CD-404\nStock: 3\nStock mínimo: 2\nPrecio: $45000\nCategoría: Motor",
-              "reply_markup": {
-                "inline_keyboard": [
-                  [
-                    {
-                      "text": "<- Anterior",
-                      "callback_data": "noop"
-                    },
-                    {
-                      "text": "Siguiente ->",
-                      "callback_data": "paginate:Stock:2"
-                    }
-                  ]
-                ]
-              }
-            },
-            "chat_instance": "2406406347500481700",
-            "data": "paginate:Stock:2"
-          }
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ]
-  },
   "versionId": "1037ee10-e575-464c-becc-96423117cc04",
   "activeVersionId": "1037ee10-e575-464c-becc-96423117cc04",
   "versionCounter": 428,
@@ -3854,7 +3797,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const mcItems = $items('Manejar Callback');\nconst mc = mcItems[0].json;\nconst queryId = mc.queryId;\nconst chatId = mc.chatId;\nconst messageId = mc.messageId;\nconst page = mc.page || 1;\nconst type = mc.type || '';\n\n// GS devuelve UN ITEM POR FILA, no un array en un solo item\nconst allItems = $input.all();\nlet dataArray = [];\n\nif (allItems.length > 0) {\n  const first = allItems[0].json;\n  if (Array.isArray(first)) {\n    dataArray = first;\n  } else if (first.results && Array.isArray(first.results)) {\n    dataArray = first.results;\n  } else if (first.data && Array.isArray(first.data)) {\n    dataArray = first.data;\n  } else {\n    // Normal: cada item del input es una fila\n    dataArray = allItems.map(i => i.json);\n  }\n}\n\nconst pageSize = 4;\nconst totalPages = Math.ceil(dataArray.length / pageSize);\nconst start = (page - 1) * pageSize;\nconst pageItems = dataArray.slice(start, start + pageSize);\n\nvar title = '';\nif (type === 'Clientes') title = 'Clientes';\nelse if (type === 'Stock') title = 'Stock';\nelse if (type === 'Turnos') title = 'Turnos';\nvar text = title + '\\n';\ntext += 'Página ' + page + ' de ' + totalPages + '\\n\\n';\nfor (let i = 0; i < pageItems.length; i++) {\n  const item = pageItems[i];\n  const num = start + i + 1;\n  if (type === 'Clientes') {\n    text += num + '. ' + (item['Nombre y Apellido'] || '-') + '\\n';\n    text += 'DNI: ' + (item['DNI'] != null ? item['DNI'] : '-') + '\\n';\n    text += 'Tel: ' + (item['Número De Teléfono'] != null ? item['Número De Teléfono'] : '-') + '\\n';\n    text += 'Dirección: ' + (item['Dirección'] || '-') + '\\n';\n  } else if (type === 'Stock') {\n    text += num + '. ' + (item['Producto'] || '-') + '\\n';\n    text += 'Código: ' + (item['Código'] || '-') + '\\n';\n    text += 'Precio: \\u0024' + (item['Precio de venta'] != null ? item['Precio de venta'] : '-') + '\\n';\n    text += 'Stock: ' + (item['Stock actual'] != null ? item['Stock actual'] : '-') + '\\n';\n  } else if (type === 'Turnos') {\n    text += num + '. ' + (item['Auto'] || item['Nombre y Apellido'] || '-') + '\\n';\n    text += 'Motivo: ' + (item['Motivo'] || '-') + '\\n';\n    text += 'Fecha: ' + (item['Fecha del Turno'] || '-') + '\\n';\n    text += 'Horario: ' + (item['Horario'] || '-') + '\\n';\n    text += 'Estado: ' + (item['Estado'] || '-') + '\\n';\n  } else {\n    text += num + '. ';\n    const fields = Object.keys(item).filter(k => k !== 'row_number');\n    for (let k = 0; k < fields.length; k++) {\n      text += (item[fields[k]] || '-') + '\\n';\n    }\n  }\n  text += '\\n';\n}\ntext += '\\u00bfQuer\\u00e9s avanzar a la siguiente p\\u00e1gina o volver a la anterior?';\n\nconst prevBtnData = (totalPages > 1 && page > 1) ? 'paginate:' + type + ':' + (page - 1) : 'noop';\nconst nextBtnData = (totalPages > 1 && page < totalPages) ? 'paginate:' + type + ':' + (page + 1) : 'noop';\n\nconst r = {pageText: text, chatId, messageId, queryId, prevBtnData, nextBtnData, currentPage: page, totalPages};\nreturn [{json: r}];"
+          "jsCode": "const mcItems = $items('Manejar Callback');\nconst mc = mcItems[0].json;\nconst queryId = mc.queryId;\nconst chatId = mc.chatId;\nconst messageId = mc.messageId;\nconst page = mc.page || 1;\nconst type = mc.type || '';\n\n// GS devuelve UN ITEM POR FILA, no un array en un solo item\nconst allItems = $input.all();\nlet dataArray = [];\n\nif (allItems.length > 0) {\n  const first = allItems[0].json;\n  if (Array.isArray(first)) {\n    dataArray = first;\n  } else if (first.results && Array.isArray(first.results)) {\n    dataArray = first.results;\n  } else if (first.data && Array.isArray(first.data)) {\n    dataArray = first.data;\n  } else {\n    // Normal: cada item del input es una fila\n    dataArray = allItems.map(i => i.json);\n  }\n}\n\nconst pageSize = 4;\nconst totalPages = Math.ceil(dataArray.length / pageSize);\nconst start = (page - 1) * pageSize;\nconst pageItems = dataArray.slice(start, start + pageSize);\n\nvar title = '';\nif (type === 'Clientes') title = 'Clientes';\nelse if (type === 'Stock') title = 'Stock';\nelse if (type === 'Turnos') title = 'Turnos';\nvar text = title + '\\n';\ntext += 'Página ' + page + ' de ' + totalPages + '\\n\\n';\nfor (let i = 0; i < pageItems.length; i++) {\n  const item = pageItems[i];\n  const num = start + i + 1;\n  if (type === 'Clientes') {\n    text += num + '. ' + (item['Nombre y Apellido'] || '-') + '\\n';\n    text += 'DNI: ' + (item['DNI'] != null ? item['DNI'] : '-') + '\\n';\n    text += 'Tel: ' + (item['Número De Teléfono'] != null ? item['Número De Teléfono'] : '-') + '\\n';\n    text += 'Dirección: ' + (item['Dirección'] || '-') + '\\n';\n  } else if (type === 'Stock') {\n    text += num + '. ' + (item['Repuesto'] || '-') + '\\n';\n    text += 'Código: ' + (item['Código'] || '-') + '\\n';\n    text += 'Precio: \\u0024' + (item['Precio Unitario'] != null ? item['Precio Unitario'] : '-') + '\\n';\n    text += 'Stock: ' + (item['Stock Actual'] != null ? item['Stock Actual'] : '-') + '\\n';\n  } else if (type === 'Turnos') {\n    text += num + '. ' + (item['Auto'] || item['Nombre y Apellido'] || '-') + '\\n';\n    text += 'Motivo: ' + (item['Motivo'] || '-') + '\\n';\n    text += 'Fecha: ' + (item['Fecha del Turno'] || '-') + '\\n';\n    text += 'Horario: ' + (item['Horario'] || '-') + '\\n';\n    text += 'Estado: ' + (item['Estado'] || '-') + '\\n';\n  } else {\n    text += num + '. ';\n    const fields = Object.keys(item).filter(k => k !== 'row_number');\n    for (let k = 0; k < fields.length; k++) {\n      text += (item[fields[k]] || '-') + '\\n';\n    }\n  }\n  text += '\\n';\n}\ntext += '\\u00bfQuer\\u00e9s avanzar a la siguiente p\\u00e1gina o volver a la anterior?';\n\nconst prevBtnData = (totalPages > 1 && page > 1) ? 'paginate:' + type + ':' + (page - 1) : 'noop';\nconst nextBtnData = (totalPages > 1 && page < totalPages) ? 'paginate:' + type + ':' + (page + 1) : 'noop';\n\nconst r = {pageText: text, chatId, messageId, queryId, prevBtnData, nextBtnData, currentPage: page, totalPages};\nreturn [{json: r}];"
         },
         "id": "2895ec86-070c-4107-9fb3-07f5e40407bf",
         "name": "Build Pagination CB",

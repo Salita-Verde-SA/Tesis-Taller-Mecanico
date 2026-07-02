@@ -13,11 +13,12 @@ Los archivos JSON en este repositorio son la fuente de verdad definitiva del flu
 ## Documentación de referencia (tesis)
 
 La carpeta `docs/` contiene el informe de tesis. El archivo `docs/Tesis_Taller_Mecanico_V2.md` es la especificación funcional del sistema en formato Markdown legible para el agente. TODO el trabajo en el flujo de n8n debe alinearse con lo que describe ese documento.
+La V3 es la actualiazda, aunque no definitiva, está bajo revisión.
 
 ### Reglas de sincronización
 
 1. **No modificar docs/ salvo sincronización explícita**: La carpeta `docs/` contiene el informe de tesis final. Solo se actualiza cuando se sincroniza con el workflow.
-2. **Alineación con la tesis**: Cualquier cambio en el flujo de n8n debe ser coherente con lo especificado en `docs/Tesis_Taller_Mecanico_V2.md`.
+2. **Alineación con la tesis**: Cualquier cambio en el flujo de n8n debe ser coherente con lo especificado en `docs/Tesis_Taller_Mecanico_V2.md`. Excepto que se mencione explícitamente que no se siga.
 3. **Importación (repo → n8n)**: Si el flujo en n8n está desactualizado respecto a los JSON del repo, importalos a n8n.
 4. **Exportación (n8n → repo)**: Si hacés cambios directamente en n8n, exportá el workflow actualizado a su JSON correspondiente y commitealo.
 5. **Verificación**: Antes de considerar una tarea completa, verificá que los JSON del repo reflejen el estado real del flujo en n8n.

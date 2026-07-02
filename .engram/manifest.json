@@ -32,6 +32,14 @@
       "sessions": 7,
       "memories": 24,
       "prompts": 53
+    },
+    {
+      "id": "3f75f746",
+      "created_by": "manu",
+      "created_at": "2026-07-02T14:13:51Z",
+      "sessions": 1,
+      "memories": 4,
+      "prompts": 7
     }
   ]
 }

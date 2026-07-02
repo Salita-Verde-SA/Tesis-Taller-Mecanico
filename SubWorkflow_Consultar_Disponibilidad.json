@@ -33,17 +33,13 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
           "mode": "list",
-          "cachedResultName": "Taller mecánico",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
+          "cachedResultName": "Taller mec\u00e1nico"
         },
         "sheetName": {
           "__rl": true,
-          "value": 1504113005,
           "mode": "list",
-          "cachedResultName": "turnos",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
+          "cachedResultName": "turnos"
         },
         "options": {}
       },
@@ -112,7 +108,6 @@
   "staticData": null,
   "meta": null,
   "nodeGroups": [],
-  "pinData": {},
   "versionId": "a71cba36-8923-4369-81b1-36b2d6c1117d",
   "activeVersionId": "a71cba36-8923-4369-81b1-36b2d6c1117d",
   "versionCounter": 31,
@@ -138,127 +133,5 @@
       }
     }
   ],
-  "tags": [],
-  "activeVersion": {
-    "updatedAt": "2026-07-01T22:41:54.445Z",
-    "createdAt": "2026-07-01T22:41:54.445Z",
-    "versionId": "a71cba36-8923-4369-81b1-36b2d6c1117d",
-    "workflowId": "1IWM34vzuNBI4C57",
-    "nodes": [
-      {
-        "parameters": {
-          "workflowInputs": {
-            "values": [
-              {
-                "name": "fecha"
-              },
-              {
-                "name": "horario"
-              }
-            ]
-          }
-        },
-        "id": "trigger",
-        "name": "Execute Workflow Trigger",
-        "type": "n8n-nodes-base.executeWorkflowTrigger",
-        "typeVersion": 1.2,
-        "position": [
-          0,
-          304
-        ]
-      },
-      {
-        "parameters": {
-          "documentId": {
-            "__rl": true,
-            "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
-            "mode": "list",
-            "cachedResultName": "Taller mecánico",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": 1504113005,
-            "mode": "list",
-            "cachedResultName": "turnos",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
-          },
-          "options": {}
-        },
-        "id": "gs-read",
-        "name": "Consultar Disponibilidad",
-        "type": "n8n-nodes-base.googleSheets",
-        "typeVersion": 4.7,
-        "position": [
-          304,
-          304
-        ],
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "name": "Google Sheets account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "const { fecha, horario } = $('Execute Workflow Trigger').first().json;\nconst rows = $input.all();\nconst match = rows.find(r => r.json['Fecha del Turno'] === fecha && r.json['Horario'] === horario && r.json['Estado'] !== 'Cancelado');\nif (match) {\n  return [{ json: { result: 'OCUPADO', disponibilidad: false } }];\n}\nreturn [{ json: { result: 'LIBRE', disponibilidad: true } }];"
-        },
-        "id": "code-result",
-        "name": "Formatear Resultado",
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          608,
-          304
-        ]
-      }
-    ],
-    "connections": {
-      "Execute Workflow Trigger": {
-        "main": [
-          [
-            {
-              "node": "Consultar Disponibilidad",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Consultar Disponibilidad": {
-        "main": [
-          [
-            {
-              "node": "Formatear Resultado",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "nodeGroups": [],
-    "authors": "Manuel Palmero",
-    "name": null,
-    "description": null,
-    "autosaved": false,
-    "workflowPublishHistory": [
-      {
-        "createdAt": "2026-07-01T22:41:54.503Z",
-        "id": 58,
-        "workflowId": "1IWM34vzuNBI4C57",
-        "versionId": "a71cba36-8923-4369-81b1-36b2d6c1117d",
-        "event": "activated",
-        "userId": "40a876fc-fbd8-4e9f-b863-c1ecfdf4d934"
-      },
-      {
-        "createdAt": "2026-07-01T22:41:54.485Z",
-        "id": 57,
-        "workflowId": "1IWM34vzuNBI4C57",
-        "versionId": "a71cba36-8923-4369-81b1-36b2d6c1117d",
-        "event": "deactivated",
-        "userId": "40a876fc-fbd8-4e9f-b863-c1ecfdf4d934"
-      }
-    ]
-  }
+  "tags": []
 }

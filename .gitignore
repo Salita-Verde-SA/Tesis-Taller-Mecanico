@@ -15,3 +15,8 @@ Thumbs.db
 docs_extracted.txt
 docs_extracted_utf8.txt
 *.log
+
+# LaTeX aux
+*.aux
+*.out
+*.toc

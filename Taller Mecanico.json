@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-02T14:48:23.162Z",
+  "updatedAt": "2026-07-02T18:07:26.008Z",
   "createdAt": "2026-07-01T19:47:24.809Z",
   "id": "Swpa4f7diJD0oTmH",
   "name": "Taller Mecanico v2",
@@ -699,7 +699,7 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}-v5",
+        "sessionKey": "={{ ($('Telegram Trigger').item.json.message?.chat?.id || $('Telegram Trigger').item.json.callback_query?.message?.chat?.id) }}-v5",
         "contextWindowLength": 30
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
@@ -1021,9 +1021,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $('Telegram Trigger').item.json.message.text }}",
+        "text": "={{ $json.text }}",
         "options": {
-          "systemMessage": "=## Rol\nSos un asistente de gestion interna del Taller Mecanico, accesible SOLO para el administrador o mecanico a cargo.\n\n## Reglas Principales\n- **Panel Interno**: Uso exclusivo interno. No revelar informacion sensible a nadie fuera del administrador.\n- **Confirmacion**: Confirmar siempre las modificaciones antes de ejecutarlas. Nunca agendar cambios sin confirmacion explicita.\n- **Confirmacion con Botones**: Cuando necesites confirmar, incluí !!CONFIRM:descripción!! al inicio de tu mensaje. NO digas 'si para confirmar, no para cancelar' — el sistema muestra botones de Confirmar/Cancelar automáticamente. El texto del !!CONFIRM:...!! se muestra como pregunta de confirmacion.\n- **Formato Telegram**: Texto plano. NO uses markdown ni formato especial. Usa listas con guiones o numeracion, datos en lineas separadas. Nunca escribas el separador \"---\".\n- **Tono**: Lenguaje directo, tecnico y sin exceso de formalidades.\n\n## CONTEXTO TEMPORAL Y CALENDARIO\nLa hora actual es {{ $now.setLocale('es').format('H:mm:ss') }}.\nHoy es {{ $now.setLocale('es').format('cccc d/MM/yyyy') }}.\n\nMañana: {{ $now.plus({days:1}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 2 días: {{ $now.plus({days:2}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 3 días: {{ $now.plus({days:3}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 4 días: {{ $now.plus({days:4}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 5 días: {{ $now.plus({days:5}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 6 días: {{ $now.plus({days:6}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 7 días: {{ $now.plus({days:7}).setLocale('es').format('cccc d/MM/yyyy') }}\n\n## HERRAMIENTAS DISPONIBLES\n- **'Obtener Repuestos'**: Consultar el stock completo (producto, codigo, precio costo, precio venta, stock).\n- **'Obtener Clientes'**: Consultar datos de clientes registrados.\n- **'Obtener Turnos'**: Consultar la agenda de turnos.\n- **'Actualizar Stock1'**: Actualizar la cantidad de stock de un repuesto (pedi el codigo del repuesto y la nueva cantidad).\n\n## REGLA CRITICA: Formato para listados con paginacion\nCuando el admin pida ver listados (clientes, repuestos, turnos) y haya MAS DE 4 items:\n1. Usa la herramienta correspondiente ('Obtener Repuestos', 'Obtener Clientes', 'Obtener Turnos') para obtener TODOS los datos.\n2. CRITICO: Siempre empezar desde la pagina 1. Al inicio de tu mensaje, agregá la linea: PAGINATED:Tipo:1/X (donde X = total de paginas, redondeando hacia arriba, ej: 10 items = 3 paginas). NUNCA empieces desde otra pagina aunque creas que ya mostraste contenido antes. NUNCA escribas símbolos como \"_\" o \"-\" entre esto y el resto del texto.\n3. Despues de la linea PAGINATED (en la misma linea o abajo), agregá el nombre del tipo (Clientes, Stock o Turnos), abajo \"Página X de Y\", una línea en blanco, y SOLO los primeros 4 items con el formato exacto que se muestra abajo.\n4. El resto lo maneja el sistema con botones de navegacion.\n\nTipo debe ser exactamente: 'Stock', 'Clientes' o 'Turnos' (con mayuscula inicial, en español).\n\nFormato exacto por tipo (seguí esta estructura AL PIE DE LA LETRA):\n\nCLIENTES:\nPAGINATED:Clientes:1/X\nClientes\nPágina 1 de X\n\n1. Nombre Apellido\nDNI: 12345678\nTel: 261234324\nDirección: Calle Falsa 123\n\n2. ...\n\nSTOCK:\nPAGINATED:Stock:1/X\nStock\nPágina 1 de X\n\n1. Nombre Producto\nCódigo: ABC-123\nPrecio: $1500\nStock: 10\n\n2. ...\n\nTURNOS:\nPAGINATED:Turnos:1/X\nTurnos\nPágina 1 de X\n\n1. Auto del cliente\nMotivo: Cambio de aceite\nFecha: 15/07/2026\nHorario: 10:00:00\nEstado: Pendiente\n\n2. ...\n\nSi hay 4 o menos items, NO incluyas la linea PAGINATED. Mostra todo directamente pero con el mismo formato de items (multi-linea por campo) y encabezado tipo + \"Página 1 de 1\" para mantener consistencia."
+          "systemMessage": "=## Rol\nSos un asistente de gestion interna del Taller Mecanico, accesible SOLO para el administrador o mecanico a cargo.\n\n## REGLA FUNDAMENTAL: No confíes en tu memoria\n- NUNCA asumas datos de conversaciones anteriores para responder. Tu memoria del chat es un historial de conversación, NO una base de datos.\n- SIEMPRE ejecutá las herramientas ('Obtener Repuestos', 'Obtener Clientes', 'Obtener Turnos') para consultar el estado actual de los datos antes de responder. No importa si \"ya viste\" ese dato antes.\n- Los datos en Google Sheets pueden cambiar en cualquier momento desde el panel web, por otros procesos, o por otro administrador. Tu memoria NO refleja esos cambios.\n- Si el usuario pregunta por stock, clientes o turnos: ejecutá la herramienta correspondiente. No respondas con lo que \"recordás\" de antes.\n- Ante la duda: ejecutá la herramienta. Preferí una consulta de más a una respuesta incorrecta.\n- La unica excepcion es el ID incremental (ID_Cliente, ID_Turno), que se calcula como maximo existente + 1.\n\n## Reglas Principales\n- **Panel Interno**: Uso exclusivo interno. No revelar informacion sensible a nadie fuera del administrador.\n- **Confirmacion**: Confirmar siempre las modificaciones antes de ejecutarlas. Nunca agendar cambios sin confirmacion explicita.\n- **Confirmacion con Botones**: Cuando necesites confirmar, incluí !!CONFIRM:descripción al inicio de tu mensaje. NO digas 'si para confirmar, no para cancelar' — el sistema muestra botones de Confirmar/Cancelar automáticamente. El texto del !!CONFIRM:... se muestra como pregunta de confirmacion.\n- **Formato Telegram**: Texto plano. NO uses markdown ni formato especial. Usa listas con guiones o numeracion, datos en lineas separadas. Nunca escribas el separador \"---\".\n- **Tono**: Lenguaje directo, tecnico y sin exceso de formalidades.\n\n## CONTEXTO TEMPORAL Y CALENDARIO\nLa hora actual es {{ $now.setLocale('es').format('H:mm:ss') }}.\nHoy es {{ $now.setLocale('es').format('cccc d/MM/yyyy') }}.\n\nMañana: {{ $now.plus({days:1}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 2 días: {{ $now.plus({days:2}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 3 días: {{ $now.plus({days:3}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 4 días: {{ $now.plus({days:4}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 5 días: {{ $now.plus({days:5}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 6 días: {{ $now.plus({days:6}).setLocale('es').format('cccc d/MM/yyyy') }}\nEn 7 días: {{ $now.plus({days:7}).setLocale('es').format('cccc d/MM/yyyy') }}\n\n## HERRAMIENTAS DISPONIBLES\n- **'Obtener Repuestos'**: Consultar el stock completo (producto, codigo, precio costo, precio venta, stock).\n- **'Obtener Clientes'**: Consultar datos de clientes registrados.\n- **'Obtener Turnos'**: Consultar la agenda de turnos.\n- **'Actualizar Stock1'**: Actualizar la cantidad de stock de un repuesto (pedi el codigo del repuesto y la nueva cantidad).\n\n## REGLA CRITICA: Formato para listados con paginacion\nCuando el admin pida ver listados (clientes, repuestos, turnos) y haya MAS DE 4 items:\n1. Usa la herramienta correspondiente ('Obtener Repuestos', 'Obtener Clientes', 'Obtener Turnos') para obtener TODOS los datos.\n2. CRITICO: Siempre empezar desde la pagina 1. Al inicio de tu mensaje, agregá la linea: PAGINATED:Tipo:1/X (donde X = total de paginas, redondeando hacia arriba, ej: 10 items = 3 paginas). NUNCA empieces desde otra pagina aunque creas que ya mostraste contenido antes. NUNCA escribas símbolos como \"_\" o \"-\" entre esto y el resto del texto.\n3. Despues de la linea PAGINATED (en la misma linea o abajo), agregá el nombre del tipo (Clientes, Stock o Turnos), abajo \"Página X de Y\", una línea en blanco, y SOLO los primeros 4 items con el formato exacto que se muestra abajo.\n4. El resto lo maneja el sistema con botones de navegacion.\n\nTipo debe ser exactamente: 'Stock', 'Clientes' o 'Turnos' (con mayuscula inicial, en español).\n\nFormato exacto por tipo (seguí esta estructura AL PIE DE LA LETRA):\n\nCLIENTES:\nPAGINATED:Clientes:1/X\nClientes\nPágina 1 de X\n\n1. Nombre Apellido\nDNI: 12345678\nTel: 261234324\nDirección: Calle Falsa 123\n\n2. ...\n\nSTOCK:\nPAGINATED:Stock:1/X\nStock\nPágina 1 de X\n\n1. Nombre Producto\nCódigo: ABC-123\nPrecio: $1500\nStock: 10\n\n2. ...\n\nTURNOS:\nPAGINATED:Turnos:1/X\nTurnos\nPágina 1 de X\n\n1. Auto del cliente\nMotivo: Cambio de aceite\nFecha: 15/07/2026\nHorario: 10:00:00\nEstado: Pendiente\n\n2. ...\n\nSi hay 4 o menos items, NO incluyas la linea PAGINATED. Mostra todo directamente pero con el mismo formato de items (multi-linea por campo) y encabezado tipo + \"Página 1 de 1\" para mantener consistencia."
         }
       },
       "id": "747e37cc-2857-47ba-a9b5-032ad1d2f2d8",
@@ -1259,7 +1259,7 @@
     },
     {
       "parameters": {
-        "jsCode": "var chatId = 0;\ntry { chatId = $items('Validar Admin')[0].json.chatId; } catch(e) {}\n\nvar output = $input.first().json.output || '';\n\ntry { output = output.replace(/_/g, '\\\\_'); } catch(e) {}\n\n// Detectar marcador CONFIRM:descripcion\nvar confirmMatch = output.match(/^!!CONFIRM:(.+?)!!([\\s\\S]*)/);\nif (confirmMatch) {\n  var confirmDesc = confirmMatch[1].trim();\n  var afterText = confirmMatch[2].trim();\n  return [{\n    json: {\n      output: afterText || confirmDesc,\n      chatId: chatId,\n      isPaginated: false,\n      isConfirm: true,\n      confirmText: confirmDesc\n    }\n  }];\n}\n\n// buscar marcador PAGINATED:Tipo:pag/total\nvar match = output.match(/^PAGINATED:(\\w+):(\\d+)\\/(\\d+)/m);\nif (match) {\n  var tipo = match[1];\n  var currentPage = parseInt(match[2]);\n  var totalPages = parseInt(match[3]);\n  output = output.replace(/^PAGINATED:\\w+:\\d+\\/\\d+\\n*/m, '');\n  var prevBtnData = currentPage > 1 ? 'paginate:' + tipo + ':' + (currentPage - 1) : 'noop';\n  var nextBtnData = currentPage < totalPages ? 'paginate:' + tipo + ':' + (currentPage + 1) : 'noop';\n  return [{json: {output: output, chatId: chatId, isPaginated: true, prevBtnData: prevBtnData, nextBtnData: nextBtnData, currentPage: currentPage, totalPages: totalPages}}];\n} else {\n  return [{json: {output: output, chatId: chatId, isPaginated: false}}];\n}"
+        "jsCode": "var chatId = 0;\ntry { chatId = $items('Validar Admin')[0].json.chatId; } catch(e) {}\n\nvar output = $input.first().json.output || '';\n\ntry { output = output.replace(/_/g, '\\\\_'); } catch(e) {}\n\n// Detectar marcador CONFIRM:descripcion\nvar confirmMatch = output.match(/^!!CONFIRM:(.+)/);\nif (confirmMatch) {\n  var confirmDesc = confirmMatch[1].trim();\n  return [{\n    json: {\n      output: confirmDesc,\n      chatId: chatId,\n      isPaginated: false,\n      isConfirm: true,\n      confirmText: confirmDesc\n    }\n  }];\n}\n\n// buscar marcador PAGINATED:Tipo:pag/total\nvar match = output.match(/^PAGINATED:(\\w+):(\\d+)\\/(\\d+)/m);\nif (match) {\n  var tipo = match[1];\n  var currentPage = parseInt(match[2]);\n  var totalPages = parseInt(match[3]);\n  output = output.replace(/^PAGINATED:\\w+:\\d+\\/\\d+\\n*/m, '');\n  var prevBtnData = currentPage > 1 ? 'paginate:' + tipo + ':' + (currentPage - 1) : 'noop';\n  var nextBtnData = currentPage < totalPages ? 'paginate:' + tipo + ':' + (currentPage + 1) : 'noop';\n  return [{json: {output: output, chatId: chatId, isPaginated: true, prevBtnData: prevBtnData, nextBtnData: nextBtnData, currentPage: currentPage, totalPages: totalPages}}];\n} else {\n  return [{json: {output: output, chatId: chatId, isPaginated: false}}];\n}"
       },
       "id": "b0f93471-e0e9-4fa5-a509-ee5b1612b7c7",
       "name": "Procesar Output Admin",
@@ -1647,10 +1647,10 @@
     },
     {
       "parameters": {
-        "jsCode": "return [{json: {}}];"
+        "jsCode": "const action = $json.action;\nconst respuesta = $json.respuesta;\nconst chatId = $json.chatId;\n\nif (action === 'confirm') {\n  if (respuesta === 'si') {\n    return [{\n      json: {\n        text: \"CONFIRMADO: el usuario aceptó la operación. Ejecutá la herramienta que habías propuesto. No preguntes de nuevo, el usuario ya confirmó.\",\n        chatId: chatId\n      }\n    }];\n  } else {\n    return [{\n      json: {\n        text: \"CANCELADO: el usuario no aceptó la operación. Cancela la operación. No preguntes de nuevo, el usuario ya canceló.\",\n        chatId: chatId\n      }\n    }];\n  }\n}\n\nreturn [{json: {}}];"
       },
       "id": "31338693-beb5-4086-bc5e-1604b02a322c",
-      "name": "NoOp Handler",
+      "name": "Handle Confirm",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
@@ -2071,6 +2071,11 @@
             "node": "Typing Admin",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Admin Start Switch",
+            "type": "main",
+            "index": 0
           }
         ],
         [
@@ -2215,7 +2220,7 @@
         ],
         [
           {
-            "node": "NoOp Handler",
+            "node": "Handle Confirm",
             "type": "main",
             "index": 0
           }
@@ -2268,13 +2273,7 @@
     },
     "Typing Admin": {
       "main": [
-        [
-          {
-            "node": "Admin Start Switch",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Admin Start Switch": {
@@ -2305,6 +2304,17 @@
           }
         ]
       ]
+    },
+    "Handle Confirm": {
+      "main": [
+        [
+          {
+            "node": "Agente Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -2318,9 +2328,66 @@
     "templateCredsSetupCompleted": true
   },
   "nodeGroups": [],
-  "versionId": "ebdecd71-49a0-49f9-8963-9497028c170a",
-  "activeVersionId": "ebdecd71-49a0-49f9-8963-9497028c170a",
-  "versionCounter": 535,
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 924187163,
+          "callback_query": {
+            "id": "5670438407452765757",
+            "from": {
+              "id": 1320251824,
+              "is_bot": false,
+              "first_name": "Manu",
+              "last_name": "Palmero",
+              "username": "manu_palmero",
+              "language_code": "es"
+            },
+            "message": {
+              "message_id": 1133,
+              "from": {
+                "id": 6073288871,
+                "is_bot": true,
+                "first_name": "Electroencefalografista",
+                "username": "electroencefalograma_bot"
+              },
+              "chat": {
+                "id": 1320251824,
+                "first_name": "Manu",
+                "last_name": "Palmero",
+                "username": "manu_palmero",
+                "type": "private"
+              },
+              "date": 1783015315,
+              "text": "Vas a agregar 2 unidades al stock del repuesto \"volante\". ¿Confirmás esta acción?",
+              "reply_markup": {
+                "inline_keyboard": [
+                  [
+                    {
+                      "text": "Si, confirmar",
+                      "callback_data": "confirm:si"
+                    },
+                    {
+                      "text": "No, cancelar",
+                      "callback_data": "confirm:no"
+                    }
+                  ]
+                ]
+              }
+            },
+            "chat_instance": "2406406347500481700",
+            "data": "confirm:no"
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "ecc537c2-e96d-4352-9401-0a2d9caa6a9a",
+  "activeVersionId": "ecc537c2-e96d-4352-9401-0a2d9caa6a9a",
+  "versionCounter": 558,
   "triggerCount": 1,
   "sourceWorkflowId": null,
   "shared": [

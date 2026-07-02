@@ -22,7 +22,8 @@ La V3 es la actualiazda, aunque no definitiva, está bajo revisión.
 3. **Importación (repo → n8n)**: Si el flujo en n8n está desactualizado respecto a los JSON del repo, importalos a n8n.
 4. **Exportación (n8n → repo)**: Si hacés cambios directamente en n8n, exportá el workflow actualizado a su JSON correspondiente y commitealo.
 5. **Verificación**: Antes de considerar una tarea completa, verificá que los JSON del repo reflejen el estado real del flujo en n8n.
-6. **Credenciales vacías en JSON**: Todos los bloques `credentials` en los JSON del repo deben contener solo el `"name"` de la credencial, sin `"id"`. Ejemplo: `"credentials": {"telegramApi": {"name": "Telegram account"}}`. n8n matchea automáticamente por nombre al importar. Nunca incluir IDs.
+6. **IDs de recursos vacíos en JSON**: Todos los bloques `credentials` en los JSON del repo deben contener solo el `"name"` de la credencial, sin `"id"`. Ejemplo: `"credentials": {"telegramApi": {"name": "Telegram account"}}`. n8n matchea automáticamente por nombre al importar. Nunca incluir IDs.  
+   También aplica a referencias a sub-workflows en nodos `toolWorkflow`: el `workflowId` debe conservar solo `cachedResultName` (nombre del sub-workflow) y eliminar `value` (ID) y `cachedResultUrl`.
 7. **Antigüedad de exportación**: Para determinar si el workflow de n8n (vía MCP) está más actualizado que el JSON del repo, comparar `updatedAt` al inicio de cada archivo JSON. Si el de n8n es más reciente, exportar. Si el del repo es más reciente, importar a n8n.
 8. **Nunca committear pinned data de prueba**: n8n permite fijar (`pin`) datos de prueba en los nodos (ej: mensajes de prueba en el Telegram Trigger). Esos datos son solo para testing local y no deben filtrarse al repo. Antes de commitear un JSON, verificar que `pinData` esté vacío o eliminarlo.
 

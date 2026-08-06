@@ -17,7 +17,9 @@ Las instrucciones del agente están en AGENTS.md.
 - [X] Que se maneje todo por botones en lugar de decir textualmente, por ejemplo, "si para confirmar, no para cancelar". Que el mensaje de bienvenida tenga botones inline para mandar mensajes que digan "ver clientes", "ver stock", etc.
 - [x] Corregir problema al actualizar stock, está mal la herramienta, devuelve el siguiente error: "columns.matchingColumns is required for the Append or Update Row operation
 Set columns.matchingColumns to a non-empty string\[\] of header names that uniquely identify the row to update (e.g. \["id"\] or \["email"\]). If there is no key column to match on, use the append operation instead."
-- [ ] Si se detecta que es administrador, que publique automáticamente la lista de comandos disponibles (por ahora solo /start) usando un nodo o la API de telegram si no hay nodo. Si se detecta que es usuario, publicar una lista de comandos para el usuario.
+- [ ] ~~Si se detecta que es administrador, que publique automáticamente la lista de comandos disponibles (por ahora solo /start) usando la API de Telegram (`setMyCommands` con scope por usuario + `setChatMenuButton`). Si se detecta que es usuario, publicar una lista de comandos para el usuario.~~ (Descartada)
+- [x] Agregar inline buttons al mensaje de bienvenida del cliente (Consultar repuestos, Agendar turno, Hacer una consulta).
+- [x] Manejar callbacks de clientes (`client_cmd:*`) en el flujo de callbacks.
 
 #### Cliente
 

@@ -18,8 +18,8 @@ Las instrucciones del agente están en AGENTS.md.
 - [x] Corregir problema al actualizar stock, está mal la herramienta, devuelve el siguiente error: "columns.matchingColumns is required for the Append or Update Row operation
 Set columns.matchingColumns to a non-empty string\[\] of header names that uniquely identify the row to update (e.g. \["id"\] or \["email"\]). If there is no key column to match on, use the append operation instead."
 - [ ] ~~Si se detecta que es administrador, que publique automáticamente la lista de comandos disponibles (por ahora solo /start) usando la API de Telegram (`setMyCommands` con scope por usuario + `setChatMenuButton`). Si se detecta que es usuario, publicar una lista de comandos para el usuario.~~ (Descartada)
-- [x] Agregar inline buttons al mensaje de bienvenida del cliente (Consultar repuestos, Agendar turno, Hacer una consulta).
-- [x] Manejar callbacks de clientes (`client_cmd:*`) en el flujo de callbacks.
+- [ ] Agregar inline buttons al mensaje de bienvenida del cliente (Consultar repuestos, Agendar turno, Hacer una consulta).
+- [ ] Manejar callbacks de clientes (`client_cmd:*`) en el flujo de callbacks.
 
 #### Cliente
 
@@ -30,3 +30,4 @@ Set columns.matchingColumns to a non-empty string\[\] of header names that uniqu
 - [x] No formatear como markdown, ni "#", ni "---", ni otras cosas que puedan haber.
 - [x] No debe responder a temas no relacionados al taller, ni aceptar bromas.
 - [x] El usuario no debe, bajo ninguna circunstancia, efectuar acciones que no le correspondan, como crear más de un usuario a la vez, borrar turnos de otras personas, romper el sistema para crear turnos superpuestos, etc. Y el agente debería rechazarlo por más justificación que el usuario dé.
+- [ ] Manejar callbacks de acciones del cliente (stock, agendar, consulta) vía inline buttons del mensaje de bienvenida.

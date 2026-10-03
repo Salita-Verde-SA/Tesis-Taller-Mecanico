@@ -1,11 +1,6 @@
 {
-  "updatedAt": "2026-07-01T22:41:54.444Z",
-  "createdAt": "2026-07-01T21:37:37.662Z",
-  "id": "1IWM34vzuNBI4C57",
+  "id": "Evk63H6jGzXJmLsk",
   "name": "SubWorkflow_Consultar_Disponibilidad",
-  "description": null,
-  "active": true,
-  "isArchived": false,
   "nodes": [
     {
       "parameters": {
@@ -33,13 +28,17 @@
       "parameters": {
         "documentId": {
           "__rl": true,
+          "value": "1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM",
           "mode": "list",
-          "cachedResultName": "Taller mec\u00e1nico"
+          "cachedResultName": "Taller mecánico",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
+          "value": 1504113005,
           "mode": "list",
-          "cachedResultName": "turnos"
+          "cachedResultName": "turnos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1D6eQJvPhYuvZqBaPtawndPt4vYrraNI0rMY5i5_PNEM/edit#gid=1504113005"
         },
         "options": {}
       },
@@ -53,6 +52,7 @@
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
+          "id": "hd1ufVqUmRsYNp0H",
           "name": "Google Sheets account"
         }
       }
@@ -95,43 +95,16 @@
       ]
     }
   },
+  "active": true,
   "settings": {
     "executionOrder": "v1",
     "saveDataErrorExecution": "all",
     "saveDataSuccessExecution": "all",
     "saveManualExecutions": true,
     "saveExecutionProgress": true,
-    "callerPolicy": "workflowsFromSameOwner",
-    "availableInMCP": false,
     "binaryMode": "separate"
   },
-  "staticData": null,
+  "versionId": "8567eb92-43cd-450a-9e6d-ffebc2dcb324",
   "meta": null,
-  "nodeGroups": [],
-  "versionId": "a71cba36-8923-4369-81b1-36b2d6c1117d",
-  "activeVersionId": "a71cba36-8923-4369-81b1-36b2d6c1117d",
-  "versionCounter": 31,
-  "triggerCount": 0,
-  "sourceWorkflowId": null,
-  "shared": [
-    {
-      "updatedAt": "2026-07-01T21:37:37.666Z",
-      "createdAt": "2026-07-01T21:37:37.666Z",
-      "role": "workflow:owner",
-      "workflowId": "1IWM34vzuNBI4C57",
-      "projectId": "TR05BAcU2qCI52zd",
-      "project": {
-        "updatedAt": "2026-03-30T19:15:19.500Z",
-        "createdAt": "2026-03-30T19:06:07.712Z",
-        "id": "TR05BAcU2qCI52zd",
-        "name": "Manuel Palmero <manueligna06@gmail.com>",
-        "type": "personal",
-        "icon": null,
-        "description": null,
-        "customTelemetryTags": [],
-        "creatorId": "40a876fc-fbd8-4e9f-b863-c1ecfdf4d934"
-      }
-    }
-  ],
   "tags": []
 }
